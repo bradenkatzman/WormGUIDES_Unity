@@ -22,7 +22,7 @@ public class LineageData : MonoBehaviour {
 		xyzScale = new double[] { xScale, yScale, zScale };
 	}
 	// END INITIALIZATION METHODS
-
+	  
 	// TODO
 	public void shiftAllPositions(int x, int y, int z) {
 

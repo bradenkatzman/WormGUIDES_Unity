@@ -47,11 +47,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\acetree\LineageData.cs" />
+     <Compile Include="Assets\acetree\LineageDataLoader.cs" />
      <Compile Include="Assets\wormguides\WormGUIDES_UnityApp.cs" />
      <Compile Include="Assets\wormguides\controllers\RootLayoutController.cs" />
      <Compile Include="Assets\wormguides\controllers\Window3DController.cs" />
      <Compile Include="Assets\wormguides\loaders\NucleiLoader.cs" />
+     <Compile Include="Assets\wormguides\loaders\ProductionInfoLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ShapesLoader.cs" />
+     <Compile Include="Assets\wormguides\resources\ProductionInfo.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
