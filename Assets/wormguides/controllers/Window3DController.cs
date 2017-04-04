@@ -9,6 +9,12 @@ public class Window3DController : MonoBehaviour {
 	private bool play;
 	private bool pause;
 
+	// for rendering
+	private NucleiLoader nucLdr;
+	private ShapesLoader shapesLdr;
+
+	private LineageData lineageData;
+
 	void Start () {
 		time = 360;
 		play = false;
@@ -31,5 +37,9 @@ public class Window3DController : MonoBehaviour {
 
 	private void getSceneData() {
 
+	}
+
+	public void setLineageData(LineageData ld) {
+		this.lineageData = ld;
 	}
 }
