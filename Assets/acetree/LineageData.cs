@@ -8,11 +8,10 @@ public class LineageData : MonoBehaviour {
 	private List<string> allCellNames;
 	private double[] xyzScale;
 	private bool isSulston;
+	private bool finishedConstruction;
 
 	void Start () {
-		Debug.Log ("instantiating lineage data");
-		timeFrames = new List<Frame> ();	
-		Debug.Log ("Finished instantiating lineage data");
+		timeFrames = new List<Frame> ();
 	}
 
 	// THIS BLOCK USED AS INITIALIZATION METHODS SINCE START() CANNOT TAKE PARAMETERS
