@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -101,9 +102,6 @@ public class ProductionInfoLoader : MonoBehaviour {
 			productionInfo.Add (initialRotation);
 		}
 
-		Debug.Log (productionInfo.Count);
-
 		return productionInfo;
-
 	}
 }

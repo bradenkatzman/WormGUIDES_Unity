@@ -10,7 +10,9 @@ public class LineageData : MonoBehaviour {
 	private bool isSulston;
 
 	void Start () {
+		Debug.Log ("instantiating lineage data");
 		timeFrames = new List<Frame> ();	
+		Debug.Log ("Finished instantiating lineage data");
 	}
 
 	// THIS BLOCK USED AS INITIALIZATION METHODS SINCE START() CANNOT TAKE PARAMETERS
@@ -23,9 +25,11 @@ public class LineageData : MonoBehaviour {
 	}
 	// END INITIALIZATION METHODS
 	  
-	// TODO
+	// 
 	public void shiftAllPositions(int x, int y, int z) {
-
+		foreach (Frame timeFrame in timeFrames) {
+			timeFrame.shiftPositions(x, y, z);
+		}
 	}
 
 	// ACCESSOR METHODS
@@ -52,10 +56,12 @@ public class LineageData : MonoBehaviour {
 	/*
 	 * 
 	 */ 
-	public double[,] getPositions(int time) {
+	public double[][] getPositions(int time) {
 		int internalTimeIdx = time - 1;
 		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
-			return new double[1, 3];
+			double[][] blank = new double[1][];
+			blank [0] = new double[3];
+			return blank;
 		}
 
 		return timeFrames [internalTimeIdx].getPositions ();
@@ -171,39 +177,54 @@ public class LineageData : MonoBehaviour {
 
 		// TODO
 		public void shiftPositions(int x, int y, int z) {
-
+			for (int i = 0; i < positions.Count; i++) {
+				double[] pos = positions [i];
+				positions[i] = new double[] {pos[0] - x, pos[1] - y, pos[2] - z};
+			}
 		}
 
-		// TODO
+		// 
 		public void addName(string name) {
-
+			names.Add (name);
 		}
 
-		// TODO
+		// 
 		public void addPosition(double[] position) {
-
+			positions.Add (position);
 		}
 
-		// TODO
+		// 
 		public void addDiameter(double diameter) {
-
+			diameters.Add (diameter);
 		}
 
-		// TODO
+		// 
 		public string[] getNames() {
-			return new string[1];
+			return names.ToArray ();
 		}
 
 
-		// TODO
-		public double[,] getPositions() {
-			return new double[1, 3];
+		// 
+		public double[][] getPositions() {
+			double[][] copy = new double[positions.Count][];
+			for (int i = 0; i < positions.Count; i++) {
+				copy [i] = new double[3];
+				for (int j = 0; j < 3; j++) {
+					copy [i] [j] = (positions [i]) [j];
+				}
+			}
+
+			return copy;
 		}
 
-
-		// TODO
+		// 
 		public double[] getDiameters() {
-			return new double[1];
+			double[] copy = new double[diameters.Count];
+			for (int i = 0; i < diameters.Count; i++) {
+				copy [i] = diameters [i];
+			}
+
+			return copy;
 		}
 	}
 }

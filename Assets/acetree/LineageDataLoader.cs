@@ -1,11 +1,142 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.IO;
+
 public class LineageDataLoader : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	private static string ENTRY_PREFIX = "Assets\\acetree\\nucleifiles\\";
+	private static string T = "t";
+	private static string ENTRY_EXT = "-nuclei";
+	private static string SLASH = "/";
+	private static int NUMBER_OF_TOKENS = 21;
+	private static int VALID_IDX = 1,
+			XCOR_IDX = 5,
+			YCOR_IDX = 6,
+			ZCOR_IDX = 7,
+			DIAMETER_IDX = 8,
+			ID_IDX = 9;
+	private static string ONE_ZERO_PAD = "0";
+	private static string TWO_ZERO_PAD = "00";
+	private static int X_POS_IDX = 0;
+	private static int Y_POS_IDX = 1;
+	private static int Z_POS_IDX = 2;
+	private static List<string> allCellNames = new List<string> ();
+	private static int avgX;
+	private static int avgY;
+	private static int avgZ;
+
+	/*
+	 * 
+	 */ 
+	public static LineageData loadNucFiles(ProductionInfo productionInfo, GameObject WormGUIDES_Unity) {
+		// initialize lineage data
+		Debug.Log("starting nuc loader");
+		LineageData ld = WormGUIDES_Unity.AddComponent<LineageData> ();
+		Debug.Log ("Past lineage data construction line");
+		ld.setAllCellNames (allCellNames);
+		ld.setXYZScale (productionInfo.getXScale (), productionInfo.getYScale (), productionInfo.getZScale ());
+
+		string urlStr;
+		for (int i = 360; i <= productionInfo.getTotalTimePoints (); i++) {
+			urlStr = getResourceAtTime (i);
+			if (urlStr != null) {
+				string FilePath = Directory.GetCurrentDirectory () + SLASH + urlStr;
+				if (File.Exists (FilePath)) {
+					process (ld, i, FilePath);
+				}
+			} else {
+				Debug.Log ("Could not find file: " + urlStr);
+			}
+		}
+
+		// translate all cells to center around (0,0,0)
+
+
+		return ld;
+	}
+
+	private static string getResourceAtTime(int i) {
+		string resourceUrlStr = null;
+		if (i >= 1) {
+			if (i < 10) {
+				resourceUrlStr = ENTRY_PREFIX + T + TWO_ZERO_PAD + i.ToString () + ENTRY_EXT;
+			} else if (i < 100) {
+				resourceUrlStr = ENTRY_PREFIX + T + ONE_ZERO_PAD + i.ToString () + ENTRY_EXT;
+			} else {
+				resourceUrlStr = ENTRY_PREFIX + T + i.ToString () + ENTRY_EXT;
+			}
+		}
+
+		return resourceUrlStr;
+	}
+
+	private static void process(LineageData ld, int time, string FilePath) {
+		Debug.Log ("processing nucs for time: " + time);
+		ld.addTimeFrame ();
+
+		using (var fs = File.OpenRead (FilePath))
+		using (var reader = new StreamReader (fs)) {
+			while (!reader.EndOfStream) {
+				string line = reader.ReadLine ();
+				if (line != null) {
+					string[] tokens = new string[NUMBER_OF_TOKENS];
+					string[] values = line.Split (',');
+
+					int k = 0;
+					for (int i = 0; i < values.Length; i++) {
+						tokens [k++] = values [i].Trim();
+					}
+
+					if ((int)Int32.Parse (tokens [VALID_IDX]) == 1) {
+						makeNucleus (ld, time, tokens);
+					}
+				}
+			}
+		}
+	}
+
+	private static void makeNucleus(LineageData ld, int time, string[] tokens) {
+		Debug.Log ("nuc making");
+		ld.addNucleus (
+			time,
+			tokens [ID_IDX],
+			(int)Int32.Parse (tokens [XCOR_IDX]),
+			(int)Int32.Parse (tokens [YCOR_IDX]),
+			Math.Round (Double.Parse (tokens [ZCOR_IDX])),
+			(int)Int32.Parse (tokens [DIAMETER_IDX]));
+	}
+
+	public static void setOriginToZero(LineageData ld) {
+		Debug.Log ("setting origin to zero");
+		int totalPositions = 0;
+		double sumX = 0.0;
+		double sumY = 0.0;
+		double sumZ = 0.0;
+
+		// sum up all x-, y- and z-coordinates of nuclei
+		for (int i = 0; i < ld.getNumberOfTimePoints (); i++) {
+			double[][] positionsArray = ld.getPositions (i);
+			for (int j = 1; j < positionsArray.Length; j++) {
+				sumX += positionsArray [j][X_POS_IDX];
+				sumY += positionsArray [j][Y_POS_IDX];
+				sumZ += positionsArray [j][Z_POS_IDX];
+				totalPositions++;
+			}
+		}
+
+		// find average of x-, y- and z-coordinates
+		avgX = (int) (sumX / totalPositions);
+		avgY = (int) (sumY / totalPositions);
+		avgZ = (int) (sumZ / totalPositions);
+
+		Debug.Log ("Average nuclei positio offsets from origin (0, 0, 0): ("
+		+ avgX.ToString () + ", "
+		+ avgY.ToString () + ", "
+		+ avgZ.ToString () + ")");
+
+		ld.shiftAllPositions (avgX, avgY, avgZ);
 	}
 }

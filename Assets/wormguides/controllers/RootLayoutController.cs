@@ -22,6 +22,7 @@ public class RootLayoutController : MonoBehaviour {
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
+
 		initProductionInfo ();
 		initLineageData ();
 		initWindow3DController ();
@@ -29,11 +30,13 @@ public class RootLayoutController : MonoBehaviour {
 
 	private void initProductionInfo() {
 		productionInfo = WormGUIDES_Unity.AddComponent<ProductionInfo> ();
+		List<List<string>> productionInfoData = ProductionInfoLoader.buildProductionInfo ();
+		productionInfo.setProductionInfoData (productionInfoData);
 	}
 
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
-
+		lineageData = LineageDataLoader.loadNucFiles (productionInfo, WormGUIDES_Unity);
 	}
 
 	private void initWindow3DController() {

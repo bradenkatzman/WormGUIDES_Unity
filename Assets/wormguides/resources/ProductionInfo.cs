@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class ProductionInfo : MonoBehaviour {
@@ -10,7 +11,11 @@ public class ProductionInfo : MonoBehaviour {
 	private List<List<string>> productionInfoData;
 
 	void Start () {
-		productionInfoData = ProductionInfoLoader.buildProductionInfo ();	
+		
+	}
+
+	public void setProductionInfoData(List<List<string>> pid) {
+		productionInfoData = pid;
 	}
 
 	// TODO
@@ -26,19 +31,19 @@ public class ProductionInfo : MonoBehaviour {
 	}
 
 	public int getTotalTimePoints() {
-		return Int32.Parse ((productionInfoData [10]) [0]);
+		return (int)Int32.Parse ((productionInfoData [10]) [0]);
 	}
 
 	public int getXScale() {
-		return Int32.Parse ((productionInfoData [11]) [0]);
+		return (int)Int32.Parse ((productionInfoData [11]) [0]);
 	}
 
 	public int getYScale() {
-		return Int32.Parse ((productionInfoData [12]) [0]);
+		return (int)Int32.Parse ((productionInfoData [12]) [0]);
 	}
 
 	public int getZScale() {
-		return Int32.Parse ((productionInfoData [13]) [0]);
+		return (int)Int32.Parse ((productionInfoData [13]) [0]);
 	}
 
 	public int getDefaultStartTime() {
