@@ -5,9 +5,9 @@ using UnityEngine;
 
 using System.IO;
 
-public class LineageDataLoader : MonoBehaviour {
+public class LineageDataLoader {
 
-	private static string ENTRY_PREFIX = "Assets\\acetree\\nucleifiles\\";
+	private static string ENTRY_PREFIX = "Assets/acetree/nucleifiles/";
 	private static string T = "t";
 	private static string ENTRY_EXT = "-nuclei";
 	private static string SLASH = "/";
@@ -33,9 +33,7 @@ public class LineageDataLoader : MonoBehaviour {
 	 */ 
 	public static LineageData loadNucFiles(ProductionInfo productionInfo, GameObject WormGUIDES_Unity) {
 		// initialize lineage data
-		Debug.Log("starting nuc loader");
-		LineageData ld = WormGUIDES_Unity.AddComponent<LineageData> ();
-		Debug.Log ("Past lineage data construction line");
+		LineageData ld = new LineageData();
 		ld.setAllCellNames (allCellNames);
 		ld.setXYZScale (productionInfo.getXScale (), productionInfo.getYScale (), productionInfo.getZScale ());
 
@@ -45,6 +43,7 @@ public class LineageDataLoader : MonoBehaviour {
 			if (urlStr != null) {
 				string FilePath = Directory.GetCurrentDirectory () + SLASH + urlStr;
 				if (File.Exists (FilePath)) {
+					Debug.Log ("processing: " + FilePath);
 					process (ld, i, FilePath);
 				}
 			} else {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LineageData : MonoBehaviour {
+public class LineageData {
 
 	private List<Frame> timeFrames;
 	private List<string> allCellNames;
@@ -168,13 +168,13 @@ public class LineageData : MonoBehaviour {
 		private List<double[]> positions;
 		private List<double> diameters;
 
-		public Frame() {
+		void Start() {
 			names = new List<string>();
 			positions = new List<double[]>();
 			diameters = new List<double>();
 		}
 
-		// TODO
+		// 
 		public void shiftPositions(int x, int y, int z) {
 			for (int i = 0; i < positions.Count; i++) {
 				double[] pos = positions [i];

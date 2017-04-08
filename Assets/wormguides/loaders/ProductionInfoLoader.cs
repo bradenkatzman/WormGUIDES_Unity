@@ -5,10 +5,10 @@ using UnityEngine;
 
 using System.IO;
 
-public class ProductionInfoLoader : MonoBehaviour {
+public class ProductionInfoLoader {
 
 	private static int NUMBER_OF_FIELDS = 17;
-	private static string PRODUCTION_INFO_FILE_PATH = "Assets\\wormguides\\models\\production_info_file\\Production_Info.csv";
+	private static string PRODUCTION_INFO_FILE_PATH = "Assets/wormguides/models/production_info_file/Production_Info.csv";
 	private static string PRODUCTION_INFO_LINE = "Production Information,,,,,,,,,,,,,,,,";
 	private static string HEADER_LINE = "Cells,Image Series,Marker,Strain,Compressed Embryo?,Temporal "
 	                                    + "Resolution,Segmentation,cytoshow link,Movie start timeProperty (min),isSulstonMode?,Total Time Points,"

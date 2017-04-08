@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class ProductionInfo : MonoBehaviour {
+public class ProductionInfo {
 
 	private string TRUE = "TRUE";
 	private int DEFAULT_START_TIME = 1;

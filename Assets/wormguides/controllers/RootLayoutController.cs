@@ -29,7 +29,7 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	private void initProductionInfo() {
-		productionInfo = WormGUIDES_Unity.AddComponent<ProductionInfo> ();
+		productionInfo = new ProductionInfo();
 		List<List<string>> productionInfoData = ProductionInfoLoader.buildProductionInfo ();
 		productionInfo.setProductionInfoData (productionInfoData);
 	}
