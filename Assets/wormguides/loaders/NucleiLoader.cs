@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NucleiLoader : MonoBehaviour {
+public class NucleiLoader {
 
 	// Use this for initialization
 	void Start () {

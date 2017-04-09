@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShapesLoader : MonoBehaviour {
+public class ShapesLoader {
 
 	// Use this for initialization
 	void Start () {

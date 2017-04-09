@@ -10,11 +10,8 @@ public class ProductionInfo {
 	private int DEFAULT_START_TIME = 1;
 	private List<List<string>> productionInfoData;
 
-	void Start () {
-		
-	}
-
-	public void setProductionInfoData(List<List<string>> pid) {
+	// empty constructor
+	public ProductionInfo(List<List<string>> pid) {
 		productionInfoData = pid;
 	}
 

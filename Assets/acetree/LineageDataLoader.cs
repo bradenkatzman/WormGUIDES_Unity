@@ -43,7 +43,6 @@ public class LineageDataLoader {
 			if (urlStr != null) {
 				string FilePath = Directory.GetCurrentDirectory () + SLASH + urlStr;
 				if (File.Exists (FilePath)) {
-					Debug.Log ("processing: " + FilePath);
 					process (ld, i, FilePath);
 				}
 			} else {
@@ -52,7 +51,7 @@ public class LineageDataLoader {
 		}
 
 		// translate all cells to center around (0,0,0)
-
+		setOriginToZero(ld);
 
 		return ld;
 	}
@@ -73,7 +72,6 @@ public class LineageDataLoader {
 	}
 
 	private static void process(LineageData ld, int time, string FilePath) {
-		Debug.Log ("processing nucs for time: " + time);
 		ld.addTimeFrame ();
 
 		using (var fs = File.OpenRead (FilePath))
@@ -98,7 +96,6 @@ public class LineageDataLoader {
 	}
 
 	private static void makeNucleus(LineageData ld, int time, string[] tokens) {
-		Debug.Log ("nuc making");
 		ld.addNucleus (
 			time,
 			tokens [ID_IDX],
@@ -109,7 +106,6 @@ public class LineageDataLoader {
 	}
 
 	public static void setOriginToZero(LineageData ld) {
-		Debug.Log ("setting origin to zero");
 		int totalPositions = 0;
 		double sumX = 0.0;
 		double sumY = 0.0;
@@ -131,10 +127,10 @@ public class LineageDataLoader {
 		avgY = (int) (sumY / totalPositions);
 		avgZ = (int) (sumZ / totalPositions);
 
-		Debug.Log ("Average nuclei positio offsets from origin (0, 0, 0): ("
-		+ avgX.ToString () + ", "
-		+ avgY.ToString () + ", "
-		+ avgZ.ToString () + ")");
+		Debug.Log ("Average nuclei position offsets from origin (0, 0, 0): (" + 
+			string.Format ("{0}, ", avgX) +
+			string.Format ("{0}, ", avgY) +
+			string.Format ("{0})", avgZ));
 
 		ld.shiftAllPositions (avgX, avgY, avgZ);
 	}

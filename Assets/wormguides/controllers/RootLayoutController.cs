@@ -19,19 +19,25 @@ public class RootLayoutController : MonoBehaviour {
 	// class which holds all of the lineage data. All time points are loaded at app initialization
 	private LineageData lineageData;
 
+	// scene rendering info
+	private int time;
+	private bool play;
+	private bool pause;
+
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
-
 
 		initProductionInfo ();
 		initLineageData ();
 		initWindow3DController ();
+
+		play = true;
+		pause = false;
+		time = 360;
 	}
 
 	private void initProductionInfo() {
-		productionInfo = new ProductionInfo();
-		List<List<string>> productionInfoData = ProductionInfoLoader.buildProductionInfo ();
-		productionInfo.setProductionInfoData (productionInfoData);
+		productionInfo = new ProductionInfo(ProductionInfoLoader.buildProductionInfo ());
 	}
 
 	// load all of the lineage data into the LineageData class
@@ -40,7 +46,22 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	private void initWindow3DController() {
-		window3d = WormGUIDES_Unity.AddComponent<Window3DController> ();
+		window3d = new Window3DController(
+			productionInfo.getXScale(),
+			productionInfo.getYScale(),
+			productionInfo.getZScale());
 		window3d.setLineageData (lineageData);
+	}
+
+	/*
+	 * Update is called once per frame
+	 *  - Here we check the state of the app (play, pause, iterate forward, iterate backward)
+	 *    and render the scene accordingly
+	 */ 
+	void Update() {
+		if (play) {
+			window3d.renderScene (time).transform.parent = WormGUIDES_Unity.transform;
+		}
+		play = false;
 	}
 }

@@ -18,6 +18,7 @@ public class ProductionInfoLoader {
 
 	public static List<List<string>> buildProductionInfo() {
 
+		// initialize lists
 		List<List<string>> productionInfo = new List<List<string>> ();
 		List<string> cells = new List<string> ();
 		List<string> imageSeries = new List<string> ();
@@ -37,6 +38,7 @@ public class ProductionInfoLoader {
 		List<string> keyValuesRotate = new List<string> ();
 		List<string> initialRotation = new List<string> ();
 
+		// process prod info file
 		string FilePath = Directory.GetCurrentDirectory () + SLASH + PRODUCTION_INFO_FILE_PATH;
 		if (File.Exists (FilePath)) {
 			using (var fs = File.OpenRead (FilePath))
