@@ -54,6 +54,8 @@
      <Compile Include="Assets\wormguides\loaders\NucleiLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ProductionInfoLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ShapesLoader.cs" />
+     <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElement.cs" />
+     <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElementsList.cs" />
      <Compile Include="Assets\wormguides\resources\ProductionInfo.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
