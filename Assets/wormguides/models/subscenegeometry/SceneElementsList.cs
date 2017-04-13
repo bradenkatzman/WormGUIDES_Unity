@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,10 +37,209 @@ public class SceneElementsList {
 	private void processStream(string FilePath, LineageData lineageData) {
 		using (var fs = File.OpenRead (FilePath))
 		using (var reader = new StreamReader (fs)) {
+			if (reader.EndOfStream) return;
+
+			// skip csv file heading
+			reader.ReadLine();
+
 			while (!reader.EndOfStream) {
-				// do the reading			
-			
+
+				string line;
+				string name;
+				string lineageName;
+				string resourceLocation;
+				int startTime;
+				int endTime;
+				List<string> cellNames;
+				
+				line = reader.ReadLine ();
+				if (line != null) {
+					string[] tokens = line.Split (',');
+
+					if (tokens.Length == NUM_CSV_FIELDS) {
+						name = tokens [DESCRIPTION_IDX];
+
+						if (isCategoryLine (tokens)) {
+							// skip over these for now
+						} else {
+							resourceLocation = tokens [RESOURCE_LOCATION_IDX];
+							startTime = (int)Int32.Parse (tokens [START_TIME_IDX]);
+							endTime = (int)Int32.Parse (tokens [END_TIME_IDX]);
+
+							// check for first time that the .obj resource exists
+							int effectiveStartTime = GeometryLoader.getEffectiveStartTime(resourceLocation, startTime, endTime);
+							if (effectiveStartTime != startTime) {
+								startTime = effectiveStartTime;
+							}
+
+							// vector of cell names
+							cellNames = new List<string>();
+							string[] cellNamesTokens = tokens [CELL_IDX].Split (' ');
+							for (int i = 0; i < cellNamesTokens.Length; i++) {
+								cellNames.Add (cellNamesTokens [i]);
+							}
+
+							lineageName = name;
+							if (name.Contains ("(")) {
+								lineageName = name.Substring (0, name.IndexOf ("(")).Trim ();
+							}
+
+							if (lineageData.isCellName (lineageName)) {
+								effectiveStartTime = lineageData.getFirstOccurenceOf (lineageName);
+								int effectiveEndTime = lineageData.getLastOccurentOf (lineageName);
+
+								// use the later one of the config start time and the effective lineage start time
+								startTime = effectiveStartTime > startTime ? effectiveStartTime : startTime;
+
+								// use the earlier one of the config start time and effective lineage start time
+								endTime = effectiveEndTime < endTime ? effecticeEndTime : endTime;
+							}
+
+							SceneElement element = new SceneElement (
+								                       lineageName,
+								                       cellNames,
+								                       tokens [MARKER_IDX],
+								                       tokens [IMAGING_SRC_IDX],
+								                       resourceLocation,
+								                       startTime,
+								                       endTime,
+								                       tokens [COMMENTS_IDX]);
+							Debug.Log ("adding a scene element");
+							addSceneElement (element);
+
+							// all the map stuff happens after here in orig WG
+						}
+					}
+				}
 			}
 		}
+	}
+
+	private bool isCategoryLine(string[] tokens) {
+		if (tokens.Length == NUM_CSV_FIELDS && !tokens [DESCRIPTION_IDX].Length == 0) {
+			bool isCategoryLine = true;
+
+			// check that all other fields are empty
+			for (int i = 1; i < NUM_CSV_FIELDS; i++) {
+				isCategoryLine &= tokens [i].Length == 0;
+			}
+			return isCategoryLine;
+		}
+		return false;
+	}
+
+	/*
+	 * 
+	 */ 
+	public int getFirstOccurenceOf(string name) {
+		int time = Int32.MinValue;
+		foreach (SceneElement se in elementsList) {
+			if (se.getSceneName ().ToLower ().Equals (name.ToLower ())) {
+				time = se.getStartTime ();
+			}
+		}
+		return time + 1;
+	}
+
+	/*
+	 * 
+	 */
+	public int getLastOccurrenceOf(string name) {
+		int time = Int32.MinValue;
+		foreach (SceneElement se in elementsList) {
+			if (se.getSceneName ().ToLower ().Equals (name.ToLower ())) {
+				time = se.getEndTime ();
+			}
+		}
+		return time + 1;
+	}
+
+	/*
+	 * 
+	 */ 
+	public void addSceneElement(SceneElement element) {
+		if (element != null) {
+			elementsList.Add (element);
+		}
+	}
+
+	/*
+	 * 
+	 */
+	public string[] getSceneElementNamesAtTime(int time) {
+		// add lineage names of all structures at time
+		List<string> list = new List<string>();
+		foreach (SceneElement se in elementsList) {
+			if (se.existsAtTime (time)) {
+				if (se.isMulticellular () || se.getAllCells ().Count == 0) {
+					list.Add (se.getSceneName ());
+				} else {
+					list.Add (se.getAllCells () [0]);
+				}
+			}
+		}
+		return list.ToArray ();
+	}
+
+	/*
+	 * 
+	 */ 
+	public List<SceneElement> getSceneElementsAtTime(int time) {
+		List<SceneElement> elements = new List<SceneElement> ();
+		foreach (SceneElement se in elementsList) {
+			if (se.existsAtTime (time)) {
+				elements.Add (se);
+			}
+		}
+		return elements;
+	}
+
+	/*
+	 * 
+	 */
+	public List<string> getAllSceneNames() {
+		List<string> names = new List<string> ();
+		foreach (SceneElement se in elementsList) {
+			names.Add (se.getSceneName ());
+		}
+
+		return names.Sort ();
+	}
+
+	/*
+	 * 
+	 */ 
+	public List<string> getAllMulticellSceneNames() {
+		List<string> names = new List<string> ();
+		foreach (SceneElement se in elementsList) {
+			if (se.isMulticellular ()) {
+				names.Add (se.getSceneName ());
+			}
+		}
+		return names.Sort ();
+	}
+
+	/*
+	 * 
+	 */ 
+	public bool isMulticellStructureName(string name) {
+		name = name.Trim ();
+		foreach (string cellName in getAllMulticellSceneNames()) {
+			if (cellName.ToLower ().Equals (name.ToLower ())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/*
+	 * TODO
+	 */
+	public string getCommentbyName(string name) {
+		return "";
+	}
+
+	public List<SceneElement> getElementsList() {
+		return elementsList;
 	}
 }
