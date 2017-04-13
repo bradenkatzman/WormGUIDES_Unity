@@ -51,9 +51,9 @@
      <Compile Include="Assets\wormguides\WormGUIDES_UnityApp.cs" />
      <Compile Include="Assets\wormguides\controllers\RootLayoutController.cs" />
      <Compile Include="Assets\wormguides\controllers\Window3DController.cs" />
+     <Compile Include="Assets\wormguides\loaders\GeomtryLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\NucleiLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ProductionInfoLoader.cs" />
-     <Compile Include="Assets\wormguides\loaders\ShapesLoader.cs" />
      <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElement.cs" />
      <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElementsList.cs" />
      <Compile Include="Assets\wormguides\resources\ProductionInfo.cs" />
