@@ -19,6 +19,8 @@ public class RootLayoutController : MonoBehaviour {
 	// class which holds all of the lineage data. All time points are loaded at app initialization
 	private LineageData lineageData;
 
+	private SceneElementsList elementsList;
+
 	// scene rendering info
 	private int time;
 	private bool play;
@@ -29,6 +31,7 @@ public class RootLayoutController : MonoBehaviour {
 
 		initProductionInfo ();
 		initLineageData ();
+		initSceneElementsList ();
 		initWindow3DController ();
 
 		play = true;
@@ -43,6 +46,10 @@ public class RootLayoutController : MonoBehaviour {
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
 		lineageData = LineageDataLoader.loadNucFiles (productionInfo, WormGUIDES_Unity);
+	}
+
+	private void initSceneElementsList() {
+		elementsList = new SceneElementsList (lineageData);
 	}
 
 	private void initWindow3DController() {

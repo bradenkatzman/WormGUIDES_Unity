@@ -9,7 +9,7 @@ public class Window3DController {
 
 	// for rendering
 	private NucleiLoader nucLdr;
-	private ShapesLoader shapesLdr;
+	private GeometryLoader geoLdr;
 
 	private LineageData lineageData;
 

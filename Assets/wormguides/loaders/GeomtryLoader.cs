@@ -27,7 +27,7 @@ public class GeometryLoader {
 		if (File.Exists (FilePath)) {
 			// check for obj file with a time
 			for (int time = startTime; time <= endTime; time++) {
-				string url = Directory.GetCurrentDirectory() + SLASH + resourcePath + T + time.ToString() + OBJ_EXT);
+				string url = Directory.GetCurrentDirectory() + SLASH + resourcePath + T + time.ToString() + OBJ_EXT;
 
 				if (File.Exists(url)) {
 					return time;

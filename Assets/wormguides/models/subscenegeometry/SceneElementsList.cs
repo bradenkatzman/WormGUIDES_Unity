@@ -92,7 +92,7 @@ public class SceneElementsList {
 								startTime = effectiveStartTime > startTime ? effectiveStartTime : startTime;
 
 								// use the earlier one of the config start time and effective lineage start time
-								endTime = effectiveEndTime < endTime ? effecticeEndTime : endTime;
+								endTime = effectiveEndTime < endTime ? effectiveEndTime : endTime;
 							}
 
 							SceneElement element = new SceneElement (
@@ -104,7 +104,6 @@ public class SceneElementsList {
 								                       startTime,
 								                       endTime,
 								                       tokens [COMMENTS_IDX]);
-							Debug.Log ("adding a scene element");
 							addSceneElement (element);
 
 							// all the map stuff happens after here in orig WG
@@ -116,7 +115,7 @@ public class SceneElementsList {
 	}
 
 	private bool isCategoryLine(string[] tokens) {
-		if (tokens.Length == NUM_CSV_FIELDS && !tokens [DESCRIPTION_IDX].Length == 0) {
+		if (tokens.Length == NUM_CSV_FIELDS && !(tokens [DESCRIPTION_IDX].Length == 0)) {
 			bool isCategoryLine = true;
 
 			// check that all other fields are empty
@@ -203,7 +202,10 @@ public class SceneElementsList {
 			names.Add (se.getSceneName ());
 		}
 
-		return names.Sort ();
+		// make sure this changes the list and doesn't create a new one that is set to nothing
+		names.Sort ();
+
+		return names;
 	}
 
 	/*
@@ -216,7 +218,11 @@ public class SceneElementsList {
 				names.Add (se.getSceneName ());
 			}
 		}
-		return names.Sort ();
+
+		// make sure this changes the list and doesn't create a new one that is set to nothing
+		names.Sort ();
+
+		return names;
 	}
 
 	/*
