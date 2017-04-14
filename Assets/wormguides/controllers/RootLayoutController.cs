@@ -58,7 +58,10 @@ public class RootLayoutController : MonoBehaviour {
 			productionInfo.getYScale(),
 			productionInfo.getZScale(),
 			lineageData,
-			elementsList);
+			elementsList,
+			LineageDataLoader.getAvgXOffsetFromZero(),
+			LineageDataLoader.getAvgYOffsetFromZero(),
+			LineageDataLoader.getAvgZOffsetFromZero());
 	}
 
 	/*

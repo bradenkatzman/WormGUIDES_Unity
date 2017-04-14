@@ -26,10 +26,8 @@ public class Window3DController {
 	private List<GameObject> currentSceneElementMeshes;
 	private List<SceneElement> currentSceneElements;
 
-	private int xScale;
-	private int yScale;
-	private int zScale;
-
+	private int xScale, yScale, zScale;
+	private int offsetX, offsetY, offsetZ;
 
 	// helper vars
 	private int X_COR_IDX = 0;
@@ -38,13 +36,18 @@ public class Window3DController {
 
 	// 
 	public Window3DController(int xS, int yS, int zS, 
-		LineageData ld, SceneElementsList elementsList) {
+		LineageData ld, SceneElementsList elementsList,
+		int offX, int offY, int offZ) {
 		this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
 
 		this.lineageData = ld;
 		this.sceneElementsList = elementsList;
+
+		this.offsetX = offX;
+		this.offsetY = offY;
+		this.offsetZ = offZ;
 
 		// initialize
 		spheres = new List<GameObject>();
@@ -58,11 +61,6 @@ public class Window3DController {
 		currentSceneElements = new List<SceneElement> ();
 
 		rootEntitiesGroup = new GameObject ();
-	}
-
-
-	public void setLineageData(LineageData ld) {
-		
 	}
 
 	// called by RootLayoutController to render the scene
@@ -118,6 +116,7 @@ public class Window3DController {
 		foreach (SceneElement se in sceneElementsAtCurrentTime) {
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
+				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
 			}
@@ -138,7 +137,6 @@ public class Window3DController {
 	}
 
 	private void addCellGeometries() {
-		Debug.Log (cellNames.Count);
 		for (int i = 0; i < cellNames.Count; i++) {
 			string cellName = cellNames [i];
 
@@ -156,14 +154,15 @@ public class Window3DController {
 				(float) position [X_COR_IDX] * xScale,
 				(float) position [Y_COR_IDX] * yScale,
 				(float) position [Z_COR_IDX] * zScale);
-			
+
+			sphere.name = cellName;
+
 			// add sphere to list
 			spheres.Add(sphere);
 		}
 	}
 
 	private void addSceneElementGeometries() {
-		Debug.Log (currentSceneElementMeshes.Count);
 		SceneElement se;
 		GameObject go;
 		int idx = -1;
@@ -173,6 +172,8 @@ public class Window3DController {
 			go = currentSceneElementMeshes [i];
 
 			// rule and coloring stuff will happen here
+
+			go.name = meshNames [i];
 
 			meshes.Add (go);
 		}

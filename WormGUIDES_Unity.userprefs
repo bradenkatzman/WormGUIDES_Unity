@@ -1,25 +1,6 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/acetree/LineageDataLoader.cs">
-    <Files>
-      <File FileName="Assets/wormguides/models/subscenegeometry/SceneElementsList.cs" Line="35" Column="2" NotebookId="1" />
-    </Files>
-    <FloatingWindows>
-      <FloatingWindow WindowId="1" X="76" Y="457" Width="640" Height="381">
-        <Files>
-          <File FileName="Assets/acetree/LineageDataLoader.cs" Line="80" Column="31" />
-=======
-  <MonoDevelop.Ide.Workbench>
-    <FloatingWindows>
-      <FloatingWindow WindowId="1" X="962" Y="323" Width="878" Height="602">
-        <Files>
-          <File FileName="Assets\wormguides\loaders\ProductionInfoLoader.cs" Line="67" Column="36" />
->>>>>>> cd33ef90ca991e56e77dea60932fa6576021ea08
-        </Files>
-      </FloatingWindow>
-    </FloatingWindows>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
