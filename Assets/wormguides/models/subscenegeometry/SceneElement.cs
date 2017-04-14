@@ -80,13 +80,13 @@ public class SceneElement {
 		return resourceLocation.EndsWith (".obj");
 	}
 
-//	public GameObject buildGeometry(int time) {
-//		if (completeResourceFlag) {
-//			return ShapesLoader.loadObj (resourceLocation);
-//		}
-//
-//		return ShapesLoader.loadObj (resourceLocation + "_t" + time);
-//	}
+	public GameObject buildGeometry(int time) {
+		if (completeResourceFlag) {
+			return GeometryLoader.loadObj (resourceLocation);
+		}
+
+		return GeometryLoader.loadObj (resourceLocation + "_t" + time);
+	}
 
 	public void setNewCellNames(List<string> cells) {
 		this.cellNames.Clear ();

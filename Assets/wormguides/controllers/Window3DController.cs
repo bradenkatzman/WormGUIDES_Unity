@@ -12,14 +12,19 @@ public class Window3DController {
 	private GeometryLoader geoLdr;
 
 	private LineageData lineageData;
+	private SceneElementsList sceneElementsList;
 
 	// subscene state parameters
 	private List<string> cellNames;
 	private List<GameObject> spheres;
 	private List<double[]> positions;
 	private List<double> diameters;
-//	private List<string> meshNames;
-//	private List<GameObject> currentSceneElementMeshes;
+
+	private List<GameObject> meshes;
+	private List<string> meshNames;
+	private List<SceneElement> sceneElementsAtCurrentTime;
+	private List<GameObject> currentSceneElementMeshes;
+	private List<SceneElement> currentSceneElements;
 
 	private int xScale;
 	private int yScale;
@@ -32,17 +37,32 @@ public class Window3DController {
 	private int Z_COR_IDX = 2;
 
 	// 
-	public Window3DController(int xS, int yS, int zS) {
+	public Window3DController(int xS, int yS, int zS, 
+		LineageData ld, SceneElementsList elementsList) {
 		this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
+
+		this.lineageData = ld;
+		this.sceneElementsList = elementsList;
+
+		// initialize
+		spheres = new List<GameObject>();
+		meshes = new List<GameObject> ();
+		cellNames = new List<string> ();
+		meshNames = new List<string> ();
+		positions = new List<double[]> ();
+		diameters = new List<double> ();
+		sceneElementsAtCurrentTime = new List<SceneElement> ();
+		currentSceneElementMeshes = new List<GameObject> ();
+		currentSceneElements = new List<SceneElement> ();
 
 		rootEntitiesGroup = new GameObject ();
 	}
 
 
 	public void setLineageData(LineageData ld) {
-		this.lineageData = ld;
+		
 	}
 
 	// called by RootLayoutController to render the scene
@@ -58,6 +78,10 @@ public class Window3DController {
 		GameObject.Destroy(rootEntitiesGroup);
 		rootEntitiesGroup = new GameObject ();
 		rootEntitiesGroup.name = "Root Entities Group";
+
+		// clear note sprites and overlays here if they are integrated at some point
+
+		// handle orientation indicator rotation here
 	}
 
 	private void getSceneData(int time) {
@@ -81,9 +105,25 @@ public class Window3DController {
 
 
 		// populate the scene elements list
+		if (sceneElementsList != null) {
+			meshNames = new List<string> (sceneElementsList.getSceneElementNamesAtTime (time));
+		}
 
-		// build the meshes and add to the meshes list
+		if (!(currentSceneElementMeshes.Count == 0)) {
+			currentSceneElementMeshes.Clear ();
+			currentSceneElements.Clear ();
+		}
 
+		sceneElementsAtCurrentTime = sceneElementsList.getSceneElementsAtTime (time);
+		foreach (SceneElement se in sceneElementsAtCurrentTime) {
+			GameObject go = se.buildGeometry (time - 1);
+			if (go != null) {
+				currentSceneElementMeshes.Add (go);
+				currentSceneElements.Add (se);
+			}
+		}
+
+		meshes = new List<GameObject> ();
 	}
 
 	private void addEntities() {
@@ -91,6 +131,9 @@ public class Window3DController {
 		addSceneElementGeometries ();
 		foreach (GameObject sphere in spheres) {
 			sphere.transform.parent = rootEntitiesGroup.transform;
+		}
+		foreach (GameObject mesh in meshes) {
+			mesh.transform.parent = rootEntitiesGroup.transform;
 		}
 	}
 
@@ -120,7 +163,19 @@ public class Window3DController {
 	}
 
 	private void addSceneElementGeometries() {
+		Debug.Log (currentSceneElementMeshes.Count);
+		SceneElement se;
+		GameObject go;
+		int idx = -1;
+		for (int i = 0; i < currentSceneElements.Count; i++) {
+			idx++;
+			se = currentSceneElements [i];
+			go = currentSceneElementMeshes [i];
 
+			// rule and coloring stuff will happen here
+
+			meshes.Add (go);
+		}
 	}
 
 	private GameObject getRootEntitiesGroup() {

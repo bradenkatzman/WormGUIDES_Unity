@@ -56,8 +56,9 @@ public class RootLayoutController : MonoBehaviour {
 		window3d = new Window3DController(
 			productionInfo.getXScale(),
 			productionInfo.getYScale(),
-			productionInfo.getZScale());
-		window3d.setLineageData (lineageData);
+			productionInfo.getZScale(),
+			lineageData,
+			elementsList);
 	}
 
 	/*
