@@ -38,7 +38,7 @@ public class LineageDataLoader {
 		ld.setXYZScale (productionInfo.getXScale (), productionInfo.getYScale (), productionInfo.getZScale ());
 
 		string urlStr;
-		for (int i = 360; i <= productionInfo.getTotalTimePoints (); i++) {
+		for (int i = 1; i <= productionInfo.getTotalTimePoints (); i++) {
 			urlStr = getResourceAtTime (i);
 			if (urlStr != null) {
 				string FilePath = Directory.GetCurrentDirectory () + SLASH + urlStr;

@@ -45,12 +45,12 @@ public class LineageData {
 	 */ 
 	public string[] getNames(int time) {
 		int internalTimeIdx = time - 1;
-//		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
-//			return new string[1];
-//		}
+		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
+			return new string[1];
+		}
 
-		return timeFrames [0].getNames ();
-//		return timeFrames [internalTimeIdx].getNames ();
+//		return timeFrames [0].getNames ();
+		return timeFrames [internalTimeIdx].getNames ();
 	}
 
 	/*
@@ -58,14 +58,14 @@ public class LineageData {
 	 */ 
 	public double[][] getPositions(int time) {
 		int internalTimeIdx = time - 1;
-//		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
-//			double[][] blank = new double[1][];
-//			blank [0] = new double[3];
-//			return blank;
-//		}
+		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
+			double[][] blank = new double[1][];
+			blank [0] = new double[3];
+			return blank;
+		}
 
-		return timeFrames [0].getPositions ();
-		//return timeFrames [internalTimeIdx].getPositions ();
+		//return timeFrames [0].getPositions ();
+		return timeFrames [internalTimeIdx].getPositions ();
 	}
 
 	/*
@@ -73,12 +73,12 @@ public class LineageData {
 	 */ 
 	public double[] getDiameters(int time) {
 		int internalTimeIdx = time - 1;
-//		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
-//			return new double[1];
-//		}
+		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
+			return new double[1];
+		}
 
-		return timeFrames [0].getDiameters ();
-//		return timeFrames [internalTimeIdx].getDiameters ();
+//		return timeFrames [0].getDiameters ();
+		return timeFrames [internalTimeIdx].getDiameters ();
 	}
 
 	/*
@@ -112,11 +112,10 @@ public class LineageData {
 	 * 
 	 */ 
 	public void addNucleus(int time, string name, double x, double y, double z, double diameter) {
-		//if (time <= getNumberOfTimePoints ()) {
+		if (time <= getNumberOfTimePoints ()) {
 			int idx = time - 1;
 
-//			Frame frame = timeFrames [idx];
-			Frame frame = timeFrames [0];
+			Frame frame = timeFrames [idx];
 			frame.addName (name);
 			frame.addPosition (new double[] { x, y, z });
 			frame.addDiameter (diameter);
@@ -124,7 +123,7 @@ public class LineageData {
 			if (!allCellNames.Contains (name)) {
 				allCellNames.Add (name);
 			}
-		//}
+		}
 	}
 
 	/*

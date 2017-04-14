@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 /*
@@ -26,6 +27,13 @@ public class RootLayoutController : MonoBehaviour {
 	private bool play;
 	private bool pause;
 
+	// UI elements
+	private Slider timeSlider;
+	private Button backwardButton;
+	private Button playPauseButton;
+	private Button forwardButton;
+	private Text timeText;
+
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
@@ -34,9 +42,57 @@ public class RootLayoutController : MonoBehaviour {
 		initSceneElementsList ();
 		initWindow3DController ();
 
-		play = true;
-		pause = false;
+		play = false;
+		pause = true;
 		time = 360;
+
+		render ();
+	}
+
+	//
+	public void setUIElements(Slider ts, Button bb, Button ppb, Button fb, Text tt) {
+		this.timeSlider = ts;
+		this.backwardButton = bb;
+		this.playPauseButton = ppb;
+		this.forwardButton = fb;
+		this.timeText = tt;
+
+		timeSlider.onValueChanged.AddListener (delegate {onSliderValueChange ();});
+		backwardButton.onClick.AddListener (onBackButtonClicked);
+		playPauseButton.onClick.AddListener (onPlayPauseButtonClicked);
+		forwardButton.onClick.AddListener (onForwardButtonClicked);
+	}
+
+	public void onSliderValueChange() {
+		time = (int) timeSlider.value;
+		render ();
+		updateUIElements ();
+	}
+
+	void onBackButtonClicked() {
+		if (time > 0) {
+			time--;
+			render ();
+			updateUIElements ();
+		}
+	}
+
+	void onForwardButtonClicked() {
+		if (time < 360) {
+			time++;
+			render ();
+			updateUIElements ();
+		}
+	}
+
+	void onPlayPauseButtonClicked() {
+		if (play) {
+			play = false;
+			playPauseButton.GetComponentInChildren<Text> ().text = "Play";
+		} else {
+			play = true;
+			playPauseButton.GetComponentInChildren<Text> ().text = "Pause";
+		}
 	}
 
 	private void initProductionInfo() {
@@ -71,8 +127,28 @@ public class RootLayoutController : MonoBehaviour {
 	 */ 
 	void Update() {
 		if (play) {
-			window3d.renderScene (time).transform.parent = WormGUIDES_Unity.transform;
+			if (time < 360 && time > 0) {
+				render ();
+				time++;
+				updateUIElements ();
+			}
 		}
-		play = false;
+	}
+
+	private void render() {
+		window3d.renderScene (time).transform.parent = WormGUIDES_Unity.transform;
+	}
+
+	private void updateUIElements() {
+		updateSlider ();
+		updateTimeText ();
+	}
+
+	private void updateSlider() {
+		timeSlider.value = time;
+	}
+
+	private void updateTimeText() {
+		timeText.text = time.ToString ();
 	}
 }
