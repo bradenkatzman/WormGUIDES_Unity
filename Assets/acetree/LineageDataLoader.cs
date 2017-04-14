@@ -134,4 +134,16 @@ public class LineageDataLoader {
 
 		ld.shiftAllPositions (avgX, avgY, avgZ);
 	}
+
+	public static int getAvgXOffsetFromZero() {
+		return avgX;
+	}
+
+	public static int getAvgYOffsetFromZero() {
+		return avgY;
+	}
+
+	public static int getAvgZOffsetFromZero() {
+		return avgZ;
+	}
 }
