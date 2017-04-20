@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{31F03ADF-DCD2-E571-720A-3D03EACA83F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_3;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_RUNTIME_GI;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_NETWORK;ENABLE_UNITYWEBREQUEST;ENABLE_VIDEO;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLAYERCONNECTION_LISTENS_FIXED_PORT;DEBUGGER_LISTENS_FIXED_PORT;PLATFORM_SUPPORTS_ADS_ID;SUPPORT_ENVIRONMENT_VARIABLES;PLATFORM_SUPPORTS_PROFILER;PLATFORM_HAS_NO_SUPPORT_FOR_BUCKET_ALLOCATOR;STRICTCPP_NEW_DELETE_SIGNATURES;HAS_NEON_SKINNIG;UNITY_GFX_USE_PLATFORM_VSYNC;UNITY_INPUT_SIMULATE_EVENTS;PLATFORM_ALWAYS_USES_STDOUT_FOR_LOG;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;UNITY_IOS;UNITY_IPHONE;UNITY_IPHONE_API;SUPPORT_MULTIPLE_DISPLAYS;ENABLE_IL2CPP;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;UNITY_TEAM_LICENSE;ENABLE_IOS_ON_DEMAND_RESOURCES;ENABLE_IOS_APP_SLICING;ENABLE_DUCK_TYPING</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\GoogleVR\Editor\Audio\GvrAudioListenerEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\Audio\GvrAudioRoomEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\Audio\GvrAudioSoundfieldEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\Audio\GvrAudioSourceEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\Controller\GvrTooltipEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\GvrCompatibilityChecker.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\GvrEditorSettings.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\GvrMenu.cs" />
+     <Compile Include="Assets\GoogleVR\Editor\GvrViewerEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Legacy\Editor\GvrGazeEditor.cs" />
+     <Compile Include="Assets\GoogleVR\Legacy\Editor\StereoControllerEditor.cs" />
+     <None Include="Assets\Resources\nucleifiles\t332-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t298-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t279-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t084-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t191-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t023-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t130-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t358-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t232-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t013-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t271-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t064-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t282-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t019-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t327-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t175-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t120-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t229-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t340-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t233-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t246-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t283-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t281-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t293-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t316-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t107-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t119-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t024-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t080-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t038-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Distortion\GvrDistortion.cginc" />
+     <None Include="Assets\Resources\nucleifiles\t089-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t238-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t208-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t008-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t122-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t349-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t305-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t149-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t309-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t162-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t300-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t103-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t303-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t350-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t240-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t275-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t337-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t138-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t321-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t163-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t099-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t143-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t114-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t331-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t274-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t359-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t098-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t211-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t102-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t123-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t151-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t215-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t264-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t319-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t097-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t126-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t310-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUIOverlayFont.shader" />
+     <None Include="Assets\Resources\nucleifiles\t101-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t277-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t042-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t128-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t259-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t183-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t262-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t186-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t105-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t129-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t224-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t088-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t201-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t061-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t335-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Legacy\Resources\UnlitTexture.shader" />
+     <None Include="Assets\Resources\nucleifiles\t252-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t219-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t179-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t193-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t112-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t188-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t254-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t203-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t110-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t093-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t189-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t351-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t217-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t108-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t180-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t244-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t216-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t133-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t194-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t172-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t269-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t167-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t002-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t031-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t273-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t131-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t150-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t087-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t025-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t265-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t251-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t083-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t032-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t266-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t220-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t174-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t017-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t125-nuclei.txt" />
+     <None Include="Assets\Plugins\Android\proguard-gvr.txt" />
+     <None Include="Assets\Resources\nucleifiles\t091-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t113-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t181-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t360-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t328-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t250-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t040-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t342-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t066-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t290-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t253-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t028-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t070-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t338-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t090-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t199-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrAdditiveOverlay.shader" />
+     <None Include="Assets\Resources\nucleifiles\t306-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t207-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t173-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t297-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t190-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t236-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t168-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t121-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t076-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t355-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t081-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t325-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t095-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t352-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t029-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t016-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t142-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t153-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t348-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t276-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t077-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t053-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t094-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t092-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t035-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t046-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t322-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t039-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t067-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t164-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t247-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t176-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t034-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t346-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t234-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t062-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t054-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t323-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t204-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t318-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t268-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t086-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t257-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t263-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t010-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t085-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t109-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t341-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t160-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t343-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t030-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t104-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t299-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t041-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t069-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t155-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t052-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t243-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlay.shader" />
+     <None Include="Assets\Resources\nucleifiles\t074-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t241-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t202-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t312-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t051-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlayColor.shader" />
+     <None Include="Assets\Resources\nucleifiles\t329-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t304-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t227-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t124-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t065-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t044-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t301-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t071-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t192-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t317-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t256-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t184-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t154-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t147-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t280-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t357-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t200-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t014-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t356-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t206-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t096-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t072-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t157-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t159-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t287-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t007-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t344-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t222-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t307-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t132-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t001-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t037-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t139-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTextureOverlay.shader" />
+     <None Include="Assets\Resources\nucleifiles\t060-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t292-nuclei.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\Resources\nucleifiles\t295-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t137-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t230-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t144-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t218-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t152-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t187-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t059-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t255-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t302-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t339-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t056-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t043-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t333-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t047-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t336-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t272-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t260-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t021-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t106-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t320-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t221-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t011-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t015-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t127-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t195-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t197-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t311-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t140-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t050-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t196-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t198-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t245-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t288-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t063-nuclei.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest-Daydream.xml" />
+     <None Include="Assets\Resources\nucleifiles\t169-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t166-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t170-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t018-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t213-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t165-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t210-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t286-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t285-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrReticleShader.shader" />
+     <None Include="Assets\Resources\nucleifiles\t231-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t116-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t284-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t258-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t296-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t058-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t347-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t209-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t313-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t118-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t228-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t115-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t223-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t314-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t324-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t235-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t248-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t242-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t249-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t205-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUIOverlay.shader" />
+     <None Include="Assets\Resources\nucleifiles\t334-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t012-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t048-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t261-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t267-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t354-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t079-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t057-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t036-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t237-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t182-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t022-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t291-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t289-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t049-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t078-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t294-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t027-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t353-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t185-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t073-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t178-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t171-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t068-nuclei.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest-Cardboard.xml" />
+     <None Include="Assets\Resources\nucleifiles\t330-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t214-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t225-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Legacy\Resources\SolidColor.shader" />
+     <None Include="Assets\Resources\nucleifiles\t278-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t004-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t006-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t156-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t100-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t177-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t158-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t082-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t134-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t003-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t009-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t239-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t026-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t135-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t145-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t226-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t075-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t005-nuclei.txt" />
+     <None Include="Assets\GoogleVR\Shaders\GvrUnityCompatibility.cginc" />
+     <None Include="Assets\Resources\nucleifiles\t345-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t136-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t033-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t270-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t045-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t326-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t212-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t308-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t117-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t111-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t161-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t146-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t148-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t055-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t315-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t020-nuclei.txt" />
+     <None Include="Assets\Resources\nucleifiles\t141-nuclei.txt" />
+ <Reference Include="UnityEditor.Advertisements">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
+ </Reference>
+ <Reference Include="nunit.framework">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/EditorTestsRunner/Editor/nunit.framework.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.EditorTestsRunner">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/EditorTestsRunner/Editor/UnityEditor.EditorTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.PlaymodeTestsRunner">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/Editor/UnityEditor.PlaymodeTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.PlaymodeTestsRunner">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.TreeEditor">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Analytics">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/Editor/UnityEditor.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.HoloLens">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.HoloLens">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.VR">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.VR">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.ProtocolBuffers">
+ <HintPath>/Users/bradenkatzman/Desktop/MSKCC/WormGUIDES_Unity/Assets/Plugins/Google.ProtocolBuffers.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Graphs">
+ <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.Graphs.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Android.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.OSXStandalone.Extensions">
+ <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions.Common">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp.csproj">
+      <Project>{87A0EC91-F254-3081-181B-12EC322D93A0}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

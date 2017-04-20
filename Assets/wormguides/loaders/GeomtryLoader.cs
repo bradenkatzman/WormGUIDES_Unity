@@ -9,7 +9,7 @@ public class GeometryLoader {
 	private static string OBJ_EXT = ".obj";
 	private static string VERTEX_LINE = "v ";
 	private static string FACE_LINE = "f ";
-	private static string SLASH = "\\";
+	private static string SLASH = "/";
 	private static string T = "_t";
 	private static string ASSETS = "Assets";
 	private static string RESOURCES = "Resources";
@@ -24,13 +24,14 @@ public class GeometryLoader {
 
 		resourcePath = SLASH + resourcePath;
 
-		string FilePath = Directory.GetCurrentDirectory () + ASSETS + SLASH + resourcePath;
-		if (File.Exists (FilePath)) {
+		TextAsset file = Resources.Load(resourcePath) as TextAsset;
+
+		if (file != null) {
 			// check for obj file with a time
 			for (int time = startTime; time <= endTime; time++) {
-				string url = Directory.GetCurrentDirectory() + SLASH + resourcePath + T + time.ToString() + OBJ_EXT;
+				TextAsset f = Resources.Load((resourcePath + T + time.ToString())) as TextAsset;
 
-				if (File.Exists(url)) {
+				if (f != null) {
 					return time;
 				}
 			}
@@ -40,8 +41,9 @@ public class GeometryLoader {
 	}
 
 	public static GameObject loadObj(string resourcePath) {
-		if (File.Exists (Directory.GetCurrentDirectory () + SLASH + ASSETS + SLASH + RESOURCES + SLASH + resourcePath + OBJ_EXT)) {
-			return GameObject.Instantiate (Resources.Load (resourcePath)) as GameObject;
+		var obj = Resources.Load (resourcePath);
+		if (obj != null) {
+			return GameObject.Instantiate (obj) as GameObject;
 		}
 		return null;
 	}

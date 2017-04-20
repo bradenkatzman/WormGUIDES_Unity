@@ -6,7 +6,12 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: tube1
     400000: //RootNode
+    400002: tube1
+    2300000: tube1
+    3300000: tube1
+    4300000: tube1
   materials:
     importMaterials: 1
     materialName: 0
@@ -17,6 +22,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 

@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UI;
-
 
 /*
  * Main script for WormGUIDES_Unity
@@ -21,6 +19,11 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public Button playPauseButton;
 	public Button forwardButton;
 	public Text timeText;
+	public Button switchCameras;
+
+	// camera stuff
+	public GameObject GvrMain;
+	public Camera PerspectiveCam;
 
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
@@ -29,7 +32,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		
 	private void initRootLayout() {
 		rlc = this.gameObject.AddComponent<RootLayoutController> ();
-		rlc.setUIElements (timeSlider, backwardButton, playPauseButton, forwardButton, timeText);
+		rlc.setUIElements (timeSlider, backwardButton, playPauseButton, forwardButton, timeText, switchCameras);
+		rlc.addCameras (GvrMain, PerspectiveCam);
 	}
 
 	public GameObject getWormGUIDES_Unity() {

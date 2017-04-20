@@ -33,6 +33,11 @@ public class RootLayoutController : MonoBehaviour {
 	private Button playPauseButton;
 	private Button forwardButton;
 	private Text timeText;
+	private Button switchCameras;
+
+	// camera stuff
+	private GameObject GvrMain;
+	private Camera PerspectiveCam;
 
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
@@ -50,17 +55,24 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	//
-	public void setUIElements(Slider ts, Button bb, Button ppb, Button fb, Text tt) {
+	public void setUIElements(Slider ts, Button bb, Button ppb, Button fb, Text tt, Button sc) {
 		this.timeSlider = ts;
 		this.backwardButton = bb;
 		this.playPauseButton = ppb;
 		this.forwardButton = fb;
 		this.timeText = tt;
+		this.switchCameras = sc;
 
 		timeSlider.onValueChanged.AddListener (delegate {onSliderValueChange ();});
 		backwardButton.onClick.AddListener (onBackButtonClicked);
 		playPauseButton.onClick.AddListener (onPlayPauseButtonClicked);
 		forwardButton.onClick.AddListener (onForwardButtonClicked);
+		switchCameras.onClick.AddListener (onSwitchCamerasClicked);
+	}
+
+	public void addCameras(GameObject GvrMain_, Camera PerspectiveCam_) {
+		this.GvrMain = GvrMain_;
+		this.PerspectiveCam = PerspectiveCam_;
 	}
 
 	public void onSliderValueChange() {
@@ -92,6 +104,16 @@ public class RootLayoutController : MonoBehaviour {
 		} else {
 			play = true;
 			playPauseButton.GetComponentInChildren<Text> ().text = "Pause";
+		}
+	}
+
+	void onSwitchCamerasClicked() {
+		if (GvrMain.activeSelf) {
+			GvrMain.active = false;
+			PerspectiveCam.enabled = true;
+		} else if (PerspectiveCam.enabled) {
+			PerspectiveCam.enabled = false;
+			GvrMain.active = true;
 		}
 	}
 

@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 using System.IO;
 
 public class LineageDataLoader {
 
-	private static string ENTRY_PREFIX = "Assets/acetree/nucleifiles/";
+	private static string ENTRY_PREFIX = "nucleifiles/";
 	private static string T = "t";
 	private static string ENTRY_EXT = "-nuclei";
 	private static string SLASH = "/";
@@ -41,10 +42,7 @@ public class LineageDataLoader {
 		for (int i = 1; i <= productionInfo.getTotalTimePoints (); i++) {
 			urlStr = getResourceAtTime (i);
 			if (urlStr != null) {
-				string FilePath = Directory.GetCurrentDirectory () + SLASH + urlStr;
-				if (File.Exists (FilePath)) {
-					process (ld, i, FilePath);
-				}
+				process (ld, i, urlStr);
 			} else {
 				Debug.Log ("Could not find file: " + urlStr);
 			}
@@ -74,17 +72,23 @@ public class LineageDataLoader {
 	private static void process(LineageData ld, int time, string FilePath) {
 		ld.addTimeFrame ();
 
-		using (var fs = File.OpenRead (FilePath))
-		using (var reader = new StreamReader (fs)) {
-			while (!reader.EndOfStream) {
-				string line = reader.ReadLine ();
-				if (line != null) {
-					string[] tokens = new string[NUMBER_OF_TOKENS];
-					string[] values = line.Split (',');
+		TextAsset file = Resources.Load (FilePath) as TextAsset;
+		if (file != null) {
 
+			string filestream = file.text;
+			string[] fLines = Regex.Split (filestream, "\n|\r|\r\n");
+
+
+			for (int i = 0; i < fLines.Length; i++) {
+				string line = fLines [i];
+
+				string[] tokens = new string[NUMBER_OF_TOKENS];
+				string[] values = line.Split (',');
+
+				if (values.Length == NUMBER_OF_TOKENS) {
 					int k = 0;
-					for (int i = 0; i < values.Length; i++) {
-						tokens [k++] = values [i].Trim();
+					for (int j = 0; j < values.Length; j++) {
+						tokens [k++] = values [j].Trim ();
 					}
 
 					if ((int)Int32.Parse (tokens [VALID_IDX]) == 1) {
@@ -92,8 +96,33 @@ public class LineageDataLoader {
 					}
 				}
 			}
+		} else {
+			Debug.Log ("couldn't find file: " + FilePath);
 		}
 	}
+
+				
+
+//		using (var fs = File.OpenRead (FilePath))
+//		using (var reader = new StreamReader (fs)) {
+//			while (!reader.EndOfStream) {
+//				string line = reader.ReadLine ();
+//				if (line != null) {
+//					string[] tokens = new string[NUMBER_OF_TOKENS];
+//					string[] values = line.Split (',');
+//
+//					int k = 0;
+//					for (int i = 0; i < values.Length; i++) {
+//						tokens [k++] = values [i].Trim();
+//					}
+//
+//					if ((int)Int32.Parse (tokens [VALID_IDX]) == 1) {
+//						makeNucleus (ld, time, tokens);
+//					}
+//				}
+//			}
+//		}
+	//}
 
 	private static void makeNucleus(LineageData ld, int time, string[] tokens) {
 		ld.addNucleus (
