@@ -25,6 +25,9 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public GameObject GvrMain;
 	public Camera PerspectiveCam;
 
+	// materials
+	public Material[] rule_materials;
+
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 		initRootLayout ();
@@ -38,5 +41,9 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	public GameObject getWormGUIDES_Unity() {
 		return this.gameObject;
+	}
+
+	public Material[] getRuleMaterials() {
+		return this.rule_materials;
 	}
 } 

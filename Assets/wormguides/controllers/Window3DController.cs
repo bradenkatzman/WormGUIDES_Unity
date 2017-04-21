@@ -34,10 +34,26 @@ public class Window3DController {
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
 
+	// list of the cells that have color rules associated with them
+	private string[] rule_cells = new string[]{
+		"ABplpaaaaaa", "ABplppaaaaa", "ABprppaaaaa", "ABprpappaap", "ABprpapppap", "ABalpapaaaa", "ABarappaaaa", "ABprpappaaa",
+		"ABplpapappa", "ABprpapappa", "ABplpapaaaa", "ABprpapaaaa",  "ABplpapaapa", "ABprpapaapa",  "ABplpapaapp", "ABprpapaapp",
+		"ABprpaaaaaa", "ABalppappaa", "ABarappppaa", "ABplpaapaaa", "ABprpaapaaa"};
+
+	private bool[] rule_cells_CELLONLY = new bool[]{
+		false, false, false, false, false, false, false, false,
+		true, true, true, true, true, true, true, true, true,
+		true, true, true, true};
+
+
+	private Material[] rule_materials;
+	private int DEFAULT_MATERIAL_IDX = 21;
+
 	// 
 	public Window3DController(int xS, int yS, int zS, 
 		LineageData ld, SceneElementsList elementsList,
-		int offX, int offY, int offZ) {
+		int offX, int offY, int offZ,
+		Material[] materials) {
 		this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
@@ -48,6 +64,8 @@ public class Window3DController {
 		this.offsetX = offX;
 		this.offsetY = offY;
 		this.offsetZ = offZ;
+
+		this.rule_materials = materials;
 
 		// initialize
 		spheres = new List<GameObject>();
@@ -116,6 +134,7 @@ public class Window3DController {
 		foreach (SceneElement se in sceneElementsAtCurrentTime) {
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
+				go.transform.Rotate (new Vector3 (0, 0, 0));
 				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
@@ -151,11 +170,27 @@ public class Window3DController {
 			// set the position of the sphere
 			double[] position = positions[i];
 			sphere.transform.position = new Vector3 (
-				(float) position [X_COR_IDX] * xScale,
+				(float) -position [X_COR_IDX] * xScale,
 				(float) position [Y_COR_IDX] * yScale,
 				(float) position [Z_COR_IDX] * zScale);
 
+			sphere.transform.Rotate (new Vector3 (0, 0, 0));
+
 			sphere.name = cellName;
+
+			// add color
+			bool hasColor = false;
+			for (int k = 0; k < rule_cells.Length; k++) {
+				if (sphere.name.ToLower ().StartsWith (rule_cells[k].ToLower ())) {
+					// add the color
+					hasColor = true;
+					sphere.GetComponent<Renderer>().material = rule_materials[k];
+				}
+			}
+
+			if (!hasColor) {
+				sphere.GetComponent<Renderer>().material = rule_materials[DEFAULT_MATERIAL_IDX];
+			}
 
 			// add sphere to list
 			spheres.Add(sphere);
@@ -171,9 +206,29 @@ public class Window3DController {
 			se = currentSceneElements [i];
 			go = currentSceneElementMeshes [i];
 
+			go.name = meshNames [i];
+
 			// rule and coloring stuff will happen here
 
-			go.name = meshNames [i];
+			// add color
+			bool hasColor = false;
+			for (int k = 0; k < rule_cells.Length; k++) {
+				if (go.name.ToLower ().StartsWith (rule_cells[k].ToLower ()) && !rule_cells_CELLONLY[k]) {
+					// add the color
+					hasColor = true;
+
+					// need to add the material to all of the components
+					foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = rule_materials[k];
+					}
+				}
+			}
+
+			if (!hasColor) {
+				foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+					rend.material = rule_materials[DEFAULT_MATERIAL_IDX];
+				}
+			}
 
 			meshes.Add (go);
 		}

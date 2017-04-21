@@ -144,7 +144,8 @@ public class RootLayoutController : MonoBehaviour {
 			elementsList,
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
-			LineageDataLoader.getAvgZOffsetFromZero());
+			LineageDataLoader.getAvgZOffsetFromZero(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getRuleMaterials());
 	}
 
 	/*
