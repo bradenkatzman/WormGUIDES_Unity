@@ -39,6 +39,8 @@ public class RootLayoutController : MonoBehaviour {
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
 
+	private int count;
+
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
@@ -50,6 +52,8 @@ public class RootLayoutController : MonoBehaviour {
 		play = false;
 		pause = true;
 		time = 360;
+
+		count = 0;
 
 		render ();
 	}
@@ -104,6 +108,7 @@ public class RootLayoutController : MonoBehaviour {
 		} else {
 			play = true;
 			playPauseButton.GetComponentInChildren<Text> ().text = "Pause";
+			count = 2;
 		}
 	}
 
@@ -149,10 +154,15 @@ public class RootLayoutController : MonoBehaviour {
 	 */ 
 	void Update() {
 		if (play) {
-			if (time < 360 && time > 0) {
-				render ();
-				time++;
-				updateUIElements ();
+			if (count == 2) { // use this to render at 1/3 of the speed at which Update() is called
+				if (time < 360 && time > 0) {
+					render ();
+					time++;
+					updateUIElements ();
+				}
+				count = 0;
+			} else {
+				count++;
 			}
 		}
 	}
