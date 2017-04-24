@@ -45,9 +45,15 @@ public class Window3DController {
 		true, true, true, true, true, true, true, true, true,
 		true, true, true, true};
 
+	private string[] tract_names = new string[]{
+		"nerve_ring_anterior", "ventral_sensory_left", "ventral_sensory_right", "nerve_ring_left",
+		"nerve_ring_left_base", "amphid_right", "amphid_left", "nerve_ring_right_base",
+		"nerve_ring_right", "VNC_left", "VNC_right"};
+
 
 	private Material[] rule_materials;
 	private int DEFAULT_MATERIAL_IDX = 21;
+	private int DEFAULT_MATERIAL_TRACTS_IDX = 22;
 
 	// 
 	public Window3DController(int xS, int yS, int zS, 
@@ -119,7 +125,6 @@ public class Window3DController {
 
 		spheres = new List<GameObject> ();
 
-
 		// populate the scene elements list
 		if (sceneElementsList != null) {
 			meshNames = new List<string> (sceneElementsList.getSceneElementNamesAtTime (time));
@@ -131,13 +136,21 @@ public class Window3DController {
 		}
 
 		sceneElementsAtCurrentTime = sceneElementsList.getSceneElementsAtTime (time);
-		foreach (SceneElement se in sceneElementsAtCurrentTime) {
+		for (int i = 0; i < sceneElementsAtCurrentTime.Count; i++) {
+			SceneElement se = sceneElementsAtCurrentTime [i];
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
-				go.transform.Rotate (new Vector3 (0, 0, 0));
+				go.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
+			} else {
+				//Debug.Log (se.getSceneName () + " has no geometry. Removing name from meshNames");
+				if (meshNames.Contains (se.getSceneName ())) {
+					meshNames.Remove (se.getSceneName ());
+				} else if (se.getAllCells ().Count != 0 && meshNames.Contains(se.getAllCells () [0])) {
+					meshNames.Remove (se.getAllCells () [0]);
+				}
 			}
 		}
 
@@ -174,14 +187,14 @@ public class Window3DController {
 				(float) position [Y_COR_IDX] * yScale,
 				(float) position [Z_COR_IDX] * zScale);
 
-			sphere.transform.Rotate (new Vector3 (0, 0, 0));
+			sphere.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 
 			sphere.name = cellName;
 
 			// add color
 			bool hasColor = false;
 			for (int k = 0; k < rule_cells.Length; k++) {
-				if (sphere.name.ToLower ().StartsWith (rule_cells[k].ToLower ())) {
+				if (sphere.name.ToLower ().Equals (rule_cells[k].ToLower ())) {
 					// add the color
 					hasColor = true;
 					sphere.GetComponent<Renderer>().material = rule_materials[k];
@@ -200,9 +213,7 @@ public class Window3DController {
 	private void addSceneElementGeometries() {
 		SceneElement se;
 		GameObject go;
-		int idx = -1;
 		for (int i = 0; i < currentSceneElements.Count; i++) {
-			idx++;
 			se = currentSceneElements [i];
 			go = currentSceneElementMeshes [i];
 
@@ -213,7 +224,7 @@ public class Window3DController {
 			// add color
 			bool hasColor = false;
 			for (int k = 0; k < rule_cells.Length; k++) {
-				if (go.name.ToLower ().StartsWith (rule_cells[k].ToLower ()) && !rule_cells_CELLONLY[k]) {
+				if (go.name.ToLower ().Equals (rule_cells[k].ToLower ()) && !rule_cells_CELLONLY[k]) {
 					// add the color
 					hasColor = true;
 
@@ -225,8 +236,20 @@ public class Window3DController {
 			}
 
 			if (!hasColor) {
-				foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-					rend.material = rule_materials[DEFAULT_MATERIAL_IDX];
+				bool isTract = false;
+				for (int k = 0; k < tract_names.Length; k++) {
+					if (go.name.ToLower ().Equals (tract_names [k].ToLower ())) {
+						isTract = true;
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = rule_materials [DEFAULT_MATERIAL_TRACTS_IDX];
+						}
+						break;
+					}
+				}
+				if (!isTract) {
+					foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+						rend.material = rule_materials[DEFAULT_MATERIAL_IDX];
+					}
 				}
 			}
 

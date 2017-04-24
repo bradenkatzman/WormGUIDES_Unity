@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/wormguides/controllers/Window3DController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\CapturePanorama\README.txt">
     <Files>
-      <File FileName="Assets/wormguides/controllers/Window3DController.cs" Line="176" Column="4" />
-      <File FileName="Assets/wormguides/WormGUIDES_UnityApp.cs" Line="1" Column="1" />
-      <File FileName="Assets/wormguides/controllers/RootLayoutController.cs" Line="1" Column="1" />
+      <File FileName="Assets\CapturePanorama\CapturePanorama.cs" Line="48" Column="42" />
+      <File FileName="Assets\CapturePanorama\README.txt" Line="25" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
