@@ -13,7 +13,11 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	private RootLayoutController rlc;
 
-	// UI elements
+	// hide/show time control button
+	public Button HideShow_TimeControl_Button;
+
+	// Time control UI elements
+	public GameObject TimeControl_Panel;
 	public Slider timeSlider;
 	public Button backwardButton;
 	public Button playPauseButton;
@@ -35,7 +39,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		
 	private void initRootLayout() {
 		rlc = this.gameObject.AddComponent<RootLayoutController> ();
-		rlc.setUIElements (timeSlider, backwardButton, playPauseButton, forwardButton, timeText, switchCameras);
+		rlc.setUIElements (HideShow_TimeControl_Button, TimeControl_Panel, timeSlider, backwardButton, playPauseButton, forwardButton, timeText, switchCameras);
 		rlc.addCameras (GvrMain, PerspectiveCam);
 	}
 

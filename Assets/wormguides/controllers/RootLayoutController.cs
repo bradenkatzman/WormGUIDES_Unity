@@ -27,7 +27,11 @@ public class RootLayoutController : MonoBehaviour {
 	private bool play;
 	private bool pause;
 
-	// UI elements
+	// hide/show time control panel button
+	private Button HideShow_TimeControl_Button;
+
+	// Time control UI elements
+	private GameObject TimeControl_Panel;
 	private Slider timeSlider;
 	private Button backwardButton;
 	private Button playPauseButton;
@@ -59,7 +63,9 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	//
-	public void setUIElements(Slider ts, Button bb, Button ppb, Button fb, Text tt, Button sc) {
+	public void setUIElements(Button hs, GameObject tcp, Slider ts, Button bb, Button ppb, Button fb, Text tt, Button sc) {
+		this.HideShow_TimeControl_Button = hs;
+		this.TimeControl_Panel = tcp;
 		this.timeSlider = ts;
 		this.backwardButton = bb;
 		this.playPauseButton = ppb;
@@ -67,6 +73,8 @@ public class RootLayoutController : MonoBehaviour {
 		this.timeText = tt;
 		this.switchCameras = sc;
 
+
+		HideShow_TimeControl_Button.onClick.AddListener (onHideShowTimeControlPanelClicked);
 		timeSlider.onValueChanged.AddListener (delegate {onSliderValueChange ();});
 		backwardButton.onClick.AddListener (onBackButtonClicked);
 		playPauseButton.onClick.AddListener (onPlayPauseButtonClicked);
@@ -77,6 +85,14 @@ public class RootLayoutController : MonoBehaviour {
 	public void addCameras(GameObject GvrMain_, Camera PerspectiveCam_) {
 		this.GvrMain = GvrMain_;
 		this.PerspectiveCam = PerspectiveCam_;
+	}
+
+	public void onHideShowTimeControlPanelClicked() {
+		if (TimeControl_Panel.activeSelf) {
+			TimeControl_Panel.SetActive(false);
+		} else {
+			TimeControl_Panel.SetActive (true);
+		}
 	}
 
 	public void onSliderValueChange() {
@@ -114,11 +130,11 @@ public class RootLayoutController : MonoBehaviour {
 
 	void onSwitchCamerasClicked() {
 		if (GvrMain.activeSelf) {
-			GvrMain.active = false;
+			GvrMain.SetActive(false);
 			PerspectiveCam.enabled = true;
 		} else if (PerspectiveCam.enabled) {
 			PerspectiveCam.enabled = false;
-			GvrMain.active = true;
+			GvrMain.SetActive(true);
 		}
 	}
 
