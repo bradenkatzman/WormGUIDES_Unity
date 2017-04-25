@@ -2,8 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\CapturePanorama\README.txt">
     <Files>
-      <File FileName="Assets\CapturePanorama\CapturePanorama.cs" Line="48" Column="42" />
-      <File FileName="Assets\CapturePanorama\README.txt" Line="25" Column="25" />
+      <File FileName="Assets\CapturePanorama\CapturePanorama.cs" Line="1" Column="1" />
+      <File FileName="Assets\CapturePanorama\README.txt" Line="45" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
