@@ -88,7 +88,7 @@ public class SceneElementsList {
 							// use the earlier one of the config start time and effective lineage start time
 							endTime = effectiveEndTime < endTime ? effectiveEndTime : endTime;
 						}
-
+							
 						SceneElement element = new SceneElement (
 							lineageName,
 							cellNames,
