@@ -22,10 +22,12 @@ public class RootLayoutController : MonoBehaviour {
 
 	private SceneElementsList elementsList;
 
+	private BillboardsList billboardsList;
+
 	// scene rendering info
 	private int time;
 	private bool play;
-	private bool pause;
+//	private bool pause;
 
 	// hide/show time control panel button
 	private Button HideShow_TimeControl_Button;
@@ -51,10 +53,11 @@ public class RootLayoutController : MonoBehaviour {
 		initProductionInfo ();
 		initLineageData ();
 		initSceneElementsList ();
+		initBillboardsList ();
 		initWindow3DController ();
 
 		play = false;
-		pause = true;
+//		pause = true;
 		time = 360;
 
 		count = 0;
@@ -151,6 +154,10 @@ public class RootLayoutController : MonoBehaviour {
 		elementsList = new SceneElementsList (lineageData);
 	}
 
+	private void initBillboardsList() {
+		billboardsList = new BillboardsList ();
+	}
+
 	private void initWindow3DController() {
 		window3d = new Window3DController(
 			productionInfo.getXScale(),
@@ -158,6 +165,9 @@ public class RootLayoutController : MonoBehaviour {
 			productionInfo.getZScale(),
 			lineageData,
 			elementsList,
+			billboardsList,
+			GvrMain,
+			PerspectiveCam,
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),
@@ -182,6 +192,8 @@ public class RootLayoutController : MonoBehaviour {
 				count++;
 			}
 		}
+
+		window3d.Update ();
 	}
 
 	private void render() {

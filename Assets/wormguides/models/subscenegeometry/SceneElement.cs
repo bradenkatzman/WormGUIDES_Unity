@@ -61,7 +61,6 @@ public class SceneElement {
 		// make sure that lineage names that start with "AB" have the proper casing
 		List<string> editedNames = new List<string>();
 		string lineagePrefix = "ab";
-		string name;
 		string namePrefix;
 		foreach (string cellName in cellNames) {
 			if (cellName.Length > 2) {

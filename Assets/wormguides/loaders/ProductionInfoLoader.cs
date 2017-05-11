@@ -16,8 +16,6 @@ public class ProductionInfoLoader {
 	                                    + "Resolution,Segmentation,cytoshow link,Movie start timeProperty (min),isSulstonMode?,Total Time Points,"
 	                                    + "X_SCALE,Y_SCALE,Z_SCALE,Key_Frames_Rotate,Key_Values_Rotate,Initial_Rotation";
 
-	private static string SLASH = "/";
-
 	public static List<List<string>> buildProductionInfo ()
 	{
 

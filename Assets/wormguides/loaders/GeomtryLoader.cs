@@ -6,13 +6,8 @@ using UnityEngine;
 
 public class GeometryLoader {
 
-	private static string OBJ_EXT = ".obj";
-	private static string VERTEX_LINE = "v ";
-	private static string FACE_LINE = "f ";
 	private static string SLASH = "/";
 	private static string T = "_t";
-	private static string ASSETS = "Assets";
-	private static string RESOURCES = "Resources";
 
 	/*
 	 * 
