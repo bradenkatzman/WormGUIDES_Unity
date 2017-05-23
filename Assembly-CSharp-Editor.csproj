@@ -174,6 +174,7 @@
      <None Include="Assets\Resources\nucleifiles\t087-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t025-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t265-nuclei.txt" />
+     <None Include="Assets\Resources\Custom_Shaders\3DTextShader.shader" />
      <None Include="Assets\Resources\nucleifiles\t251-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t083-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t032-nuclei.txt" />
@@ -509,10 +510,6 @@
  <Reference Include="UnityEditor.iOS.Extensions.Common">
  <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{87A0EC91-F254-3081-181B-12EC322D93A0}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

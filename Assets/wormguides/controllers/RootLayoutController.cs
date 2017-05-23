@@ -32,7 +32,7 @@ public class RootLayoutController : MonoBehaviour {
 	// hide/show time control panel button
 	private Button HideShow_TimeControl_Button;
 
-	// Time control UI elements
+	// control UI elements
 	private GameObject TimeControl_Panel;
 	private Slider timeSlider;
 	private Button backwardButton;
@@ -40,10 +40,14 @@ public class RootLayoutController : MonoBehaviour {
 	private Button forwardButton;
 	private Text timeText;
 	private Button switchCameras;
+	private Dropdown ColorScheme_Dropdown;
 
 	// camera stuff
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
+
+	// color scheme stuff
+	private ColorScheme CS;
 
 	private int count;
 
@@ -66,7 +70,8 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	//
-	public void setUIElements(Button hs, GameObject tcp, Slider ts, Button bb, Button ppb, Button fb, Text tt, Button sc) {
+	public void setUIElements(Button hs, GameObject tcp, Slider ts, Button bb, 
+		Button ppb, Button fb, Text tt, Button sc, Dropdown csd) {
 		this.HideShow_TimeControl_Button = hs;
 		this.TimeControl_Panel = tcp;
 		this.timeSlider = ts;
@@ -75,6 +80,7 @@ public class RootLayoutController : MonoBehaviour {
 		this.forwardButton = fb;
 		this.timeText = tt;
 		this.switchCameras = sc;
+		this.ColorScheme_Dropdown = csd;
 
 
 		HideShow_TimeControl_Button.onClick.AddListener (onHideShowTimeControlPanelClicked);
@@ -83,11 +89,16 @@ public class RootLayoutController : MonoBehaviour {
 		playPauseButton.onClick.AddListener (onPlayPauseButtonClicked);
 		forwardButton.onClick.AddListener (onForwardButtonClicked);
 		switchCameras.onClick.AddListener (onSwitchCamerasClicked);
+		ColorScheme_Dropdown.onValueChanged.AddListener (delegate { onColorSchemeDropdownValueChanged(); });
 	}
 
 	public void addCameras(GameObject GvrMain_, Camera PerspectiveCam_) {
 		this.GvrMain = GvrMain_;
 		this.PerspectiveCam = PerspectiveCam_;
+	}
+
+	public void setColorScheme(ColorScheme cs_) {
+		this.CS = cs_;
 	}
 
 	public void onHideShowTimeControlPanelClicked() {
@@ -127,7 +138,7 @@ public class RootLayoutController : MonoBehaviour {
 		} else {
 			play = true;
 			playPauseButton.GetComponentInChildren<Text> ().text = "Pause";
-			count = 2;
+			count = 3;
 		}
 	}
 
@@ -139,6 +150,10 @@ public class RootLayoutController : MonoBehaviour {
 			PerspectiveCam.enabled = false;
 			GvrMain.SetActive(true);
 		}
+	}
+
+	void onColorSchemeDropdownValueChanged() {
+		window3d.updateColorScheme (ColorScheme_Dropdown.value);
 	}
 
 	private void initProductionInfo() {
@@ -171,7 +186,11 @@ public class RootLayoutController : MonoBehaviour {
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getRuleMaterials());
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTractTourNerveRingRuleMaterials(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getLineageSpatialRelationshipsRuleMaterials(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getDefaultMaterials(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTextMaterial(),
+			this.CS);
 	}
 
 	/*
@@ -181,11 +200,14 @@ public class RootLayoutController : MonoBehaviour {
 	 */ 
 	void Update() {
 		if (play) {
-			if (count == 2) { // use this to render at 1/3 of the speed at which Update() is called
+			if (count == 3) { // use this to render at 1/4 of the speed at which Update() is called
 				if (time < 360 && time > 0) {
 					render ();
 					time++;
 					updateUIElements ();
+				} else if (time == 360) {
+					play = false;
+					playPauseButton.GetComponentInChildren<Text> ().text = "Play";
 				}
 				count = 0;
 			} else {

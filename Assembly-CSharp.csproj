@@ -123,6 +123,7 @@
      <Compile Include="Assets\wormguides\loaders\GeomtryLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\NucleiLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ProductionInfoLoader.cs" />
+     <Compile Include="Assets\wormguides\models\ColorScheme.cs" />
      <Compile Include="Assets\wormguides\models\subscenegeometry\Billboard.cs" />
      <Compile Include="Assets\wormguides\models\subscenegeometry\BillboardAttachmentType.cs" />
      <Compile Include="Assets\wormguides\models\subscenegeometry\BillboardsList.cs" />
@@ -246,6 +247,7 @@
      <None Include="Assets\Resources\nucleifiles\t087-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t025-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t265-nuclei.txt" />
+     <None Include="Assets\Resources\Custom_Shaders\3DTextShader.shader" />
      <None Include="Assets\Resources\nucleifiles\t251-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t083-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t032-nuclei.txt" />

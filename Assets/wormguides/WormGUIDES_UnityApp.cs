@@ -24,30 +24,56 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public Button forwardButton;
 	public Text timeText;
 	public Button switchCameras;
+	public Dropdown colorSchemeDropdown;
 
 	// camera stuff
 	public GameObject GvrMain;
 	public Camera PerspectiveCam;
 
-	// materials
-	public Material[] rule_materials;
+	// color scheme enum
+	private ColorScheme CS;
+
+	// materials for color schemes
+	public Material[] TractTour_NerveRing_rule_materials;
+	public Material[] LineageSpatialRelationships_rule_materials;
+	public Material[] DefaultMaterials;
+
+	public Material TextMaterial;
 
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
+
+		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
+		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
 		initRootLayout ();
 	}
 		
 	private void initRootLayout() {
 		rlc = this.gameObject.AddComponent<RootLayoutController> ();
-		rlc.setUIElements (HideShow_TimeControl_Button, TimeControl_Panel, timeSlider, backwardButton, playPauseButton, forwardButton, timeText, switchCameras);
-		rlc.addCameras (GvrMain, PerspectiveCam);
+		rlc.setUIElements (this.HideShow_TimeControl_Button, this.TimeControl_Panel,
+			this.timeSlider, this.backwardButton, this.playPauseButton, this.forwardButton,
+			this.timeText, this.switchCameras, this.colorSchemeDropdown);
+		rlc.addCameras (this.GvrMain, this.PerspectiveCam);
+		rlc.setColorScheme (this.CS);
 	}
 
 	public GameObject getWormGUIDES_Unity() {
 		return this.gameObject;
 	}
 
-	public Material[] getRuleMaterials() {
-		return this.rule_materials;
+	public Material[] getTractTourNerveRingRuleMaterials() {
+		return this.TractTour_NerveRing_rule_materials;
+	}
+
+	public Material[] getLineageSpatialRelationshipsRuleMaterials() {
+		return this.LineageSpatialRelationships_rule_materials;
+	}
+
+	public Material[] getDefaultMaterials() {
+		return this.DefaultMaterials;
+	}
+
+	public Material getTextMaterial() {
+		return this.TextMaterial;
 	}
 } 
