@@ -8,8 +8,8 @@ using System.IO;
 
 public class SceneElementsList {
 	private static string CELL_CONFIG_FILE_PATH = "shapes_file/CellShapesConfig";
-	private static string ASTERISK = "*";
-	private static string SLASH = "/";
+	//private static string ASTERISK = "*";
+	//private static string SLASH = "/";
 
 	private static int NUM_CSV_FIELDS = 8;
 	private static int DESCRIPTION_IDX = 0;
@@ -106,89 +106,6 @@ public class SceneElementsList {
 			}
 		}
 	}
-
-
-
-
-
-//		using (var fs = File.OpenRead (FilePath))
-//		using (var reader = new StreamReader (fs)) {
-//			if (reader.EndOfStream) return;
-//
-//			// skip csv file heading
-//			reader.ReadLine();
-//
-//			while (!reader.EndOfStream) {
-//
-//				string line;
-//				string name;
-//				string lineageName;
-//				string resourceLocation;
-//				int startTime;
-//				int endTime;
-//				List<string> cellNames;
-//				
-//				line = reader.ReadLine ();
-//				if (line != null) {
-//					string[] tokens = line.Split (',');
-//
-//					if (tokens.Length == NUM_CSV_FIELDS) {
-//						name = tokens [DESCRIPTION_IDX];
-//
-//						if (isCategoryLine (tokens)) {
-//							// skip over these for now
-//						} else {
-//							resourceLocation = tokens [RESOURCE_LOCATION_IDX];
-//							startTime = (int)Int32.Parse (tokens [START_TIME_IDX]);
-//							endTime = (int)Int32.Parse (tokens [END_TIME_IDX]);
-//
-//							// check for first time that the .obj resource exists
-//							int effectiveStartTime = GeometryLoader.getEffectiveStartTime(resourceLocation, startTime, endTime);
-//							if (effectiveStartTime != startTime) {
-//								startTime = effectiveStartTime;
-//							}
-//
-//							// vector of cell names
-//							cellNames = new List<string>();
-//							string[] cellNamesTokens = tokens [CELL_IDX].Split (' ');
-//							for (int i = 0; i < cellNamesTokens.Length; i++) {
-//								cellNames.Add (cellNamesTokens [i]);
-//							}
-//
-//							lineageName = name;
-//							if (name.Contains ("(")) {
-//								lineageName = name.Substring (0, name.IndexOf ("(")).Trim ();
-//							}
-//
-//							if (lineageData.isCellName (lineageName)) {
-//								effectiveStartTime = lineageData.getFirstOccurenceOf (lineageName);
-//								int effectiveEndTime = lineageData.getLastOccurentOf (lineageName);
-//
-//								// use the later one of the config start time and the effective lineage start time
-//								startTime = effectiveStartTime > startTime ? effectiveStartTime : startTime;
-//
-//								// use the earlier one of the config start time and effective lineage start time
-//								endTime = effectiveEndTime < endTime ? effectiveEndTime : endTime;
-//							}
-//
-//							SceneElement element = new SceneElement (
-//								                       lineageName,
-//								                       cellNames,
-//								                       tokens [MARKER_IDX],
-//								                       tokens [IMAGING_SRC_IDX],
-//								                       resourceLocation,
-//								                       startTime,
-//								                       endTime,
-//								                       tokens [COMMENTS_IDX]);
-//							addSceneElement (element);
-//
-//							// all the map stuff happens after here in orig WG
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
 
 	private bool isCategoryLine(string[] tokens) {
 		if (tokens.Length == NUM_CSV_FIELDS && !(tokens [DESCRIPTION_IDX].Length == 0)) {

@@ -11,7 +11,6 @@ public class LineageDataLoader {
 	private static string ENTRY_PREFIX = "nucleifiles/";
 	private static string T = "t";
 	private static string ENTRY_EXT = "-nuclei";
-	private static string SLASH = "/";
 	private static int NUMBER_OF_TOKENS = 21;
 	private static int VALID_IDX = 1,
 			XCOR_IDX = 5,
