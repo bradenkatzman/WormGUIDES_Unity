@@ -42,6 +42,9 @@ public class RootLayoutController : MonoBehaviour {
 	private Button switchCameras;
 	private Dropdown ColorScheme_Dropdown;
 
+	// context menu
+	private GameObject ContextMenu;
+
 	// camera stuff
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
@@ -73,7 +76,7 @@ public class RootLayoutController : MonoBehaviour {
 
 	//
 	public void setUIElements(Button hs, GameObject tcp, Slider ts, Button bb, 
-		Button ppb, Button fb, Text tt, Button sc, Dropdown csd) {
+		Button ppb, Button fb, Text tt, Button sc, Dropdown csd, GameObject cm) {
 		this.HideShow_Control_Button = hs;
 		this.Control_Panel = tcp;
 		this.timeSlider = ts;
@@ -83,7 +86,7 @@ public class RootLayoutController : MonoBehaviour {
 		this.timeText = tt;
 		this.switchCameras = sc;
 		this.ColorScheme_Dropdown = csd;
-
+		this.ContextMenu = cm;
 
 		HideShow_Control_Button.onClick.AddListener (onHideShowTimeControlPanelClicked);
 		timeSlider.onValueChanged.AddListener (delegate {onSliderValueChange ();});
@@ -194,7 +197,8 @@ public class RootLayoutController : MonoBehaviour {
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getLineageSpatialRelationshipsRuleMaterials(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getDefaultMaterials(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTextMaterial(),
-			this.CS);
+			this.CS,
+			this.ContextMenu);
 	}
 
 	/*

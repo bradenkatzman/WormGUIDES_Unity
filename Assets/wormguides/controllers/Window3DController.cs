@@ -47,6 +47,11 @@ public class Window3DController {
 	// rotation
 	private Gyroscope gyro;
 
+	// context menu
+	private GameObject ContextMenu;
+	private bool hasAVL;
+	private Vector3 avlPos;
+
 	/*
 	 * Cells with associated color rules
 	 */ 
@@ -106,7 +111,8 @@ public class Window3DController {
 		Material[] Lsr_materials,
 		Material[] defMaterials,
 		Material tMaterial,
-		ColorScheme cs_) {
+		ColorScheme cs_,
+		GameObject cm) {
 		this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
@@ -128,6 +134,10 @@ public class Window3DController {
 		this.textMaterial = tMaterial;
 
 		this.CS = cs_;
+		this.ContextMenu = cm;
+
+		// temp context menu vars
+		this.hasAVL = false;
 
 		// initialize
 		this.gyro = Input.gyro;
@@ -167,6 +177,10 @@ public class Window3DController {
 		GameObject.Destroy(rootEntitiesGroup);
 		rootEntitiesGroup = new GameObject ();
 		rootEntitiesGroup.name = "Root Entities Group";
+
+		// temp
+		this.hasAVL = false;
+		this.ContextMenu.SetActive (false);
 
 		// clear note sprites and overlays here if they are integrated at some point
 
@@ -298,6 +312,12 @@ public class Window3DController {
 		foreach (GameObject textMesh in currentBillboardTextMeshes) {
 			textMesh.transform.parent = rootEntitiesGroup.transform;
 		}
+
+		if (hasAVL) {
+			ContextMenu.transform.position = new Vector3 (avlPos.x + 25.0f, avlPos.y - 15.0f, avlPos.z);
+			ContextMenu.SetActive (true);
+
+		}
 	}
 
 	private void addCellGeometries() {
@@ -322,6 +342,11 @@ public class Window3DController {
 			sphere.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 
 			sphere.name = cellName;
+
+			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
+				this.hasAVL = true;
+				this.avlPos = sphere.transform.position;
+			}
 
 			// add color
 			bool hasColor = false;
@@ -413,18 +438,27 @@ public class Window3DController {
 
 
 	public void Update() {
-		// if there are billboards, continuously make them face the active camera
-		foreach (GameObject b_GO in currentBillboardTextMeshes) {
-			// make billboard front facing
-			if (GvrMain.activeSelf) {
+
+		if (GvrMain.activeSelf) {
+			foreach (GameObject b_GO in currentBillboardTextMeshes) {
 				//Debug.Log ("looking toward VR cam");
 				b_GO.transform.LookAt (GvrMain.transform);
-			} else if (PerspectiveCam.enabled) {
+				b_GO.transform.Rotate(new Vector3(0, 180, 0));
+			}
+			if (hasAVL) {
+				ContextMenu.transform.LookAt (GvrMain.transform);
+				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
+			}
+		} else if (PerspectiveCam.enabled) {
+			foreach (GameObject b_GO in currentBillboardTextMeshes) {
 				//Debug.Log ("looking toward Perspective Cam");
 				b_GO.transform.LookAt (PerspectiveCam.transform);
+				b_GO.transform.Rotate(new Vector3(0, 180, 0));
 			}
-
-			b_GO.transform.Rotate(new Vector3(0, 180, 0));
+			if (hasAVL) {
+				ContextMenu.transform.LookAt (PerspectiveCam.transform);
+				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
+			}
 		}
 	}
 }
