@@ -26,6 +26,9 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public Button switchCameras;
 	public Dropdown colorSchemeDropdown;
 
+	// context menu
+	public GameObject ContextMenu;
+
 	// camera stuff
 	public GameObject GvrMain;
 	public Camera PerspectiveCam;
@@ -52,7 +55,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		rlc = this.gameObject.AddComponent<RootLayoutController> ();
 		rlc.setUIElements (this.HideShow_Control_Button, this.Control_Panel,
 			this.timeSlider, this.backwardButton, this.playPauseButton, this.forwardButton,
-			this.timeText, this.switchCameras, this.colorSchemeDropdown);
+			this.timeText, this.switchCameras, this.colorSchemeDropdown, this.ContextMenu);
 		rlc.addCameras (this.GvrMain, this.PerspectiveCam);
 		rlc.setColorScheme (this.CS);
 	}
