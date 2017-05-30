@@ -9,7 +9,6 @@ public class PinchZoomController : MonoBehaviour {
 	private bool initialized;
 
 	// camera stuff
-	private GameObject GvrMain;
 	private Camera PerspectiveCam;
 
 	void Start() {
@@ -17,12 +16,11 @@ public class PinchZoomController : MonoBehaviour {
 		this.perspectiveZoomSpeed = 0.5f;
 	}
 
-	public void setCameras(GameObject vrc, Camera pc) {
-		this.GvrMain = vrc;
+	public void setCamera(Camera pc) {
 		this.PerspectiveCam = pc;
 		this.initialized = true;
 	}
-		
+
 	void Update () {
 		// make sure start up complete and in perspective mode
 		if (initialized && PerspectiveCam.enabled) {
@@ -45,7 +43,12 @@ public class PinchZoomController : MonoBehaviour {
 				// find the difference in the distances between each frame
 				float deltaMagDiff = prevTouchDeltaMag - tDeltaMag;
 
-
+				// check if zoom in or zoom out
+				if (deltaMagDiff > 0.0f) {
+					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * perspectiveZoomSpeed);
+				} else if (deltaMagDiff < 0.0f) {
+					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * -perspectiveZoomSpeed);
+				}
 			}
 		}
 	}

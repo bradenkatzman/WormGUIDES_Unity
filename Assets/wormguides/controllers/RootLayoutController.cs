@@ -49,6 +49,9 @@ public class RootLayoutController : MonoBehaviour {
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
 
+	// zoom stuff
+	private PinchZoomController pzc;
+
 	// color scheme stuff
 	private ColorScheme CS;
 
@@ -65,6 +68,7 @@ public class RootLayoutController : MonoBehaviour {
 		initLineageData ();
 		initSceneElementsList ();
 		initBillboardsList ();
+		initPinchZoomController ();
 		initWindow3DController ();
 
 		play = false;
@@ -184,6 +188,11 @@ public class RootLayoutController : MonoBehaviour {
 
 	private void initBillboardsList() {
 		billboardsList = new BillboardsList ();
+	}
+
+	private void initPinchZoomController() {
+		pzc = this.gameObject.AddComponent<PinchZoomController> ();
+		pzc.setCameras (this.GvrMain, this.PerspectiveCam);
 	}
 
 	private void initWindow3DController() {
