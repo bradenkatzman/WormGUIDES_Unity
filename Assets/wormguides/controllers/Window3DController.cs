@@ -44,13 +44,10 @@ public class Window3DController {
 
 	private int time;
 
-	// rotation
-	private Gyroscope gyro;
-
 	// context menu
 	private GameObject ContextMenu;
-	private bool hasAVL;
-	private Vector3 avlPos;
+//	private bool hasAVL;
+//	private Vector3 avlPos;
 
 	/*
 	 * Cells with associated color rules
@@ -137,10 +134,9 @@ public class Window3DController {
 		this.ContextMenu = cm;
 
 		// temp context menu vars
-		this.hasAVL = false;
+		//this.hasAVL = false;
 
 		// initialize
-		this.gyro = Input.gyro;
 		spheres = new List<GameObject>();
 		meshes = new List<GameObject> ();
 		cellNames = new List<string> ();
@@ -163,12 +159,6 @@ public class Window3DController {
 		getSceneData (time);
 		addEntities ();
 
-		// add rotation of gyroscrope if in perspective mode
-		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
-			getRootEntitiesGroup ().transform.rotation = gyro.attitude;
-		}
-
-
 		return getRootEntitiesGroup ();
 	}
 
@@ -179,8 +169,8 @@ public class Window3DController {
 		rootEntitiesGroup.name = "Root Entities Group";
 
 		// temp
-		this.hasAVL = false;
-		this.ContextMenu.SetActive (false);
+//		this.hasAVL = false;
+//		this.ContextMenu.SetActive (false);
 
 		// clear note sprites and overlays here if they are integrated at some point
 
@@ -313,11 +303,11 @@ public class Window3DController {
 			textMesh.transform.parent = rootEntitiesGroup.transform;
 		}
 
-		if (hasAVL) {
-			ContextMenu.transform.position = new Vector3 (avlPos.x + 25.0f, avlPos.y - 15.0f, avlPos.z);
-			ContextMenu.SetActive (true);
-
-		}
+//		if (hasAVL) {
+//			ContextMenu.transform.position = new Vector3 (avlPos.x + 25.0f, avlPos.y - 15.0f, avlPos.z);
+//			ContextMenu.SetActive (true);
+//
+//		}
 	}
 
 	private void addCellGeometries() {
@@ -328,6 +318,7 @@ public class Window3DController {
 			float radius = (float) diameters[i] / 2.0f;
 
 			GameObject sphere = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+
 			sphere.transform.localScale = new Vector3 (radius, radius, radius);
 
 			// add rotate values to spheres
@@ -343,10 +334,10 @@ public class Window3DController {
 
 			sphere.name = cellName;
 
-			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
-				this.hasAVL = true;
-				this.avlPos = sphere.transform.position;
-			}
+//			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
+//				this.hasAVL = true;
+//				this.avlPos = sphere.transform.position;
+//			}
 
 			// add color
 			bool hasColor = false;
@@ -392,13 +383,22 @@ public class Window3DController {
 			bool hasColor = false;
 			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
 				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells[k].ToLower ()) && !TractTour_NerveRing_rule_cells_CELLONLY[k]) {
+					if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ()) && !TractTour_NerveRing_rule_cells_CELLONLY [k]) {
 						// add the color
 						hasColor = true;
 
 						// need to add the material to all of the components
-						foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = TractTour_NerveRing_rule_materials[k];
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = TractTour_NerveRing_rule_materials [k];
+						}
+					}
+				}
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
+				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
+					if (go.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ())) {
+						hasColor = true;
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = LineageSpatialRelationships_rule_materials [k];
 						}
 					}
 				}
@@ -427,38 +427,41 @@ public class Window3DController {
 		}
 	}
 
-	public void updateColorScheme(int ColorScheme_IDX) {
+	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity, Quaternion attitude) {
 		this.CS.setColorScheme (ColorScheme_IDX);
-		renderScene (time);
+
+		GameObject reg = renderScene (time);
+		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
+			reg.transform.rotation = attitude;
+		}
+		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 
 	private GameObject getRootEntitiesGroup() {
 		return rootEntitiesGroup;
 	}
 
-
 	public void Update() {
-
 		if (GvrMain.activeSelf) {
 			foreach (GameObject b_GO in currentBillboardTextMeshes) {
 				//Debug.Log ("looking toward VR cam");
 				b_GO.transform.LookAt (GvrMain.transform);
 				b_GO.transform.Rotate(new Vector3(0, 180, 0));
 			}
-			if (hasAVL) {
-				ContextMenu.transform.LookAt (GvrMain.transform);
-				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
-			}
+//			if (hasAVL) {
+//				ContextMenu.transform.LookAt (GvrMain.transform);
+//				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
+//			}
 		} else if (PerspectiveCam.enabled) {
 			foreach (GameObject b_GO in currentBillboardTextMeshes) {
 				//Debug.Log ("looking toward Perspective Cam");
 				b_GO.transform.LookAt (PerspectiveCam.transform);
 				b_GO.transform.Rotate(new Vector3(0, 180, 0));
 			}
-			if (hasAVL) {
-				ContextMenu.transform.LookAt (PerspectiveCam.transform);
-				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
-			}
+//			if (hasAVL) {
+//				ContextMenu.transform.LookAt (PerspectiveCam.transform);
+//				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
+//			}
 		}
 	}
 }

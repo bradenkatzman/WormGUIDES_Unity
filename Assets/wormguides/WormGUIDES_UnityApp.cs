@@ -43,12 +43,25 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	public Material TextMaterial;
 
+	// rotation
+	private Gyroscope gyro;
+
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
+
+		this.gyro = Input.gyro;
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
 		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
 		initRootLayout ();
+	}
+
+	void Update() {
+		// add rotation of scene based on gyroscrope if in perspective mode
+		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
+			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
+			transform.Find("Root Entities Group").transform.rotation = gyro.attitude;
+		}
 	}
 		
 	private void initRootLayout() {
@@ -58,6 +71,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 			this.timeText, this.switchCameras, this.colorSchemeDropdown, this.ContextMenu);
 		rlc.addCameras (this.GvrMain, this.PerspectiveCam);
 		rlc.setColorScheme (this.CS);
+		rlc.setGyro (this.gyro);
 	}
 
 	public GameObject getWormGUIDES_Unity() {

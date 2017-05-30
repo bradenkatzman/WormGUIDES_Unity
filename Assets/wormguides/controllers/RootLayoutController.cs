@@ -56,6 +56,8 @@ public class RootLayoutController : MonoBehaviour {
 	private string showControlPanelStr = "Show Control Panel";
 	private string hideControlPanelStr = "Hide Control Panel";
 
+	private Gyroscope gyro;
+
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
@@ -104,6 +106,10 @@ public class RootLayoutController : MonoBehaviour {
 
 	public void setColorScheme(ColorScheme cs_) {
 		this.CS = cs_;
+	}
+
+	public void setGyro(Gyroscope gyro_) {
+		this.gyro = gyro_;
 	}
 
 	public void onHideShowTimeControlPanelClicked() {
@@ -160,7 +166,7 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	void onColorSchemeDropdownValueChanged() {
-		window3d.updateColorScheme (ColorScheme_Dropdown.value);
+		window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity, this.gyro.attitude);
 	}
 
 	private void initProductionInfo() {
@@ -227,7 +233,11 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	private void render() {
-		window3d.renderScene (time).transform.parent = WormGUIDES_Unity.transform;
+		GameObject reg = window3d.renderScene (time);
+		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
+			reg.transform.rotation = gyro.attitude;
+		}
+		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 
 	private void updateUIElements() {
