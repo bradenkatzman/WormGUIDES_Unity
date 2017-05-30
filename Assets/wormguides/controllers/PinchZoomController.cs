@@ -6,27 +6,24 @@ public class PinchZoomController : MonoBehaviour {
 
 	private float perspectiveZoomSpeed;
 
-	private bool initialized;
-
 	// camera stuff
 	private Camera PerspectiveCam;
 
 	void Start() {
-		this.initialized = false;
-		this.perspectiveZoomSpeed = 0.5f;
+		this.perspectiveZoomSpeed = 1.5f;
 	}
 
 	public void setCamera(Camera pc) {
 		this.PerspectiveCam = pc;
-		this.initialized = true;
 	}
 
 	void Update () {
 		// make sure start up complete and in perspective mode
-		if (initialized && PerspectiveCam.enabled) {
+		if (PerspectiveCam.enabled) {
 
 			// if there are two touches on the device
 			if (Input.touchCount == 2) {
+				Debug.Log ("Got two touch");
 
 				// store the touches
 				Touch tZero = Input.GetTouch (0);
@@ -45,10 +42,12 @@ public class PinchZoomController : MonoBehaviour {
 
 				// check if zoom in or zoom out
 				if (deltaMagDiff > 0.0f) {
-					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * perspectiveZoomSpeed);
-				} else if (deltaMagDiff < 0.0f) {
 					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * -perspectiveZoomSpeed);
+				} else if (deltaMagDiff < 0.0f) {
+					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * perspectiveZoomSpeed);
 				}
+			} else {
+				//Debug.Log (Input.touchCount);
 			}
 		}
 	}
