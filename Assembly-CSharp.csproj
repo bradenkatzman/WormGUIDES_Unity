@@ -122,6 +122,7 @@
      <Compile Include="Assets\wormguides\controllers\RootLayoutController.cs" />
      <Compile Include="Assets\wormguides\controllers\Window3DController.cs" />
      <Compile Include="Assets\wormguides\loaders\GeomtryLoader.cs" />
+     <Compile Include="Assets\wormguides\loaders\MainSceneLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\NucleiLoader.cs" />
      <Compile Include="Assets\wormguides\loaders\ProductionInfoLoader.cs" />
      <Compile Include="Assets\wormguides\models\ColorScheme.cs" />
