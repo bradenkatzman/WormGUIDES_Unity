@@ -49,6 +49,15 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
+		// first set the selected camera mode
+		if (ApplicationModel.getCameraMode () == 0) {
+			this.PerspectiveCam.enabled = false;
+			this.GvrMain.SetActive(true);
+		} else if (ApplicationModel.getCameraMode () == 1) {
+			this.GvrMain.SetActive(false);
+			this.PerspectiveCam.enabled = true;
+		}
+
 		this.gyro = Input.gyro;
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);

@@ -1,11 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainSceneLoader : MonoBehaviour {
 
+	public Button VRModeButton;
+	public Button PerspectiveModeButton;
+
+	public Text MenuCameraSelectionText;
+	private string MenuCameraSelectionTextStr = "Please wait a few moments while the application loads.";
+
 	// the index of the scene that will be built by this script
 	private int scene;
+
+	AsyncOperation async;
+
+	private string VRModeStr = "Loading VR Mode...";
+	private string PerspectiveModeStr = "Loading Perspective Mode...";
+
+	private int VR_MODE = 0;
+	private int PERSPECTIVE_MODE = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -13,26 +28,40 @@ public class MainSceneLoader : MonoBehaviour {
 
 		// start the loading of the main scene in the background
 		StartCoroutine(LoadNewScene());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+		this.VRModeButton.onClick.AddListener (VRModeButtonClicked);
+		this.PerspectiveModeButton.onClick.AddListener (PerspectiveModeButtonClicked);
 	}
 
-	// The coroutine runs on its own at the same time as Update() and takes an integer indicating which scene to load.
+	void VRModeButtonClicked() {
+		ApplicationModel.setCameraMode (VR_MODE);
+		this.async.allowSceneActivation = true;
+
+		this.VRModeButton.GetComponentInChildren<Text> ().text = VRModeStr;
+
+		this.VRModeButton.interactable = false;
+		this.PerspectiveModeButton.interactable = false;
+
+		this.MenuCameraSelectionText.text = MenuCameraSelectionTextStr;
+	}
+
+	void PerspectiveModeButtonClicked() {
+		ApplicationModel.setCameraMode (PERSPECTIVE_MODE);
+		this.async.allowSceneActivation = true;
+
+		this.PerspectiveModeButton.GetComponentInChildren<Text> ().text = PerspectiveModeStr;
+
+		this.VRModeButton.interactable = false;
+		this.PerspectiveModeButton.interactable = false;
+
+		this.MenuCameraSelectionText.text = MenuCameraSelectionTextStr;
+	}
+
+	// load the scene by index
 	IEnumerator LoadNewScene() {
-
-		// This line waits for 3 seconds before executing the next line in the coroutine.
-		// This line is only necessary for this demo. The scenes are so simple that they load too fast to read the "Loading..." text.
-		yield return new WaitForSeconds (3);
-
 		// Start an asynchronous operation to load the scene that was passed to the LoadNewScene coroutine.
-		AsyncOperation async = Application.LoadLevelAsync (scene);
-
-		// While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-		while (!async.isDone) {
-			yield return null;
-		}
+		this.async = Application.LoadLevelAsync (scene);
+		this.async.allowSceneActivation = false;
+		yield return async;
 	}
 }
