@@ -20,6 +20,8 @@ public class RootLayoutController : MonoBehaviour {
 	// class which holds all of the lineage data. All time points are loaded at app initialization
 	private LineageData lineageData;
 
+	private PartsList partsList;
+
 	private SceneElementsList elementsList;
 
 	private BillboardsList billboardsList;
@@ -66,6 +68,7 @@ public class RootLayoutController : MonoBehaviour {
 
 		initProductionInfo ();
 		initLineageData ();
+		initPartsList ();
 		initSceneElementsList ();
 		initBillboardsList ();
 		initPinchZoomController ();
@@ -170,37 +173,42 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	void onColorSchemeDropdownValueChanged() {
-		window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity, this.gyro.attitude);
+		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity, this.gyro.attitude);
 	}
 
 	private void initProductionInfo() {
-		productionInfo = new ProductionInfo(ProductionInfoLoader.buildProductionInfo ());
+		this.productionInfo = new ProductionInfo(ProductionInfoLoader.buildProductionInfo ());
 	}
 
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
-		lineageData = LineageDataLoader.loadNucFiles (productionInfo, WormGUIDES_Unity);
+		this.lineageData = LineageDataLoader.loadNucFiles (productionInfo, WormGUIDES_Unity);
+	}
+
+	private void initPartsList() {
+		this.partsList = new PartsList (PartsListLoader.buildPartsList ());
 	}
 
 	private void initSceneElementsList() {
-		elementsList = new SceneElementsList (lineageData);
+		this.elementsList = new SceneElementsList (lineageData);
 	}
 
 	private void initBillboardsList() {
-		billboardsList = new BillboardsList ();
+		this.billboardsList = new BillboardsList ();
 	}
 
 	private void initPinchZoomController() {
-		pzc = this.gameObject.AddComponent<PinchZoomController> ();
-		pzc.setCamera (this.PerspectiveCam);
+		this.pzc = this.gameObject.AddComponent<PinchZoomController> ();
+		this.pzc.setCamera (this.PerspectiveCam);
 	}
 
 	private void initWindow3DController() {
-		window3d = new Window3DController(
+		this.window3d = new Window3DController(
 			productionInfo.getXScale(),
 			productionInfo.getYScale(),
 			productionInfo.getZScale(),
 			lineageData,
+			partsList,
 			elementsList,
 			billboardsList,
 			GvrMain,
@@ -210,6 +218,8 @@ public class RootLayoutController : MonoBehaviour {
 			LineageDataLoader.getAvgZOffsetFromZero(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTractTourNerveRingRuleMaterials(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getLineageSpatialRelationshipsRuleMaterials(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getNeuronalCellPositionsRuleMaterials(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTissueTypesRuleMaterials(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getDefaultMaterials(),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTextMaterial(),
 			this.CS,

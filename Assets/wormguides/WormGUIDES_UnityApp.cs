@@ -39,6 +39,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	// materials for color schemes
 	public Material[] TractTour_NerveRing_rule_materials;
 	public Material[] LineageSpatialRelationships_rule_materials;
+	public Material[] NeuronalCellPositions_rule_materials;
+	public Material[] TissueTypes_rule_materials;
 	public Material[] DefaultMaterials;
 
 	public Material TextMaterial;
@@ -58,6 +60,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 			this.PerspectiveCam.enabled = true;
 		}
 
+		// enable and set the 
+		Input.gyro.enabled = true;
 		this.gyro = Input.gyro;
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
@@ -93,6 +97,14 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	public Material[] getLineageSpatialRelationshipsRuleMaterials() {
 		return this.LineageSpatialRelationships_rule_materials;
+	}
+
+	public Material[] getNeuronalCellPositionsRuleMaterials() {
+		return this.NeuronalCellPositions_rule_materials;
+	}
+
+	public Material[] getTissueTypesRuleMaterials() {
+		return this.TissueTypes_rule_materials;
 	}
 
 	public Material[] getDefaultMaterials() {
