@@ -221,6 +221,7 @@
      <None Include="Assets\Resources\nucleifiles\t153-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t348-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t276-nuclei.txt" />
+     <None Include="Assets\Resources\partslist_file\partslist.txt" />
      <None Include="Assets\Resources\nucleifiles\t077-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t053-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t094-nuclei.txt" />

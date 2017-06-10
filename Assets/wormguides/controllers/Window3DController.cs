@@ -12,6 +12,7 @@ public class Window3DController {
 	private GeometryLoader geoLdr;
 
 	private LineageData lineageData;
+	private PartsList partsList;
 	private SceneElementsList sceneElementsList;
 	private BillboardsList billboardsList;
 
@@ -50,7 +51,7 @@ public class Window3DController {
 //	private Vector3 avlPos;
 
 	/*
-	 * Cells with associated color rules
+	 * Cells or keywords with associated color rules
 	 */ 
 			// 1. Tract Tour, Nerve Ring
 	private string[] TractTour_NerveRing_rule_cells = new string[]{
@@ -66,7 +67,16 @@ public class Window3DController {
 			// 2. Lineage and Spatial Relationships (color only applies to primitive cell shapes
 	private string[] LineageSpatialRelationships_rule_cells = new string[] {
 		"E", "MS", "D", "C", "P4", "ABal", "ABar", "ABpl", "ABpr", "Z2", "Z3"};
-	// ** end cells
+
+			// 3. Neuronal Cell Positions
+	private string[] NeuronalCellPositions_keywords = new string[] {
+		"sheath", "socket", "sensory", "interneuron", "motor"};
+			// 4. Tissue Types
+	private string[] TissueTypes_keywords = new string[] {
+		"muscle", "intestinal", "marginal", "vulva", "interneuron", "motor", "sensory", "pore", "duct",
+		"gland", "excretory", "hypoderm", "seam", "socket", "sheath", "valve", "arcade", "epithelium", 
+		"rectal", "head"};
+	// ** end cells/keywords
 
 	// string vars
 	private string[] tract_names = new string[]{
@@ -89,6 +99,12 @@ public class Window3DController {
 			// 2. Lineage and Spatial Relationships
 	private Material[] LineageSpatialRelationships_rule_materials;
 
+			// 3. Neuronal Cell Positions
+	private Material[] NeuronalCellPositions_rule_materials;
+
+			// 4. Tissue Types
+	private Material[] TissueTypes_rule_materials;
+
 			//defaults
 	private Material[] DefaultMaterials;
 	private int DEFAULT_MATERIAL_IDX = 0;
@@ -101,11 +117,13 @@ public class Window3DController {
 	private static string SPACE = " ";
 
 	public Window3DController(int xS, int yS, int zS, 
-		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
+		LineageData ld, PartsList pl, SceneElementsList elementsList, BillboardsList bl,
 		GameObject vrCam, Camera persCam,
 		int offX, int offY, int offZ,
 		Material[] Tt_Nr_materials,
 		Material[] Lsr_materials,
+		Material[] ncp_materials,
+		Material[] tt_materials,
 		Material[] defMaterials,
 		Material tMaterial,
 		ColorScheme cs_,
@@ -115,6 +133,7 @@ public class Window3DController {
 		this.zScale = zS;
 
 		this.lineageData = ld;
+		this.partsList = pl;
 		this.sceneElementsList = elementsList;
 		this.billboardsList = bl;
 
@@ -127,6 +146,8 @@ public class Window3DController {
 
 		this.TractTour_NerveRing_rule_materials = Tt_Nr_materials;
 		this.LineageSpatialRelationships_rule_materials = Lsr_materials;
+		this.NeuronalCellPositions_rule_materials = ncp_materials;
+		this.TissueTypes_rule_materials = tt_materials;
 		this.DefaultMaterials = defMaterials;
 		this.textMaterial = tMaterial;
 
@@ -341,19 +362,64 @@ public class Window3DController {
 
 			// add color
 			bool hasColor = false;
-			if (CS.getColorScheme().Equals(ColorScheme.CS.TourTract_NerveRing)) {
+			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
 				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().Equals (TractTour_NerveRing_rule_cells[k].ToLower ())) {
+					if (sphere.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
 						// add the color
 						hasColor = true;
-						sphere.GetComponent<Renderer>().material = TractTour_NerveRing_rule_materials[k];
+						sphere.GetComponent<Renderer> ().material = TractTour_NerveRing_rule_materials [k];
 					}
 				}
-			}  else if (CS.getColorScheme().Equals(ColorScheme.CS.LineageSpatialRelationships)) {
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
 				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ()) && !sphere.name.Equals("EMS")) {
+					if (sphere.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ()) && !sphere.name.Equals ("EMS")) {
 						hasColor = true;
 						sphere.GetComponent<Renderer> ().material = LineageSpatialRelationships_rule_materials [k];
+					}
+				}
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
+					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, NeuronalCellPositions_keywords [k]);
+
+					if (descrMatchResults == 0) { // pure clone, give full color
+						hasColor = true;
+						sphere.GetComponent<Renderer> ().material = NeuronalCellPositions_rule_materials [k];
+					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+						hasColor = true;
+						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
+								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+						Color weightedColor = new Color ();
+						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+						if (success) {
+							sphere.GetComponent<Renderer> ().material.color = weightedColor;
+						} else {
+							Debug.Log ("failed with " + weightedHex);
+						}
+					}
+				}
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
+					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, TissueTypes_keywords [k]);
+					if (descrMatchResults == 0) { // pure clone, give full color
+						hasColor = true;
+						sphere.GetComponent<Renderer> ().material = TissueTypes_rule_materials [k];
+					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+						hasColor = true;
+						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
+								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+						Color weightedColor = new Color ();
+						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+						if (success) {
+							sphere.GetComponent<Renderer> ().material.color = weightedColor;
+						} else {
+							Debug.Log ("failed with " + weightedHex);
+						}
 					}
 				}
 			}
@@ -399,6 +465,60 @@ public class Window3DController {
 						hasColor = true;
 						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
 							rend.material = LineageSpatialRelationships_rule_materials [k];
+						}
+					}
+				}
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
+					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
+
+					if (descrMatchResults == 0) { // pure clone, give full color
+						hasColor = true;
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = NeuronalCellPositions_rule_materials [k];
+						}
+					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+						hasColor = true;
+						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
+								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+						Color weightedColor = new Color ();
+						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+						if (success) {
+							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+								go.GetComponent<Renderer> ().material.color = weightedColor;
+							}
+						} else {
+							Debug.Log ("failed with " + weightedHex);
+						}
+					}
+				}
+			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
+					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
+
+					if (descrMatchResults == 0) { // pure clone, give full color
+						hasColor = true;
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = TissueTypes_rule_materials [k];
+						}
+					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+						hasColor = true;
+						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
+								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+						Color weightedColor = new Color ();
+						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+						if (success) {
+							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+								go.GetComponent<Renderer> ().material.color = weightedColor;
+							}
+						} else {
+							Debug.Log ("failed with " + weightedHex);
 						}
 					}
 				}

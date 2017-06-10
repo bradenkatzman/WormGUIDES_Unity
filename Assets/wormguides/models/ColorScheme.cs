@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ColorScheme {
 	private int firstIDX = 0;
-	private int lastIDX = 1;
+	private int lastIDX = 3;
 
-	public enum CS {TourTract_NerveRing, LineageSpatialRelationships};
+	public enum CS {TourTract_NerveRing, LineageSpatialRelationships, NeuronalCellPositions, TissueTypes};
 
 	private CS cs;
 

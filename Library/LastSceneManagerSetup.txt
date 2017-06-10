@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/wormguides/unity_scenes/MainScene.unity
+- path: Assets/wormguides/unity_scenes/MainSceneReal.unity
   isLoaded: 1
   isActive: 1
