@@ -192,7 +192,7 @@ public class RootLayoutController : MonoBehaviour {
 
 	private void initPinchZoomController() {
 		pzc = this.gameObject.AddComponent<PinchZoomController> ();
-		pzc.setCameras (this.GvrMain, this.PerspectiveCam);
+		pzc.setCamera (this.PerspectiveCam);
 	}
 
 	private void initWindow3DController() {
