@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainSceneLoader : MonoBehaviour {
 
@@ -60,7 +61,7 @@ public class MainSceneLoader : MonoBehaviour {
 	// load the scene by index
 	IEnumerator LoadNewScene() {
 		// Start an asynchronous operation to load the scene that was passed to the LoadNewScene coroutine.
-		this.async = Application.LoadLevelAsync (scene);
+		this.async = SceneManager.LoadSceneAsync (scene);
 		this.async.allowSceneActivation = false;
 		yield return async;
 	}

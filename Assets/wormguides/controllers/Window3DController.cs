@@ -257,6 +257,7 @@ public class Window3DController {
 			Billboard b = billboardsAtCurrentTime [i];
 
 			GameObject b_GO = null;
+			GameObject arrow_ref = null;
 			// determine if this billboard has geometry instead of text
 			bool miscGeometry = false;
 			foreach (string name in billboard_misc_geometry_names) {
@@ -265,13 +266,16 @@ public class Window3DController {
 					if (b_GO != null) {
 						miscGeometry = true;
 
-						if (b.getBillboardText ().ToLower().Equals("Arrow".ToLower())) {
+						if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
+							arrow_ref = b_GO;
 							GameObject arrow_child = b_GO.transform.GetChild (0).gameObject;
 							arrow_child.transform.localScale += new Vector3 (9, 9, 9);
 							arrow_child.transform.eulerAngles = new Vector3 (0, 0, 90);
 							foreach (Renderer rend in b_GO.GetComponentsInChildren<Renderer>()) {
 								rend.material = DefaultMaterials [MISCELLANEOUS_GEOMETRY_MATERIAL_IDX];
 							}
+						} else if (b.getBillboardText ().ToLower ().Equals ("Nose Tip".ToLower ())) {
+							b_GO.transform.parent = arrow_ref.transform;
 						}
 					}
 				}
@@ -378,7 +382,7 @@ public class Window3DController {
 					}
 				}
 			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
+				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
 					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, NeuronalCellPositions_keywords [k]);
 
 					if (descrMatchResults == 0) { // pure clone, give full color
@@ -401,7 +405,7 @@ public class Window3DController {
 					}
 				}
 			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
+				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
 					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, TissueTypes_keywords [k]);
 					if (descrMatchResults == 0) { // pure clone, give full color
 						hasColor = true;
@@ -469,7 +473,7 @@ public class Window3DController {
 					}
 				}
 			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
+				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
 					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
 
 					if (descrMatchResults == 0) { // pure clone, give full color
@@ -496,7 +500,7 @@ public class Window3DController {
 					}
 				}
 			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
+				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
 					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
 
 					if (descrMatchResults == 0) { // pure clone, give full color
