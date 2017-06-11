@@ -1,16 +1,6 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\wormguides\controllers\PinchZoomController.cs">
-    <Files>
-      <File FileName="Assets\wormguides\WormGUIDES_UnityApp.cs" Line="68" Column="3" />
-      <File FileName="Assets\wormguides\controllers\RootLayoutController.cs" Line="195" Column="18" />
-      <File FileName="Assets\wormguides\controllers\PinchZoomController.cs" Line="9" Column="27" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
-=======
   <MonoDevelop.Ide.Workbench />
->>>>>>> bf223c0f1f6864e2715bcd8ff2f379c19659e295
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

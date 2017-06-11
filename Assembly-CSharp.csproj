@@ -115,6 +115,7 @@
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrIntent.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrUIHelpers.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Video\GvrVideoPlayerTexture.cs" />
+     <Compile Include="Assets\PerspectiveCameraCapture.cs" />
      <Compile Include="Assets\acetree\LineageData.cs" />
      <Compile Include="Assets\acetree\LineageDataLoader.cs" />
      <Compile Include="Assets\wormguides\Utilities\WeightedAvgHexcode.cs" />

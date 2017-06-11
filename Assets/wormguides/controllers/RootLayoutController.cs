@@ -27,9 +27,7 @@ public class RootLayoutController : MonoBehaviour {
 	private BillboardsList billboardsList;
 
 	// scene rendering info
-	private int time;
 	private bool play;
-//	private bool pause;
 
 	// hide/show time control panel button
 	private Button HideShow_Control_Button;
@@ -63,6 +61,8 @@ public class RootLayoutController : MonoBehaviour {
 
 	private Gyroscope gyro;
 
+	private string REG_tag;
+
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
@@ -75,10 +75,10 @@ public class RootLayoutController : MonoBehaviour {
 		initWindow3DController ();
 
 		play = false;
-//		pause = true;
-		time = 360;
 
 		count = 0;
+
+		this.REG_tag = "Root Entities Group";
 
 		render ();
 	}
@@ -130,22 +130,22 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	public void onSliderValueChange() {
-		time = (int) timeSlider.value;
+		ApplicationModel.setTime((int)timeSlider.value);
 		render ();
 		updateUIElements ();
 	}
 
 	void onBackButtonClicked() {
-		if (time > 0) {
-			time--;
+		if (ApplicationModel.getTime() > 0) {
+			ApplicationModel.setTime(ApplicationModel.getTime() - 1);
 			render ();
 			updateUIElements ();
 		}
 	}
 
 	void onForwardButtonClicked() {
-		if (time < 360) {
-			time++;
+		if (ApplicationModel.getTime() < 360) {
+			ApplicationModel.setTime(ApplicationModel.getTime() + 1);
 			render ();
 			updateUIElements ();
 		}
@@ -158,7 +158,7 @@ public class RootLayoutController : MonoBehaviour {
 		} else {
 			play = true;
 			playPauseButton.GetComponentInChildren<Text> ().text = "Pause";
-			count = 3;
+			count = 8;
 		}
 	}
 
@@ -233,12 +233,12 @@ public class RootLayoutController : MonoBehaviour {
 	 */ 
 	void Update() {
 		if (play) {
-			if (count == 3) { // use this to render at 1/4 of the speed at which Update() is called
-				if (time < 360 && time > 0) {
+			if (count == 8) { // use this to render at 1/4 of the speed at which Update() is called
+				if (ApplicationModel.getTime() < 360 && ApplicationModel.getTime() > 0) {
 					render ();
-					time++;
+					ApplicationModel.setTime(ApplicationModel.getTime() + 1);
 					updateUIElements ();
-				} else if (time == 360) {
+				} else if (ApplicationModel.getTime() == 360) {
 					play = false;
 					playPauseButton.GetComponentInChildren<Text> ().text = "Play";
 				}
@@ -252,10 +252,11 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	private void render() {
-		GameObject reg = window3d.renderScene (time);
-		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
-			reg.transform.rotation = gyro.attitude;
-		}
+		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
+		reg.tag = REG_tag;
+//		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
+//			reg.transform.rotation = gyro.attitude;
+//		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 
@@ -265,10 +266,10 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	private void updateSlider() {
-		timeSlider.value = time;
+		timeSlider.value = ApplicationModel.getTime();
 	}
 
 	private void updateTimeText() {
-		timeText.text = time.ToString ();
+		timeText.text = ApplicationModel.getTime().ToString ();
 	}
 }

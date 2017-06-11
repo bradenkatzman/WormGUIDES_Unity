@@ -43,8 +43,6 @@ public class Window3DController {
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
 
-	private int time;
-
 	// context menu
 	private GameObject ContextMenu;
 //	private bool hasAVL;
@@ -174,8 +172,7 @@ public class Window3DController {
 	}
 
 	// called by RootLayoutController to render the scene
-	public GameObject renderScene(int time_) {
-		this.time = time_;
+	public GameObject renderScene(int time) {
 		refreshScene ();
 		getSceneData (time);
 		addEntities ();
@@ -274,8 +271,6 @@ public class Window3DController {
 							foreach (Renderer rend in b_GO.GetComponentsInChildren<Renderer>()) {
 								rend.material = DefaultMaterials [MISCELLANEOUS_GEOMETRY_MATERIAL_IDX];
 							}
-						} else if (b.getBillboardText ().ToLower ().Equals ("Nose Tip".ToLower ())) {
-							b_GO.transform.parent = arrow_ref.transform;
 						}
 					}
 				}
@@ -554,7 +549,7 @@ public class Window3DController {
 	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity, Quaternion attitude) {
 		this.CS.setColorScheme (ColorScheme_IDX);
 
-		GameObject reg = renderScene (time);
+		GameObject reg = renderScene (ApplicationModel.getTime());
 		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
 			reg.transform.rotation = attitude;
 		}
