@@ -17,10 +17,10 @@ public class RootLayoutController : MonoBehaviour {
 
 	private ProductionInfo productionInfo;
 
+	private RulesLists rulesLists;
+
 	// class which holds all of the lineage data. All time points are loaded at app initialization
 	private LineageData lineageData;
-
-	private PartsList partsList;
 
 	private SceneElementsList elementsList;
 
@@ -66,9 +66,10 @@ public class RootLayoutController : MonoBehaviour {
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
+		initPartsList ();
+		initRulesList ();
 		initProductionInfo ();
 		initLineageData ();
-		initPartsList ();
 		initSceneElementsList ();
 		initBillboardsList ();
 		initPinchZoomController ();
@@ -182,11 +183,20 @@ public class RootLayoutController : MonoBehaviour {
 
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
-		this.lineageData = LineageDataLoader.loadNucFiles (productionInfo, WormGUIDES_Unity);
+		this.lineageData = LineageDataLoader.loadNucFiles (productionInfo, rulesLists);
 	}
 
 	private void initPartsList() {
-		this.partsList = new PartsList (PartsListLoader.buildPartsList ());
+		PartsList.initPartsList ();
+	}
+
+	private void initRulesList() {
+		this.rulesLists = new RulesLists (
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTractTourNerveRingRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getLineageSpatialRelationshipsRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getNeuronalCellPositionsRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTissueTypesRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getDefaultMaterials ());
 	}
 
 	private void initSceneElementsList() {
@@ -208,7 +218,6 @@ public class RootLayoutController : MonoBehaviour {
 			productionInfo.getYScale(),
 			productionInfo.getZScale(),
 			lineageData,
-			partsList,
 			elementsList,
 			billboardsList,
 			GvrMain,
@@ -216,12 +225,11 @@ public class RootLayoutController : MonoBehaviour {
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTractTourNerveRingRuleMaterials(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getLineageSpatialRelationshipsRuleMaterials(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getNeuronalCellPositionsRuleMaterials(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTissueTypesRuleMaterials(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getDefaultMaterials(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp>().getTextMaterial(),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTractTourNerveRingRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getLineageSpatialRelationshipsRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getNeuronalCellPositionsRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTissueTypesRuleMaterials (),
+			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getDefaultMaterials (),
 			this.CS,
 			this.ContextMenu);
 	}
@@ -254,9 +262,6 @@ public class RootLayoutController : MonoBehaviour {
 	private void render() {
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
 		reg.tag = REG_tag;
-//		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
-//			reg.transform.rotation = gyro.attitude;
-//		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 

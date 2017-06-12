@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartsList {
-	private List<string> functionalNames;
-	private List<string> lineageNames;
-	private List<string> descriptions;
+public static class PartsList {
+	private static List<string> functionalNames;
+	private static List<string> lineageNames;
+	private static List<string> descriptions;
 
-	public PartsList(List<List<string>> pl) {
-		if (pl != null && pl.Count == 3) {
-			this.functionalNames = pl [0];
-			this.lineageNames = pl [1];
-			this.descriptions = pl [2];
+	public static void initPartsList() {
+		List<List<string>> pl = PartsListLoader.buildPartsList();
+		if (pl != null 
+			&& pl.Count == 3 
+			&& (pl[1].Count == pl[2].Count)) {
+			functionalNames = pl [0];
+			lineageNames = pl [1];
+			descriptions = pl [2];
 		}
 	}
 
@@ -24,7 +27,7 @@ public class PartsList {
 	 * If the given cell has a keyword match in its child, return the number of generations between parent and child
 	 * If the given cell has no keyword match in its description or its children's descriptions, return -1
 	 */ 
-	public int findDescriptionMatch(string cellName, string query) {
+	public static int findDescriptionMatch(string cellName, string query) {
 		// first see if this cell is a pure clone by looking for its index in the lineage names list
 		int cellNameIdx = getIndexByLineageName (cellName);
 		if (cellNameIdx != -1 
@@ -51,7 +54,7 @@ public class PartsList {
 		return -1;
 	}
 
-	private bool isParentOfPartsListEntry(string cellName) {
+	private static bool isParentOfPartsListEntry(string cellName) {
 		foreach (string entry in lineageNames) {
 			if (entry.StartsWith(cellName)) return true;
 		}
@@ -59,7 +62,7 @@ public class PartsList {
 		return false;
 	}
 
-	private int getIndexByLineageName(string cell) {
+	private static int getIndexByLineageName(string cell) {
 		for (int i = 0; i < lineageNames.Count; i++) {
 			if (cell.ToLower ().Equals (lineageNames [i].ToLower ())) {
 				return i;

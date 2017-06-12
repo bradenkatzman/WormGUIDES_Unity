@@ -9,6 +9,8 @@ public class ApplicationModel  {
 
 	private static int time = 360;
 
+	private static int NUM_COLOR_SCHEMES = 4;
+
 	public static void setCameraMode(int mode) {
 		cameraMode = mode;
 	}
@@ -23,5 +25,9 @@ public class ApplicationModel  {
 
 	public static int getTime() {
 		return time;
+	}
+
+	public static int getNumColorSchemes() {
+		return NUM_COLOR_SCHEMES;
 	}
 }

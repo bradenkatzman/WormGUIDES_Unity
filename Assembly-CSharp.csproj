@@ -118,6 +118,7 @@
      <Compile Include="Assets\PerspectiveCameraCapture.cs" />
      <Compile Include="Assets\acetree\LineageData.cs" />
      <Compile Include="Assets\acetree\LineageDataLoader.cs" />
+     <Compile Include="Assets\wormguides\Utilities\RulesLists.cs" />
      <Compile Include="Assets\wormguides\Utilities\WeightedAvgHexcode.cs" />
      <Compile Include="Assets\wormguides\WormGUIDES_UnityApp.cs" />
      <Compile Include="Assets\wormguides\controllers\PinchZoomController.cs" />

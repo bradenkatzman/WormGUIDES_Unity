@@ -63,7 +63,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		}
 
 		// enable and set the 
-		Input.gyro.enabled = true;
+		//Input.gyro.enabled = true;
 		this.gyro = Input.gyro;
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
@@ -74,7 +74,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	void Update() {
 		// add rotation of scene based on gyroscrope if in perspective mode
 		Transform regTransform = transform.Find(REG);
-		if (regTransform != null && !GvrMain.activeSelf && PerspectiveCam.enabled) {
+		if (regTransform != null && !GvrMain.activeSelf && PerspectiveCam.enabled && gyro.enabled) {
 			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
 			regTransform.transform.rotation = gyro.attitude;
 		}

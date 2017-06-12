@@ -81,6 +81,15 @@ public class LineageData {
 		return timeFrames [internalTimeIdx].getDiameters ();
 	}
 
+	public List<Material> getMaterials(int time, ColorScheme.CS cs) {
+		int internalTimeIdx = time - 1;
+		if (internalTimeIdx >= getNumberOfTimePoints () || internalTimeIdx < 0) {
+			return new List<Material>();
+		}
+
+		return timeFrames [internalTimeIdx].getMaterialsByColorSchemIDX (cs);
+	}
+
 	/*
 	 *
 	 */ 
@@ -123,6 +132,18 @@ public class LineageData {
 			if (!allCellNames.Contains (name)) {
 				allCellNames.Add (name);
 			}
+		}
+	}
+
+	/*
+	 * 
+	 */ 
+	public void addMaterialsForFrame(int time, RulesLists rulesLists) {
+		if (time <= getNumberOfTimePoints ()) {
+			int idx = time - 1;
+
+			Frame frame = timeFrames [idx];
+			frame.addMaterials (rulesLists);
 		}
 	}
 
@@ -170,11 +191,19 @@ public class LineageData {
 		private List<string> names;
 		private List<double[]> positions;
 		private List<double> diameters;
+		private List<Material> TractTour_NerveRing_materials;
+		private List<Material> LineageSpatialRelationships_materials;
+		private List<Material> NeuronalCellPositions_materials;
+		private List<Material> TissueTypes_materials;
 
 		public Frame() {
 			names = new List<string>();
 			positions = new List<double[]>();
 			diameters = new List<double>();
+			TractTour_NerveRing_materials = new List<Material>();
+			LineageSpatialRelationships_materials = new List<Material>();
+			NeuronalCellPositions_materials = new List<Material>();
+			TissueTypes_materials = new List<Material>();
 		}
 
 		// 
@@ -198,6 +227,16 @@ public class LineageData {
 		// 
 		public void addDiameter(double diameter) {
 			diameters.Add (diameter);
+		}
+
+		public void addMaterials(RulesLists rulesLists) {
+			List<List<Material>> allMaterials = rulesLists.getAllRuleMaterialsForTimePoint (this.names);
+			if (allMaterials.Count == ApplicationModel.getNumColorSchemes ()) {
+				TractTour_NerveRing_materials = allMaterials [0];
+				LineageSpatialRelationships_materials = allMaterials [1];
+				NeuronalCellPositions_materials = allMaterials [2];
+				TissueTypes_materials = allMaterials [3];
+			}
 		}
 
 		// 
@@ -227,6 +266,19 @@ public class LineageData {
 			}
 
 			return copy;
+		}
+
+		public List<Material> getMaterialsByColorSchemIDX(ColorScheme.CS cs) {
+			if (cs.Equals(ColorScheme.CS.TourTract_NerveRing)) {
+				return this.TractTour_NerveRing_materials;
+			} else if (cs.Equals(ColorScheme.CS.LineageSpatialRelationships)) {
+				return this.LineageSpatialRelationships_materials;
+			} else if (cs.Equals(ColorScheme.CS.NeuronalCellPositions)) {
+				return this.NeuronalCellPositions_materials;
+			} else if (cs.Equals(ColorScheme.CS.TissueTypes)) {
+				return this.TissueTypes_materials;
+			}
+			return new List<Material> ();
 		}
 	}
 }

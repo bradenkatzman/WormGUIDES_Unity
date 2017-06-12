@@ -12,7 +12,6 @@ public class Window3DController {
 	private GeometryLoader geoLdr;
 
 	private LineageData lineageData;
-	private PartsList partsList;
 	private SceneElementsList sceneElementsList;
 	private BillboardsList billboardsList;
 
@@ -21,6 +20,7 @@ public class Window3DController {
 	private List<GameObject> spheres;
 	private List<double[]> positions;
 	private List<double> diameters;
+	private List<Material> cellSphereMaterials;
 
 	private List<GameObject> meshes;
 	private List<string> meshNames;
@@ -35,8 +35,6 @@ public class Window3DController {
 
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
-
-	private Material textMaterial;
 
 	// helper vars
 	private int X_COR_IDX = 0;
@@ -115,7 +113,7 @@ public class Window3DController {
 	private static string SPACE = " ";
 
 	public Window3DController(int xS, int yS, int zS, 
-		LineageData ld, PartsList pl, SceneElementsList elementsList, BillboardsList bl,
+		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
 		GameObject vrCam, Camera persCam,
 		int offX, int offY, int offZ,
 		Material[] Tt_Nr_materials,
@@ -123,7 +121,6 @@ public class Window3DController {
 		Material[] ncp_materials,
 		Material[] tt_materials,
 		Material[] defMaterials,
-		Material tMaterial,
 		ColorScheme cs_,
 		GameObject cm) {
 		this.xScale = xS;
@@ -131,7 +128,6 @@ public class Window3DController {
 		this.zScale = zS;
 
 		this.lineageData = ld;
-		this.partsList = pl;
 		this.sceneElementsList = elementsList;
 		this.billboardsList = bl;
 
@@ -147,7 +143,7 @@ public class Window3DController {
 		this.NeuronalCellPositions_rule_materials = ncp_materials;
 		this.TissueTypes_rule_materials = tt_materials;
 		this.DefaultMaterials = defMaterials;
-		this.textMaterial = tMaterial;
+//		this.textMaterial = tMaterial;
 
 		this.CS = cs_;
 		this.ContextMenu = cm;
@@ -198,6 +194,17 @@ public class Window3DController {
 	private void getSceneData(int time) {
 		// get cell names, positions, diameters and spheres
 		cellNames = new List<string>(lineageData.getNames(time));
+
+		if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TourTract_NerveRing);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.LineageSpatialRelationships);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.NeuronalCellPositions);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TissueTypes);
+		}
+
 
 		positions = new List<double[]>();
 		foreach (double[] position in lineageData.getPositions (time)) {
@@ -354,79 +361,12 @@ public class Window3DController {
 
 			sphere.name = cellName;
 
+			sphere.GetComponent<Renderer> ().material = cellSphereMaterials[i];
+
 //			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
 //				this.hasAVL = true;
 //				this.avlPos = sphere.transform.position;
 //			}
-
-			// add color
-			bool hasColor = false;
-			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
-				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
-						// add the color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = TractTour_NerveRing_rule_materials [k];
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
-				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ()) && !sphere.name.Equals ("EMS")) {
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = LineageSpatialRelationships_rule_materials [k];
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, NeuronalCellPositions_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = NeuronalCellPositions_rule_materials [k];
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
-							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
-								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
-							new float[]{(1.0f/(float)(descrMatchResults + 1)),
-								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
-						Color weightedColor = new Color ();
-						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
-						if (success) {
-							sphere.GetComponent<Renderer> ().material.color = weightedColor;
-						} else {
-							Debug.Log ("failed with " + weightedHex);
-						}
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, TissueTypes_keywords [k]);
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = TissueTypes_rule_materials [k];
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
-							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
-								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
-							new float[]{(1.0f/(float)(descrMatchResults + 1)),
-								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
-						Color weightedColor = new Color ();
-						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
-						if (success) {
-							sphere.GetComponent<Renderer> ().material.color = weightedColor;
-						} else {
-							Debug.Log ("failed with " + weightedHex);
-						}
-					}
-				}
-			}
-
-
-			if (!hasColor) {
-				sphere.GetComponent<Renderer>().material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
-			}
 
 			// add sphere to list
 			spheres.Add(sphere);
@@ -467,63 +407,63 @@ public class Window3DController {
 						}
 					}
 				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = NeuronalCellPositions_rule_materials [k];
-						}
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
-							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
-								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
-							new float[]{(1.0f/(float)(descrMatchResults + 1)),
-								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
-						Color weightedColor = new Color ();
-						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
-						if (success) {
-							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-								go.GetComponent<Renderer> ().material.color = weightedColor;
-							}
-						} else {
-							Debug.Log ("failed with " + weightedHex);
-						}
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = TissueTypes_rule_materials [k];
-						}
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
-							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
-								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
-							new float[]{(1.0f/(float)(descrMatchResults + 1)),
-								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
-						Color weightedColor = new Color ();
-						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
-						if (success) {
-							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-								go.GetComponent<Renderer> ().material.color = weightedColor;
-							}
-						} else {
-							Debug.Log ("failed with " + weightedHex);
-						}
-					}
-				}
-			}
-
-
+			} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+//				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
+//					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
+//
+//					if (descrMatchResults == 0) { // pure clone, give full color
+//						hasColor = true;
+//						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//							rend.material = NeuronalCellPositions_rule_materials [k];
+//						}
+//					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+//						hasColor = true;
+//						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+//							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
+//								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+//							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+//								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+//						Color weightedColor = new Color ();
+//						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+//						if (success) {
+//							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//								go.GetComponent<Renderer> ().material.color = weightedColor;
+//							}
+//						} else {
+//							Debug.Log ("failed with " + weightedHex);
+//						}
+//					}
+//				}
+//			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+//				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
+//					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
+//
+//					if (descrMatchResults == 0) { // pure clone, give full color
+//						hasColor = true;
+//						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//							rend.material = TissueTypes_rule_materials [k];
+//						}
+//					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+//						hasColor = true;
+//						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+//							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
+//								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+//							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+//								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+//						Color weightedColor = new Color ();
+//						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+//						if (success) {
+//							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//								go.GetComponent<Renderer> ().material.color = weightedColor;
+//							}
+//						} else {
+//							Debug.Log ("failed with " + weightedHex);
+//						}
+//					}
+//				}
+//			}
+//
+//
 			if (!hasColor) {
 				bool isTract = false;
 				for (int k = 0; k < tract_names.Length; k++) {
