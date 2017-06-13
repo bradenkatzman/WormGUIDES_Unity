@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeightedAvgHexcode {
 
-	private static int HEX_CODE_LENGTH = 6;
+	private static int HEX_CODE_LENGTH = 8;
 
 	// vars for indexing hex code
 	private static int R_START_IDX = 0;
@@ -20,9 +20,9 @@ public class WeightedAvgHexcode {
 
 	private static string SHARP = "#";
 
+	private static string ALPHA_VAL = "FF";
 
-	// TODO --> check if the incoming hex codes have a #, and whether the outgoing string 
-	private static string computeWeightedAverageHexcode(string[] hexCodes, float[] weights) {
+	public static string computeWeightedAverageHexcode(string[] hexCodes, float[] weights) {
 		foreach (string hex in hexCodes) if (hex.Length != HEX_CODE_LENGTH) return DEFAULT_HEX;
 
 		// first separate the two colors into 3 color numbers for R, G, B
@@ -36,10 +36,16 @@ public class WeightedAvgHexcode {
 			b_strs [i] = hexCodes [i].Substring (B_START_IDX, SINGLE_COLOR_LENGTH);
 		}
 
-		// convert each color string into an int (specify explicitly that we are parsing a hex-based representation of a number
+		// convert each color string into an int (specify explicitly that we are parsing a hex-based representation of a number)
 		int[] r_ints = new int[hexCodes.Length];
 		int[] g_ints = new int[hexCodes.Length];
 		int[] b_ints = new int[hexCodes.Length];
+
+		for (int i = 0; i < hexCodes.Length; i++) {
+			r_ints [i] = System.Int32.Parse (r_strs [i], System.Globalization.NumberStyles.AllowHexSpecifier);
+			g_ints [i] = System.Int32.Parse (g_strs [i], System.Globalization.NumberStyles.AllowHexSpecifier);
+			b_ints [i] = System.Int32.Parse (b_strs [i], System.Globalization.NumberStyles.AllowHexSpecifier);
+		}
 
 
 		// calculate the weighted average
@@ -54,15 +60,21 @@ public class WeightedAvgHexcode {
 
 		// convert the weighted ints to two-digit hexadecimal strings
 		string r_weighted_str, g_weighted_str, b_weighted_str;
-		r_weighted_str = g_weighted_str = b_weighted_str = "00";
+		r_weighted_str = r_weighted.ToString ("X");
+		g_weighted_str = g_weighted.ToString("X");
+		b_weighted_str = b_weighted.ToString("X");
 
 		// zero pad the hex strings when necessary
 		if (r_weighted_str.Length == ONE) r_weighted_str = addZeroPad (r_weighted_str);
 		if (g_weighted_str.Length == ONE) g_weighted_str = addZeroPad (g_weighted_str);
 		if (b_weighted_str.Length == ONE) b_weighted_str = addZeroPad (b_weighted_str);
 
-		// concatenate the individual codes into a single hex code
-		string weightedHexCode = r_weighted_str + g_weighted_str + b_weighted_str;
+		// concatenate the individual codes into a single hex code, append the "FF" alpha channel
+		string weightedHexCode = SHARP +
+									r_weighted_str +
+									g_weighted_str + 
+									b_weighted_str + 
+								ALPHA_VAL;
 
 		return weightedHexCode;
 	}

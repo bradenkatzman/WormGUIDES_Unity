@@ -31,7 +31,7 @@ public class LineageDataLoader {
 	/*
 	 * 
 	 */ 
-	public static LineageData loadNucFiles(ProductionInfo productionInfo, GameObject WormGUIDES_Unity) {
+	public static LineageData loadNucFiles(ProductionInfo productionInfo, RulesLists rulesLists) {
 		// initialize lineage data
 		LineageData ld = new LineageData();
 		ld.setAllCellNames (allCellNames);
@@ -46,6 +46,8 @@ public class LineageDataLoader {
 				Debug.Log ("Could not find file: " + urlStr);
 			}
 		}
+
+		processAllMaterials (productionInfo, ld, rulesLists);
 
 		// translate all cells to center around (0,0,0)
 		setOriginToZero(ld);
@@ -97,6 +99,12 @@ public class LineageDataLoader {
 			}
 		} else {
 			Debug.Log ("couldn't find file: " + FilePath);
+		}
+	}
+
+	private static void processAllMaterials(ProductionInfo productionInfo, LineageData ld, RulesLists rulesLists) {
+		for (int i = 1; i <= productionInfo.getTotalTimePoints (); i++) {
+			ld.addMaterialsForFrame (i, rulesLists);
 		}
 	}
 

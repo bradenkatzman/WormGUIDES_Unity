@@ -48,6 +48,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	// rotation
 	private Gyroscope gyro;
 
+	private string REG = "Root Entities Group";
+
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
@@ -71,9 +73,10 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	void Update() {
 		// add rotation of scene based on gyroscrope if in perspective mode
-		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
+		Transform regTransform = transform.Find(REG);
+		if (regTransform != null && !GvrMain.activeSelf && PerspectiveCam.enabled && gyro.enabled) {
 			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
-			transform.Find("Root Entities Group").transform.rotation = gyro.attitude;
+			regTransform.transform.rotation = gyro.attitude;
 		}
 	}
 		

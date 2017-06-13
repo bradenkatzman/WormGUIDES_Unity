@@ -12,7 +12,6 @@ public class Window3DController {
 	private GeometryLoader geoLdr;
 
 	private LineageData lineageData;
-	private PartsList partsList;
 	private SceneElementsList sceneElementsList;
 	private BillboardsList billboardsList;
 
@@ -21,6 +20,7 @@ public class Window3DController {
 	private List<GameObject> spheres;
 	private List<double[]> positions;
 	private List<double> diameters;
+	private List<Material> cellSphereMaterials;
 
 	private List<GameObject> meshes;
 	private List<string> meshNames;
@@ -36,14 +36,10 @@ public class Window3DController {
 	private GameObject GvrMain;
 	private Camera PerspectiveCam;
 
-	private Material textMaterial;
-
 	// helper vars
 	private int X_COR_IDX = 0;
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
-
-	private int time;
 
 	// context menu
 	private GameObject ContextMenu;
@@ -117,7 +113,7 @@ public class Window3DController {
 	private static string SPACE = " ";
 
 	public Window3DController(int xS, int yS, int zS, 
-		LineageData ld, PartsList pl, SceneElementsList elementsList, BillboardsList bl,
+		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
 		GameObject vrCam, Camera persCam,
 		int offX, int offY, int offZ,
 		Material[] Tt_Nr_materials,
@@ -125,7 +121,6 @@ public class Window3DController {
 		Material[] ncp_materials,
 		Material[] tt_materials,
 		Material[] defMaterials,
-		Material tMaterial,
 		ColorScheme cs_,
 		GameObject cm) {
 		this.xScale = xS;
@@ -133,7 +128,6 @@ public class Window3DController {
 		this.zScale = zS;
 
 		this.lineageData = ld;
-		this.partsList = pl;
 		this.sceneElementsList = elementsList;
 		this.billboardsList = bl;
 
@@ -149,7 +143,7 @@ public class Window3DController {
 		this.NeuronalCellPositions_rule_materials = ncp_materials;
 		this.TissueTypes_rule_materials = tt_materials;
 		this.DefaultMaterials = defMaterials;
-		this.textMaterial = tMaterial;
+//		this.textMaterial = tMaterial;
 
 		this.CS = cs_;
 		this.ContextMenu = cm;
@@ -174,8 +168,7 @@ public class Window3DController {
 	}
 
 	// called by RootLayoutController to render the scene
-	public GameObject renderScene(int time_) {
-		this.time = time_;
+	public GameObject renderScene(int time) {
 		refreshScene ();
 		getSceneData (time);
 		addEntities ();
@@ -201,6 +194,17 @@ public class Window3DController {
 	private void getSceneData(int time) {
 		// get cell names, positions, diameters and spheres
 		cellNames = new List<string>(lineageData.getNames(time));
+
+		if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TourTract_NerveRing);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.LineageSpatialRelationships);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.NeuronalCellPositions);
+		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TissueTypes);
+		}
+
 
 		positions = new List<double[]>();
 		foreach (double[] position in lineageData.getPositions (time)) {
@@ -257,6 +261,7 @@ public class Window3DController {
 			Billboard b = billboardsAtCurrentTime [i];
 
 			GameObject b_GO = null;
+			float[] arrow_pos = new float[3];
 			// determine if this billboard has geometry instead of text
 			bool miscGeometry = false;
 			foreach (string name in billboard_misc_geometry_names) {
@@ -264,8 +269,7 @@ public class Window3DController {
 					b_GO = GeometryLoader.loadObj (billboardsList.getMiscGeoPathStr() + b.getBillboardText ());
 					if (b_GO != null) {
 						miscGeometry = true;
-
-						if (b.getBillboardText ().ToLower().Equals("Arrow".ToLower())) {
+						if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
 							GameObject arrow_child = b_GO.transform.GetChild (0).gameObject;
 							arrow_child.transform.localScale += new Vector3 (9, 9, 9);
 							arrow_child.transform.eulerAngles = new Vector3 (0, 0, 90);
@@ -288,12 +292,25 @@ public class Window3DController {
 			}
 
 			if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Static)) {
-				float[] xyzLocation = b.getXYZLocation ();
-				b_GO.transform.position = new Vector3 (
-					xyzLocation[X_COR_IDX],
-					xyzLocation[Y_COR_IDX],
-					xyzLocation[Z_COR_IDX]
-				);
+				if (b.getBillboardText().ToLower().Equals ("Nose Tip".ToLower())) {
+					float[] xyzLocation = b.getXYZLocation ();
+					b_GO.transform.position = new Vector3 (
+						xyzLocation [X_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_X,
+						xyzLocation [Y_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Y,
+						xyzLocation [Z_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Z
+					);
+				} else {
+					float[] xyzLocation = b.getXYZLocation ();
+					b_GO.transform.position = new Vector3 (
+						xyzLocation [X_COR_IDX],
+						xyzLocation [Y_COR_IDX],
+						xyzLocation [Z_COR_IDX]
+					);
+
+					if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
+						arrow_pos = xyzLocation;
+					}
+				}
 			} else if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Cell)) {
 				// find the position of the attachment cell
 				int idx = cellNames.IndexOf(billboardsAtCurrentTime[i].getAttachmentCell());
@@ -338,11 +355,11 @@ public class Window3DController {
 			// size of the sphere
 			float radius = (float) diameters[i] / 2.0f;
 
+			// create primitive
 			GameObject sphere = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 
+			// add radius as scale
 			sphere.transform.localScale = new Vector3 (radius, radius, radius);
-
-			// add rotate values to spheres
 
 			// set the position of the sphere
 			double[] position = positions[i];
@@ -353,58 +370,16 @@ public class Window3DController {
 
 			sphere.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 
+			// set cell name
 			sphere.name = cellName;
+
+			// add color
+			sphere.GetComponent<Renderer> ().material = cellSphereMaterials[i];
 
 //			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
 //				this.hasAVL = true;
 //				this.avlPos = sphere.transform.position;
 //			}
-
-			// add color
-			bool hasColor = false;
-			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
-				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
-						// add the color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = TractTour_NerveRing_rule_materials [k];
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
-				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
-					if (sphere.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ()) && !sphere.name.Equals ("EMS")) {
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = LineageSpatialRelationships_rule_materials [k];
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, NeuronalCellPositions_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = NeuronalCellPositions_rule_materials [k];
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (sphere.name, TissueTypes_keywords [k]);
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						sphere.GetComponent<Renderer> ().material = TissueTypes_rule_materials [k];
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-
-					}
-				}
-			}
-
-
-			if (!hasColor) {
-				sphere.GetComponent<Renderer>().material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
-			}
 
 			// add sphere to list
 			spheres.Add(sphere);
@@ -445,33 +420,61 @@ public class Window3DController {
 						}
 					}
 				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-				for (int k = 0; k < NeuronalCellPositions_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = NeuronalCellPositions_rule_materials [k];
-						}
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-				for (int k = 0; k < TissueTypes_keywords.Length; k++) {
-					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
-
-					if (descrMatchResults == 0) { // pure clone, give full color
-						hasColor = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = TissueTypes_rule_materials [k];
-						}
-					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
-						hasColor = true;
-					}
-				}
-			}
+			} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+//				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
+//					int descrMatchResults = PartsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
+//
+//					if (descrMatchResults == 0) { // pure clone, give full color
+//						hasColor = true;
+//						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//							rend.material = NeuronalCellPositions_rule_materials [k];
+//						}
+//					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+//						hasColor = true;
+//						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+//							new string[]{ColorUtility.ToHtmlStringRGBA(NeuronalCellPositions_rule_materials[k].color),
+//								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+//							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+//								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+//						Color weightedColor = new Color ();
+//						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+//						if (success) {
+//							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//								go.GetComponent<Renderer> ().material.color = weightedColor;
+//							}
+//						} else {
+//							Debug.Log ("failed with " + weightedHex);
+//						}
+//					}
+//				}
+//			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
+//				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
+//					int descrMatchResults = PartsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
+//
+//					if (descrMatchResults == 0) { // pure clone, give full color
+//						hasColor = true;
+//						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//							rend.material = TissueTypes_rule_materials [k];
+//						}
+//					} else if (descrMatchResults > 0) { // parent of pure clone, give weighted avg color
+//						hasColor = true;
+//						string weightedHex = WeightedAvgHexcode.computeWeightedAverageHexcode(
+//							new string[]{ColorUtility.ToHtmlStringRGBA(TissueTypes_rule_materials[k].color),
+//								ColorUtility.ToHtmlStringRGBA(DefaultMaterials[DEFAULT_MATERIAL_IDX].color)},
+//							new float[]{(1.0f/(float)(descrMatchResults + 1)),
+//								(((float)(descrMatchResults))/((float)(descrMatchResults + 1)))});
+//						Color weightedColor = new Color ();
+//						bool success = ColorUtility.TryParseHtmlString (weightedHex, out weightedColor);
+//						if (success) {
+//							foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+//								go.GetComponent<Renderer> ().material.color = weightedColor;
+//							}
+//						} else {
+//							Debug.Log ("failed with " + weightedHex);
+//						}
+//					}
+//				}
+//			}
 
 
 			if (!hasColor) {
@@ -499,7 +502,7 @@ public class Window3DController {
 	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity, Quaternion attitude) {
 		this.CS.setColorScheme (ColorScheme_IDX);
 
-		GameObject reg = renderScene (time);
+		GameObject reg = renderScene (ApplicationModel.getTime());
 		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
 			reg.transform.rotation = attitude;
 		}
@@ -523,7 +526,6 @@ public class Window3DController {
 //			}
 		} else if (PerspectiveCam.enabled) {
 			foreach (GameObject b_GO in currentBillboardTextMeshes) {
-				//Debug.Log ("looking toward Perspective Cam");
 				b_GO.transform.LookAt (PerspectiveCam.transform);
 				b_GO.transform.Rotate(new Vector3(0, 180, 0));
 			}

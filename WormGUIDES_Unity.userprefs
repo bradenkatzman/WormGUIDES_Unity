@@ -1,11 +1,21 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/wormguides/controllers/Window3DController.cs">
     <Files>
       <File FileName="Assets/wormguides/WormGUIDES_UnityApp.cs" Line="107" Column="42" />
       <File FileName="Assets/wormguides/controllers/RootLayoutController.cs" Line="205" Column="41" />
       <File FileName="Assets/wormguides/controllers/Window3DController.cs" Line="359" Column="26" />
       <File FileName="Assets/wormguides/resources/PartsList.cs" Line="21" Column="25" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\wormguides\controllers\RootLayoutController.cs">
+    <Files>
+      <File FileName="Assets\wormguides\WormGUIDES_UnityApp.cs" Line="77" Column="3" />
+      <File FileName="Assets\wormguides\controllers\RootLayoutController.cs" Line="269" Column="53" />
+      <File FileName="Assets\wormguides\Utilities\RulesLists.cs" Line="161" Column="16" />
+      <File FileName="Assets\wormguides\controllers\Window3DController.cs" Line="307" Column="19" />
+      <File FileName="Assets\wormguides\models\subscenegeometry\BillboardsList.cs" Line="18" Column="8" />
+>>>>>>> 136f4a675814dc07e1ddd227cd94c751e7d13ee0
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
