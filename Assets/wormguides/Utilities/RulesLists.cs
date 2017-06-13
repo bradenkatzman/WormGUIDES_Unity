@@ -12,11 +12,6 @@ public class RulesLists {
 		"ABplpapappa", "ABprpapappa", "ABplpapaaaa", "ABprpapaaaa",  "ABplpapaapa", "ABprpapaapa",  "ABplpapaapp", "ABprpapaapp",
 		"ABprpaaaaaa", "ABalppappaa", "ABarappppaa", "ABplpaapaaa", "ABprpaapaaa", "unc-86_outgrowth"};
 
-	private bool[] TractTour_NerveRing_rule_cells_CELLONLY = new bool[]{
-		false, false, false, false, false, false, false, false,
-		true, true, true, true, true, true, true, true, true,
-		true, true, true, true, false};
-
 	// 2. Lineage and Spatial Relationships (color only applies to primitive cell shapes
 	private string[] LineageSpatialRelationships_rule_cells = new string[] {
 		"E", "MS", "D", "C", "P4", "ABal", "ABar", "ABpl", "ABpr", "Z2", "Z3"};
@@ -50,8 +45,6 @@ public class RulesLists {
 	//defaults
 	private Material[] DefaultMaterials;
 	private int DEFAULT_MATERIAL_IDX = 0;
-	private int DEFAULT_MATERIAL_TRACTS_IDX = 1;
-	private int MISCELLANEOUS_GEOMETRY_MATERIAL_IDX = 2;
 	// ** end color schemes
 
 
@@ -105,11 +98,10 @@ public class RulesLists {
 				LineageSpatialRelationships_materials.Add(DefaultMaterials [DEFAULT_MATERIAL_IDX]);
 			}
 //			/****** END LINEAGE/SPATIAL RELATIONSHIPS ******/
-//
-//			/****** NEURONAL CELL POSITIONS ******/
+
+			/****** NEURONAL CELL POSITIONS ******/
 //			hasColor = false;
-//			for (int k = 0; !hasColor && k < 1; k++) {
-////			for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
+//			for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
 //				int descrMatchResults = PartsList.findDescriptionMatch (cellNames[i], NeuronalCellPositions_keywords [k]);
 //
 //				if (descrMatchResults == 0) { // pure clone, give full color
@@ -141,10 +133,10 @@ public class RulesLists {
 //				Debug.Log ("has neuronal cell position color");
 //			}
 //			/****** END NEURONAL CELL POSITIONS ******/
-//
-//
-//
-//			/****** TISSUE TYPES ******/
+////
+////
+////
+////			/****** TISSUE TYPES ******/
 //			hasColor = false;
 //			for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
 //				int descrMatchResults = PartsList.findDescriptionMatch (cellNames[i], TissueTypes_keywords [k]);

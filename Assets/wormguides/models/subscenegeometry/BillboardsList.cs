@@ -15,6 +15,11 @@ public class BillboardsList {
 	private static int START_TIME_IDX = 4;
 	private static int END_TIME_IDX = 5;
 
+	public static float NOSE_TIP_OFFSET_X = 4;
+	public static float NOSE_TIP_OFFSET_Y = 18;
+	public static float NOSE_TIP_OFFSET_Z = -28;
+
+
 	private static int DEFAULT_FONT_SIZE = 50;
 	private static float X_OFFSET = 5;
 	private static float Y_OFFSET = -15;

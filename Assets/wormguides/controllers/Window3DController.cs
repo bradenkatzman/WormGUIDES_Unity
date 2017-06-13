@@ -261,7 +261,7 @@ public class Window3DController {
 			Billboard b = billboardsAtCurrentTime [i];
 
 			GameObject b_GO = null;
-			GameObject arrow_ref = null;
+			float[] arrow_pos = new float[3];
 			// determine if this billboard has geometry instead of text
 			bool miscGeometry = false;
 			foreach (string name in billboard_misc_geometry_names) {
@@ -269,9 +269,7 @@ public class Window3DController {
 					b_GO = GeometryLoader.loadObj (billboardsList.getMiscGeoPathStr() + b.getBillboardText ());
 					if (b_GO != null) {
 						miscGeometry = true;
-
 						if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
-							arrow_ref = b_GO;
 							GameObject arrow_child = b_GO.transform.GetChild (0).gameObject;
 							arrow_child.transform.localScale += new Vector3 (9, 9, 9);
 							arrow_child.transform.eulerAngles = new Vector3 (0, 0, 90);
@@ -294,12 +292,25 @@ public class Window3DController {
 			}
 
 			if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Static)) {
-				float[] xyzLocation = b.getXYZLocation ();
-				b_GO.transform.position = new Vector3 (
-					xyzLocation[X_COR_IDX],
-					xyzLocation[Y_COR_IDX],
-					xyzLocation[Z_COR_IDX]
-				);
+				if (b.getBillboardText().ToLower().Equals ("Nose Tip".ToLower())) {
+					float[] xyzLocation = b.getXYZLocation ();
+					b_GO.transform.position = new Vector3 (
+						xyzLocation [X_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_X,
+						xyzLocation [Y_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Y,
+						xyzLocation [Z_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Z
+					);
+				} else {
+					float[] xyzLocation = b.getXYZLocation ();
+					b_GO.transform.position = new Vector3 (
+						xyzLocation [X_COR_IDX],
+						xyzLocation [Y_COR_IDX],
+						xyzLocation [Z_COR_IDX]
+					);
+
+					if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
+						arrow_pos = xyzLocation;
+					}
+				}
 			} else if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Cell)) {
 				// find the position of the attachment cell
 				int idx = cellNames.IndexOf(billboardsAtCurrentTime[i].getAttachmentCell());
@@ -344,11 +355,11 @@ public class Window3DController {
 			// size of the sphere
 			float radius = (float) diameters[i] / 2.0f;
 
+			// create primitive
 			GameObject sphere = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 
+			// add radius as scale
 			sphere.transform.localScale = new Vector3 (radius, radius, radius);
-
-			// add rotate values to spheres
 
 			// set the position of the sphere
 			double[] position = positions[i];
@@ -359,8 +370,10 @@ public class Window3DController {
 
 			sphere.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 
+			// set cell name
 			sphere.name = cellName;
 
+			// add color
 			sphere.GetComponent<Renderer> ().material = cellSphereMaterials[i];
 
 //			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
@@ -409,7 +422,7 @@ public class Window3DController {
 				}
 			} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
 //				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
-//					int descrMatchResults = partsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
+//					int descrMatchResults = PartsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
 //
 //					if (descrMatchResults == 0) { // pure clone, give full color
 //						hasColor = true;
@@ -436,7 +449,7 @@ public class Window3DController {
 //				}
 //			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
 //				for (int k = 0; !hasColor && k < TissueTypes_keywords.Length; k++) {
-//					int descrMatchResults = partsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
+//					int descrMatchResults = PartsList.findDescriptionMatch (go.name, TissueTypes_keywords [k]);
 //
 //					if (descrMatchResults == 0) { // pure clone, give full color
 //						hasColor = true;
@@ -462,8 +475,8 @@ public class Window3DController {
 //					}
 //				}
 //			}
-//
-//
+
+
 			if (!hasColor) {
 				bool isTract = false;
 				for (int k = 0; k < tract_names.Length; k++) {
@@ -513,7 +526,6 @@ public class Window3DController {
 //			}
 		} else if (PerspectiveCam.enabled) {
 			foreach (GameObject b_GO in currentBillboardTextMeshes) {
-				//Debug.Log ("looking toward Perspective Cam");
 				b_GO.transform.LookAt (PerspectiveCam.transform);
 				b_GO.transform.Rotate(new Vector3(0, 180, 0));
 			}

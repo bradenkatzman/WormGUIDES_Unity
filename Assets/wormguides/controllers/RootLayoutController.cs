@@ -262,6 +262,10 @@ public class RootLayoutController : MonoBehaviour {
 	private void render() {
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
 		reg.tag = REG_tag;
+		if (reg != null && !GvrMain.activeSelf && PerspectiveCam.enabled && gyro.enabled) {
+			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
+			reg.transform.rotation = gyro.attitude;
+		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 

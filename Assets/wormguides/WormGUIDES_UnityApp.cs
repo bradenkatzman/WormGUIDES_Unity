@@ -63,7 +63,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		}
 
 		// enable and set the 
-		//Input.gyro.enabled = true;
+		Input.gyro.enabled = true;
 		this.gyro = Input.gyro;
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);

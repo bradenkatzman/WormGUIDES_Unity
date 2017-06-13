@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\wormguides\Utilities\RulesLists.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\wormguides\controllers\RootLayoutController.cs">
     <Files>
-      <File FileName="Assets\wormguides\WormGUIDES_UnityApp.cs" Line="72" Column="3" />
-      <File FileName="Assets\wormguides\controllers\RootLayoutController.cs" Line="264" Column="21" />
-      <File FileName="Assets\wormguides\Utilities\RulesLists.cs" Line="49" Column="2" />
-      <File FileName="Assets\wormguides\controllers\Window3DController.cs" Line="475" Column="13" />
+      <File FileName="Assets\wormguides\WormGUIDES_UnityApp.cs" Line="77" Column="3" />
+      <File FileName="Assets\wormguides\controllers\RootLayoutController.cs" Line="269" Column="53" />
+      <File FileName="Assets\wormguides\Utilities\RulesLists.cs" Line="161" Column="16" />
+      <File FileName="Assets\wormguides\controllers\Window3DController.cs" Line="307" Column="19" />
+      <File FileName="Assets\wormguides\models\subscenegeometry\BillboardsList.cs" Line="18" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
