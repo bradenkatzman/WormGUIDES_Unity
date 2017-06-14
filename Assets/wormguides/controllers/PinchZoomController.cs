@@ -46,8 +46,6 @@ public class PinchZoomController : MonoBehaviour {
 				} else if (deltaMagDiff < 0.0f) {
 					PerspectiveCam.transform.Translate (PerspectiveCam.transform.forward * perspectiveZoomSpeed);
 				}
-			} else {
-				//Debug.Log (Input.touchCount);
 			}
 		}
 	}

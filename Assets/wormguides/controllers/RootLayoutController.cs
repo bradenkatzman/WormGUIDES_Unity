@@ -46,8 +46,10 @@ public class RootLayoutController : MonoBehaviour {
 	private GameObject ContextMenu;
 
 	// camera stuff
-	private GameObject GvrMain;
+	private GameObject Gvr_EmbryoCenter;
 	private Camera PerspectiveCam;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialPosition;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialRotation;
 
 	// zoom stuff
 	private PinchZoomController pzc;
@@ -58,8 +60,6 @@ public class RootLayoutController : MonoBehaviour {
 	private int count;
 	private string showControlPanelStr = "Show Control Panel";
 	private string hideControlPanelStr = "Hide Control Panel";
-
-	private Gyroscope gyro;
 
 	private string REG_tag;
 
@@ -107,17 +107,16 @@ public class RootLayoutController : MonoBehaviour {
 		ColorScheme_Dropdown.onValueChanged.AddListener (delegate { onColorSchemeDropdownValueChanged(); });
 	}
 
-	public void addCameras(GameObject GvrMain_, Camera PerspectiveCam_) {
-		this.GvrMain = GvrMain_;
-		this.PerspectiveCam = PerspectiveCam_;
+	public void addCameras(GameObject Gvr_EmbryoCenter_, Camera PerspectiveCamera_,
+		Vector3 Gvr_EmbryoCenter_Transform_InitialPosition_, Vector3 Gvr_EmbryoCenter_Transform_InitialRotation_) {
+		this.Gvr_EmbryoCenter = Gvr_EmbryoCenter_;
+		this.PerspectiveCam = PerspectiveCamera_;
+		this.Gvr_EmbryoCenter_Transform_InitialPosition = Gvr_EmbryoCenter_Transform_InitialPosition_;
+		this.Gvr_EmbryoCenter_Transform_InitialRotation = Gvr_EmbryoCenter_Transform_InitialRotation_;
 	}
 
 	public void setColorScheme(ColorScheme cs_) {
 		this.CS = cs_;
-	}
-
-	public void setGyro(Gyroscope gyro_) {
-		this.gyro = gyro_;
 	}
 
 	public void onHideShowTimeControlPanelClicked() {
@@ -164,17 +163,33 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	void onSwitchCamerasClicked() {
-		if (GvrMain.activeSelf) {
-			GvrMain.SetActive(false);
-			PerspectiveCam.enabled = true;
-		} else if (PerspectiveCam.enabled) {
-			PerspectiveCam.enabled = false;
-			GvrMain.SetActive(true);
+		if (ApplicationModel.getCameraMode() == 0) {
+//			Gvr_EmbryoCenter.SetActive(false);
+//			Gvr_Perspective.SetActive(true);
+
+			// switch the viewer to the location of the perspective camera
+			Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
+			Gvr_EmbryoCenter.transform.eulerAngles = PerspectiveCam.transform.eulerAngles;
+			Gvr_EmbryoCenter.transform.Find ("Head").localPosition = new Vector3 (0, 0, 0.08f);
+			Gvr_EmbryoCenter.transform.Find ("Head").eulerAngles = new Vector3 (0, 0, 0);
+
+			ApplicationModel.setCameraMode (1);
+		} else if (ApplicationModel.getCameraMode() == 1) {
+//			Gvr_Perspective.SetActive(false);
+//			Gvr_EmbryoCenter.SetActive(true);
+
+			Gvr_EmbryoCenter.transform.position = Gvr_EmbryoCenter_Transform_InitialPosition;
+			Gvr_EmbryoCenter.transform.eulerAngles = Gvr_EmbryoCenter_Transform_InitialRotation;
+			Gvr_EmbryoCenter.transform.Find ("Head").localPosition = new Vector3 (0, 0, 0.08f);
+			Gvr_EmbryoCenter.transform.Find ("Head").eulerAngles = new Vector3 (0, 0, 0);
+
+
+			ApplicationModel.setCameraMode (0);
 		}
 	}
 
 	void onColorSchemeDropdownValueChanged() {
-		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity, this.gyro.attitude);
+		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);
 	}
 
 	private void initProductionInfo() {
@@ -220,8 +235,10 @@ public class RootLayoutController : MonoBehaviour {
 			lineageData,
 			elementsList,
 			billboardsList,
-			GvrMain,
+			Gvr_EmbryoCenter,
 			PerspectiveCam,
+			Gvr_EmbryoCenter_Transform_InitialPosition,
+			Gvr_EmbryoCenter_Transform_InitialRotation,
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),
@@ -262,9 +279,8 @@ public class RootLayoutController : MonoBehaviour {
 	private void render() {
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
 		reg.tag = REG_tag;
-		if (reg != null && !GvrMain.activeSelf && PerspectiveCam.enabled && gyro.enabled) {
-			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
-			reg.transform.rotation = gyro.attitude;
+		if (reg != null && ApplicationModel.getCameraMode() == 1) {
+			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
 		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}

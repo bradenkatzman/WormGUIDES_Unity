@@ -30,8 +30,10 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public GameObject ContextMenu;
 
 	// camera stuff
-	public GameObject GvrMain;
+	public GameObject Gvr_EmbryoCenter;
 	public Camera PerspectiveCam;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialPosition;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialRotation;
 
 	// color scheme enum
 	private ColorScheme CS;
@@ -45,9 +47,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	public Material TextMaterial;
 
-	// rotation
-	private Gyroscope gyro;
-
 	private string REG = "Root Entities Group";
 
 	void Start() {
@@ -55,28 +54,33 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 		// first set the selected camera mode
 		if (ApplicationModel.getCameraMode () == 0) {
-			this.PerspectiveCam.enabled = false;
-			this.GvrMain.SetActive(true);
-		} else if (ApplicationModel.getCameraMode () == 1) {
-			this.GvrMain.SetActive(false);
-			this.PerspectiveCam.enabled = true;
-		}
+			//this.PerspectiveCam.enabled = false;
+//			this.Gvr_Perspective.SetActive(false);
+//			this.Gvr_EmbryoCenter.SetActive(true);
 
-		// enable and set the 
-		Input.gyro.enabled = true;
-		this.gyro = Input.gyro;
+			// default, do nothing
+
+		} else if (ApplicationModel.getCameraMode () == 1) {
+//			this.Gvr_EmbryoCenter.SetActive(false);
+//			this.Gvr_Perspective.SetActive (true);
+			//this.PerspectiveCam.enabled = true;
+
+			// move the Gvr camera to the location of the perspective game
+			this.Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
+			this.Gvr_EmbryoCenter.transform.rotation = PerspectiveCam.transform.rotation;
+		}
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
 		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
 		initRootLayout ();
 	}
 
+	// TODO
 	void Update() {
 		// add rotation of scene based on gyroscrope if in perspective mode
-		Transform regTransform = transform.Find(REG);
-		if (regTransform != null && !GvrMain.activeSelf && PerspectiveCam.enabled && gyro.enabled) {
-			//Debug.Log ("rotating with: " + gyro.attitude.ToString ());
-			regTransform.transform.rotation = gyro.attitude;
+		Transform reg = transform.Find(REG);
+		if (reg != null && !Gvr_EmbryoCenter.transform.position.Equals (Gvr_EmbryoCenter_Transform_InitialPosition)) {
+			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
 		}
 	}
 		
@@ -85,9 +89,9 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		rlc.setUIElements (this.HideShow_Control_Button, this.Control_Panel,
 			this.timeSlider, this.backwardButton, this.playPauseButton, this.forwardButton,
 			this.timeText, this.switchCameras, this.colorSchemeDropdown, this.ContextMenu);
-		rlc.addCameras (this.GvrMain, this.PerspectiveCam);
+		rlc.addCameras (this.Gvr_EmbryoCenter, this.PerspectiveCam, 
+			this.Gvr_EmbryoCenter_Transform_InitialPosition, this.Gvr_EmbryoCenter_Transform_InitialRotation);
 		rlc.setColorScheme (this.CS);
-		rlc.setGyro (this.gyro);
 	}
 
 	public GameObject getWormGUIDES_Unity() {
