@@ -11,6 +11,8 @@ public class ApplicationModel  {
 
 	private static int NUM_COLOR_SCHEMES = 4;
 
+	private static Quaternion Gvr_Head_Rot = Quaternion.identity;
+
 	public static void setCameraMode(int mode) {
 		cameraMode = mode;
 	}
@@ -29,5 +31,13 @@ public class ApplicationModel  {
 
 	public static int getNumColorSchemes() {
 		return NUM_COLOR_SCHEMES;
+	}
+
+	public static void setGvrHeadRot(Quaternion q) {
+		Gvr_Head_Rot = q;
+	}
+
+	public static Quaternion getGvrHeadRot() {
+		return Gvr_Head_Rot;
 	}
 }

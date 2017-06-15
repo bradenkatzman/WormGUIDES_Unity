@@ -108,7 +108,10 @@ public class GvrHead : MonoBehaviour {
     if (trackRotation) {
       var rot = GvrViewer.Instance.HeadPose.Orientation;
       if (target == null) {
-        transform.localRotation = rot;
+		ApplicationModel.setGvrHeadRot (rot);
+		if (ApplicationModel.getCameraMode () == 0) {
+			transform.localRotation = rot;
+		}
       } else {
         transform.rotation = target.rotation * rot;
       }
@@ -117,7 +120,9 @@ public class GvrHead : MonoBehaviour {
     if (trackPosition) {
       Vector3 pos = GvrViewer.Instance.HeadPose.Position;
       if (target == null) {
-        transform.localPosition = pos;
+		if (ApplicationModel.getCameraMode () == 0) {
+			transform.localPosition = pos;
+		}
       } else {
         transform.position = target.position + target.rotation * pos;
       }

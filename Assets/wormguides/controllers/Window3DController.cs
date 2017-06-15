@@ -33,8 +33,10 @@ public class Window3DController {
 	private int xScale, yScale, zScale;
 	private int offsetX, offsetY, offsetZ;
 
-	private GameObject GvrMain;
+	private GameObject Gvr_EmbryoCenter;
 	private Camera PerspectiveCam;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialPosition;
+	public Vector3 Gvr_EmbryoCenter_Transform_InitialRotation;
 
 	// helper vars
 	private int X_COR_IDX = 0;
@@ -114,7 +116,9 @@ public class Window3DController {
 
 	public Window3DController(int xS, int yS, int zS, 
 		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
-		GameObject vrCam, Camera persCam,
+		GameObject vrCam_EmbryoCenter, Camera pc, 
+		Vector3 Gvr_EmbryoCenter_Transform_InitialPosition_,
+		Vector3 Gvr_EmbryoCenter_Transform_InitialRotation_,
 		int offX, int offY, int offZ,
 		Material[] Tt_Nr_materials,
 		Material[] Lsr_materials,
@@ -131,8 +135,10 @@ public class Window3DController {
 		this.sceneElementsList = elementsList;
 		this.billboardsList = bl;
 
-		this.GvrMain = vrCam;
-		this.PerspectiveCam = persCam;
+		this.Gvr_EmbryoCenter = vrCam_EmbryoCenter;
+		this.PerspectiveCam = pc;
+		this.Gvr_EmbryoCenter_Transform_InitialPosition = Gvr_EmbryoCenter_Transform_InitialPosition_;
+		this.Gvr_EmbryoCenter_Transform_InitialRotation = Gvr_EmbryoCenter_Transform_InitialRotation_;
 
 		this.offsetX = offX;
 		this.offsetY = offY;
@@ -499,12 +505,12 @@ public class Window3DController {
 		}
 	}
 
-	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity, Quaternion attitude) {
+	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity) {
 		this.CS.setColorScheme (ColorScheme_IDX);
 
 		GameObject reg = renderScene (ApplicationModel.getTime());
-		if (!GvrMain.activeSelf && PerspectiveCam.enabled) {
-			reg.transform.rotation = attitude;
+		if (!Gvr_EmbryoCenter.transform.position.Equals(Gvr_EmbryoCenter_Transform_InitialPosition)) {
+			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
 		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
@@ -514,25 +520,10 @@ public class Window3DController {
 	}
 
 	public void Update() {
-		if (GvrMain.activeSelf) {
-			foreach (GameObject b_GO in currentBillboardTextMeshes) {
-				//Debug.Log ("looking toward VR cam");
-				b_GO.transform.LookAt (GvrMain.transform);
-				b_GO.transform.Rotate(new Vector3(0, 180, 0));
-			}
-//			if (hasAVL) {
-//				ContextMenu.transform.LookAt (GvrMain.transform);
-//				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
-//			}
-		} else if (PerspectiveCam.enabled) {
-			foreach (GameObject b_GO in currentBillboardTextMeshes) {
-				b_GO.transform.LookAt (PerspectiveCam.transform);
-				b_GO.transform.Rotate(new Vector3(0, 180, 0));
-			}
-//			if (hasAVL) {
-//				ContextMenu.transform.LookAt (PerspectiveCam.transform);
-//				ContextMenu.transform.Rotate(new Vector3(0, 180, 0));
-//			}
+		foreach (GameObject b_GO in currentBillboardTextMeshes) {
+			//Debug.Log ("looking toward VR cam");
+			b_GO.transform.LookAt (Gvr_EmbryoCenter.transform);
+			b_GO.transform.Rotate(new Vector3(0, 180, 0));
 		}
 	}
 }
