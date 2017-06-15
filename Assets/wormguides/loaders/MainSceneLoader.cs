@@ -17,8 +17,8 @@ public class MainSceneLoader : MonoBehaviour {
 
 	AsyncOperation async;
 
-	private string VRModeStr = "Loading VR Mode...";
-	private string PerspectiveModeStr = "Loading Perspective Mode...";
+	private string VRModeStr = "Loading 360 Mode...";
+	private string PerspectiveModeStr = "Loading Persp. Mode...";
 
 	private int VR_MODE = 0;
 	private int PERSPECTIVE_MODE = 1;
