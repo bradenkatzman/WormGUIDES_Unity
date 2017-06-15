@@ -46,11 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CapturePanorama\CapturePanorama.cs" />
-     <Compile Include="Assets\CapturePanorama\Scripts\Icosphere.cs" />
-     <Compile Include="Assets\CapturePanorama\Scripts\ImageEffectCopyCamera.cs" />
-     <Compile Include="Assets\CapturePanorama\Scripts\ReadPanoConfig.cs" />
-     <Compile Include="Assets\CapturePanorama\Scripts\ScreenFadeControl.cs" />
      <Compile Include="Assets\GoogleVR\Legacy\Scripts\GvrHead.cs" />
      <Compile Include="Assets\GoogleVR\Legacy\Scripts\Internal\GvrCameraUtils.cs" />
      <Compile Include="Assets\GoogleVR\Legacy\Scripts\Internal\GvrEye.cs" />
@@ -115,7 +110,6 @@
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrIntent.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrUIHelpers.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Video\GvrVideoPlayerTexture.cs" />
-     <Compile Include="Assets\PerspectiveCameraCapture.cs" />
      <Compile Include="Assets\acetree\LineageData.cs" />
      <Compile Include="Assets\acetree\LineageDataLoader.cs" />
      <Compile Include="Assets\wormguides\Utilities\RulesLists.cs" />
@@ -163,7 +157,6 @@
      <None Include="Assets\Resources\nucleifiles\t281-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t293-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t316-nuclei.txt" />
-     <None Include="Assets\CapturePanorama\Compute Shaders\ConvertPanoramaShader.compute" />
      <None Include="Assets\Resources\nucleifiles\t107-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t119-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t024-nuclei.txt" />
@@ -209,7 +202,6 @@
      <None Include="Assets\Resources\nucleifiles\t310-nuclei.txt" />
      <None Include="Assets\GoogleVR\Shaders\GvrUIOverlayFont.shader" />
      <None Include="Assets\Resources\nucleifiles\t101-nuclei.txt" />
-     <None Include="Assets\CapturePanorama\README.txt" />
      <None Include="Assets\Resources\nucleifiles\t277-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t042-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t128-nuclei.txt" />
@@ -322,7 +314,6 @@
      <None Include="Assets\Resources\nucleifiles\t054-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t323-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t204-nuclei.txt" />
-     <None Include="Assets\CapturePanorama\Compute Shaders\TextureToBufferShader.compute" />
      <None Include="Assets\Resources\nucleifiles\t318-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t268-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t086-nuclei.txt" />
@@ -337,7 +328,6 @@
      <None Include="Assets\Resources\nucleifiles\t030-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t104-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t299-nuclei.txt" />
-     <None Include="Assets\CapturePanorama\Shaders\Unlit Transparent HUD.shader" />
      <None Include="Assets\Resources\nucleifiles\t041-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t069-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t155-nuclei.txt" />
@@ -514,7 +504,6 @@
      <None Include="Assets\Resources\nucleifiles\t111-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t161-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t146-nuclei.txt" />
-     <None Include="Assets\CapturePanorama\Compute Shaders\ConvertPanoramaStereoShader.compute" />
      <None Include="Assets\Resources\nucleifiles\t148-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t055-nuclei.txt" />
      <None Include="Assets\Resources\nucleifiles\t315-nuclei.txt" />
@@ -537,9 +526,6 @@
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
- </Reference>
- <Reference Include="System.Drawing">
- <HintPath>/Users/bradenkatzman/Desktop/MSKCC/WormGUIDES_Unity/Assets/CapturePanorama/Managed Plugins/System.Drawing.dll</HintPath>
  </Reference>
  <Reference Include="Google.ProtocolBuffers">
  <HintPath>/Users/bradenkatzman/Desktop/MSKCC/WormGUIDES_Unity/Assets/Plugins/Google.ProtocolBuffers.dll</HintPath>
