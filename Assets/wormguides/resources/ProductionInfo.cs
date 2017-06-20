@@ -6,43 +6,43 @@ using UnityEngine;
 
 public class ProductionInfo {
 
-	private string TRUE = "TRUE";
-	private int DEFAULT_START_TIME = 1;
-	private List<List<string>> productionInfoData;
+	private static string TRUE = "TRUE";
+	private static int DEFAULT_START_TIME = 1;
+	private static List<List<string>> productionInfoData;
 
-	public ProductionInfo(List<List<string>> pid) {
-		productionInfoData = pid;
+	public static void initProductionInfo() {
+		productionInfoData = ProductionInfoLoader.buildProductionInfo ();
 	}
 
 	// TODO
-	public List<string> getNuclearInfo() {
+	public static List<string> getNuclearInfo() {
 		return new List<string> ();
 	}
 
 	/*
 	 * 
 	 */ 
-	public bool getIsSulstonFlag() {
+	public static bool getIsSulstonFlag() {
 		return TRUE.ToLower().Equals((productionInfoData[9])[0].ToLower());
 	}
 
-	public int getTotalTimePoints() {
+	public static int getTotalTimePoints() {
 		return (int)Int32.Parse ((productionInfoData [10]) [0]);
 	}
 
-	public int getXScale() {
+	public static int getXScale() {
 		return (int)Int32.Parse ((productionInfoData [11]) [0]);
 	}
 
-	public int getYScale() {
+	public static int getYScale() {
 		return (int)Int32.Parse ((productionInfoData [12]) [0]);
 	}
 
-	public int getZScale() {
+	public static int getZScale() {
 		return (int)Int32.Parse ((productionInfoData [13]) [0]);
 	}
 
-	public int getDefaultStartTime() {
+	public static int getDefaultStartTime() {
 		return DEFAULT_START_TIME;
 	}
 
@@ -52,29 +52,29 @@ public class ProductionInfo {
 	}
 
 	// TODO
-	public List<string> getCellShapeData(string queryCell) {
+	public static List<string> getCellShapeData(string queryCell) {
 		return new List<string> ();
 	}
 
 	// TODO
-	public double[] getKeyFramesRotate() {
+	public static double[] getKeyFramesRotate() {
 		return new double[3];
 	}
 
 	// TODO
-	public double[] getKeyValuesRotate() {
+	public static double[] getKeyValuesRotate() {
 		return new double[3];
 	}
 
 	// TOOD
-	public double[] getInitialRotation() {
+	public static double[] getInitialRotation() {
 		return new double[3];
 	}
 
 	/*
 	 * 
 	 */ 
-	public List<List<string>> getProductionInfoData() {
+	public static List<List<string>> getProductionInfoData() {
 		return productionInfoData;
 	}
 }

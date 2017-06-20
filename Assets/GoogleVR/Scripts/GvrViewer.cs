@@ -510,6 +510,7 @@ public class GvrViewer : MonoBehaviour {
     Tilted = device.tilted;
     ProfileChanged = device.profileChanged;
     BackButtonPressed = device.backButtonPressed || Input.GetKeyDown(KeyCode.Escape);
+	if (BackButtonPressed) {	Application.Quit ();	}
     // Reset device flags.
     device.tilted = false;
     device.profileChanged = false;

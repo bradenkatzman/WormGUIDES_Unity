@@ -66,9 +66,7 @@ public class RootLayoutController : MonoBehaviour {
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
-		initPartsList ();
 		initRulesList ();
-		initProductionInfo ();
 		initLineageData ();
 		initSceneElementsList ();
 		initBillboardsList ();
@@ -192,17 +190,9 @@ public class RootLayoutController : MonoBehaviour {
 		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);
 	}
 
-	private void initProductionInfo() {
-		this.productionInfo = new ProductionInfo(ProductionInfoLoader.buildProductionInfo ());
-	}
-
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
-		this.lineageData = LineageDataLoader.loadNucFiles (productionInfo, rulesLists);
-	}
-
-	private void initPartsList() {
-		PartsList.initPartsList ();
+		this.lineageData = LineageDataLoader.loadNucFiles (rulesLists);
 	}
 
 	private void initRulesList() {
@@ -229,9 +219,9 @@ public class RootLayoutController : MonoBehaviour {
 
 	private void initWindow3DController() {
 		this.window3d = new Window3DController(
-			productionInfo.getXScale(),
-			productionInfo.getYScale(),
-			productionInfo.getZScale(),
+			ProductionInfo.getXScale(),
+			ProductionInfo.getYScale(),
+			ProductionInfo.getZScale(),
 			lineageData,
 			elementsList,
 			billboardsList,
@@ -278,8 +268,8 @@ public class RootLayoutController : MonoBehaviour {
 
 	private void render() {
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
-		reg.tag = REG_tag;
 		if (reg != null && ApplicationModel.getCameraMode() == 1) {
+			reg.tag = REG_tag;
 			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
 		}
 		reg.transform.parent = WormGUIDES_Unity.transform;

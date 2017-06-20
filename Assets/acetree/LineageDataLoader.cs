@@ -31,14 +31,14 @@ public class LineageDataLoader {
 	/*
 	 * 
 	 */ 
-	public static LineageData loadNucFiles(ProductionInfo productionInfo, RulesLists rulesLists) {
+	public static LineageData loadNucFiles(RulesLists rulesLists) {
 		// initialize lineage data
 		LineageData ld = new LineageData();
 		ld.setAllCellNames (allCellNames);
-		ld.setXYZScale (productionInfo.getXScale (), productionInfo.getYScale (), productionInfo.getZScale ());
+		ld.setXYZScale (ProductionInfo.getXScale (), ProductionInfo.getYScale (), ProductionInfo.getZScale ());
 
 		string urlStr;
-		for (int i = 1; i <= productionInfo.getTotalTimePoints (); i++) {
+		for (int i = 1; i <= ProductionInfo.getTotalTimePoints (); i++) {
 			urlStr = getResourceAtTime (i);
 			if (urlStr != null) {
 				process (ld, i, urlStr);
@@ -47,7 +47,7 @@ public class LineageDataLoader {
 			}
 		}
 
-		processAllMaterials (productionInfo, ld, rulesLists);
+		processAllMaterials (ld, rulesLists);
 
 		// translate all cells to center around (0,0,0)
 		setOriginToZero(ld);
@@ -102,8 +102,8 @@ public class LineageDataLoader {
 		}
 	}
 
-	private static void processAllMaterials(ProductionInfo productionInfo, LineageData ld, RulesLists rulesLists) {
-		for (int i = 1; i <= productionInfo.getTotalTimePoints (); i++) {
+	private static void processAllMaterials(LineageData ld, RulesLists rulesLists) {
+		for (int i = 1; i <= ProductionInfo.getTotalTimePoints (); i++) {
 			ld.addMaterialsForFrame (i, rulesLists);
 		}
 	}

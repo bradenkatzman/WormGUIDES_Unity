@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class MainSceneLoader : MonoBehaviour {
 
-	public Button VRModeButton;
-	public Button PerspectiveModeButton;
+	public Button InternalCameraButton;
+	public Button ExternalCameraButton;
 
 	public Text MenuCameraSelectionText;
 	private string MenuCameraSelectionTextStr = "Please wait a few moments while the application loads.";
@@ -17,43 +17,46 @@ public class MainSceneLoader : MonoBehaviour {
 
 	AsyncOperation async;
 
-	private string VRModeStr = "Loading 360 Mode...";
-	private string PerspectiveModeStr = "Loading Persp. Mode...";
+	private string VRModeStr = "Loading Internal Camera...";
+	private string PerspectiveModeStr = "Loading External Camera...";
 
-	private int VR_MODE = 0;
-	private int PERSPECTIVE_MODE = 1;
+	private int INTERNAL_CAMERA_MODE = 0;
+	private int EXTERNAL_CAMERA_MODE = 1;
 
 	// Use this for initialization
 	void Start () {
 		this.scene = 1;
 
+		PartsList.initPartsList ();
+		ProductionInfo.initProductionInfo ();
+
 		// start the loading of the main scene in the background
 		StartCoroutine(LoadNewScene());
 
-		this.VRModeButton.onClick.AddListener (VRModeButtonClicked);
-		this.PerspectiveModeButton.onClick.AddListener (PerspectiveModeButtonClicked);
+		this.InternalCameraButton.onClick.AddListener (VRModeButtonClicked);
+		this.ExternalCameraButton.onClick.AddListener (PerspectiveModeButtonClicked);
 	}
 
 	void VRModeButtonClicked() {
-		ApplicationModel.setCameraMode (VR_MODE);
+		ApplicationModel.setCameraMode (INTERNAL_CAMERA_MODE);
 		this.async.allowSceneActivation = true;
 
-		this.VRModeButton.GetComponentInChildren<Text> ().text = VRModeStr;
+		this.InternalCameraButton.GetComponentInChildren<Text> ().text = VRModeStr;
 
-		this.VRModeButton.interactable = false;
-		this.PerspectiveModeButton.interactable = false;
+		this.InternalCameraButton.interactable = false;
+		this.ExternalCameraButton.interactable = false;
 
 		this.MenuCameraSelectionText.text = MenuCameraSelectionTextStr;
 	}
 
 	void PerspectiveModeButtonClicked() {
-		ApplicationModel.setCameraMode (PERSPECTIVE_MODE);
+		ApplicationModel.setCameraMode (EXTERNAL_CAMERA_MODE);
 		this.async.allowSceneActivation = true;
 
-		this.PerspectiveModeButton.GetComponentInChildren<Text> ().text = PerspectiveModeStr;
+		this.ExternalCameraButton.GetComponentInChildren<Text> ().text = PerspectiveModeStr;
 
-		this.VRModeButton.interactable = false;
-		this.PerspectiveModeButton.interactable = false;
+		this.InternalCameraButton.interactable = false;
+		this.ExternalCameraButton.interactable = false;
 
 		this.MenuCameraSelectionText.text = MenuCameraSelectionTextStr;
 	}

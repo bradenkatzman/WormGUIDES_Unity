@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ApplicationModel  {
 
-	// 0 == VR, 1 == Perspective
+	// 0 == INTERNAL_CAMERA_MODE, 1 == EXTERNAL_CAMERA_MODE
 	private static int cameraMode = 0;
 
 	private static int time = 360;
