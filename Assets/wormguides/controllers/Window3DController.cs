@@ -510,7 +510,7 @@ public class Window3DController {
 
 		GameObject reg = renderScene (ApplicationModel.getTime());
 		if (!Gvr_EmbryoCenter.transform.position.Equals(Gvr_EmbryoCenter_Transform_InitialPosition)) {
-			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
+			reg.transform.rotation = Quaternion.Inverse(ApplicationModel.getGvrHeadRot ());
 		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}

@@ -17,8 +17,8 @@ public class MainSceneLoader : MonoBehaviour {
 
 	AsyncOperation async;
 
-	private string VRModeStr = "Loading Internal Camera...";
-	private string PerspectiveModeStr = "Loading External Camera...";
+	private string VRModeStr = "Loading Internal View...";
+	private string PerspectiveModeStr = "Loading External View...";
 
 	private int INTERNAL_CAMERA_MODE = 0;
 	private int EXTERNAL_CAMERA_MODE = 1;

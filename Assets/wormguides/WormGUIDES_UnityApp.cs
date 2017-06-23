@@ -81,7 +81,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		// add rotation of scene based on gyroscrope if in perspective mode
 		Transform reg = transform.Find(REG);
 		if (reg != null && !Gvr_EmbryoCenter.transform.position.Equals (Gvr_EmbryoCenter_Transform_InitialPosition)) {
-			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
+			reg.transform.rotation = Quaternion.Inverse(ApplicationModel.getGvrHeadRot ());
 		}
 	}
 		
