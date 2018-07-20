@@ -30,7 +30,7 @@ public class MainSceneLoader : MonoBehaviour {
 		PartsList.initPartsList ();
 		ProductionInfo.initProductionInfo ();
 
-		// start the loading of the main scene in the background
+        // start the loading of the main scene in the background
 		StartCoroutine(LoadNewScene());
 
 		this.InternalCameraButton.onClick.AddListener (VRModeButtonClicked);

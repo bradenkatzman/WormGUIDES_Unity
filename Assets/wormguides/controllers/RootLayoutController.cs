@@ -46,10 +46,7 @@ public class RootLayoutController : MonoBehaviour {
 	private GameObject ContextMenu;
 
 	// camera stuff
-	private GameObject Gvr_EmbryoCenter;
 	private Camera PerspectiveCam;
-	public Vector3 Gvr_EmbryoCenter_Transform_InitialPosition;
-	public Vector3 Gvr_EmbryoCenter_Transform_InitialRotation;
 
 	// zoom stuff
 	private PinchZoomController pzc;
@@ -105,12 +102,8 @@ public class RootLayoutController : MonoBehaviour {
 		ColorScheme_Dropdown.onValueChanged.AddListener (delegate { onColorSchemeDropdownValueChanged(); });
 	}
 
-	public void addCameras(GameObject Gvr_EmbryoCenter_, Camera PerspectiveCamera_,
-		Vector3 Gvr_EmbryoCenter_Transform_InitialPosition_, Vector3 Gvr_EmbryoCenter_Transform_InitialRotation_) {
-		this.Gvr_EmbryoCenter = Gvr_EmbryoCenter_;
+	public void addCameras(Camera PerspectiveCamera_) {
 		this.PerspectiveCam = PerspectiveCamera_;
-		this.Gvr_EmbryoCenter_Transform_InitialPosition = Gvr_EmbryoCenter_Transform_InitialPosition_;
-		this.Gvr_EmbryoCenter_Transform_InitialRotation = Gvr_EmbryoCenter_Transform_InitialRotation_;
 	}
 
 	public void setColorScheme(ColorScheme cs_) {
@@ -160,31 +153,7 @@ public class RootLayoutController : MonoBehaviour {
 		}
 	}
 
-	void onSwitchCamerasClicked() {
-		if (ApplicationModel.getCameraMode() == 0) {
-//			Gvr_EmbryoCenter.SetActive(false);
-//			Gvr_Perspective.SetActive(true);
-
-			// switch the viewer to the location of the perspective camera
-			Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
-			Gvr_EmbryoCenter.transform.eulerAngles = PerspectiveCam.transform.eulerAngles;
-			Gvr_EmbryoCenter.transform.Find ("Head").localPosition = new Vector3 (0, 0, 0.08f);
-			Gvr_EmbryoCenter.transform.Find ("Head").eulerAngles = new Vector3 (0, 0, 0);
-
-			ApplicationModel.setCameraMode (1);
-		} else if (ApplicationModel.getCameraMode() == 1) {
-//			Gvr_Perspective.SetActive(false);
-//			Gvr_EmbryoCenter.SetActive(true);
-
-			Gvr_EmbryoCenter.transform.position = Gvr_EmbryoCenter_Transform_InitialPosition;
-			Gvr_EmbryoCenter.transform.eulerAngles = Gvr_EmbryoCenter_Transform_InitialRotation;
-			Gvr_EmbryoCenter.transform.Find ("Head").localPosition = new Vector3 (0, 0, 0.08f);
-			Gvr_EmbryoCenter.transform.Find ("Head").eulerAngles = new Vector3 (0, 0, 0);
-
-
-			ApplicationModel.setCameraMode (0);
-		}
-	}
+	void onSwitchCamerasClicked() {	}
 
 	void onColorSchemeDropdownValueChanged() {
 		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);
@@ -225,10 +194,7 @@ public class RootLayoutController : MonoBehaviour {
 			lineageData,
 			elementsList,
 			billboardsList,
-			Gvr_EmbryoCenter,
 			PerspectiveCam,
-			Gvr_EmbryoCenter_Transform_InitialPosition,
-			Gvr_EmbryoCenter_Transform_InitialRotation,
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),

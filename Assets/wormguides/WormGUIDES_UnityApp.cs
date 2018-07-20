@@ -30,10 +30,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public GameObject ContextMenu;
 
 	// camera stuff
-	public GameObject Gvr_EmbryoCenter;
 	public Camera PerspectiveCam;
-	public Vector3 Gvr_EmbryoCenter_Transform_InitialPosition;
-	public Vector3 Gvr_EmbryoCenter_Transform_InitialRotation;
 
 	// color scheme enum
 	private ColorScheme CS;
@@ -52,23 +49,26 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
-		// first set the selected camera mode
-		if (ApplicationModel.getCameraMode () == 0) {
+        PartsList.initPartsList();
+        ProductionInfo.initProductionInfo();
+
+        // first set the selected camera mode
+//        if (ApplicationModel.getCameraMode () == 0) {
 			//this.PerspectiveCam.enabled = false;
 //			this.Gvr_Perspective.SetActive(false);
 //			this.Gvr_EmbryoCenter.SetActive(true);
 
 			// default, do nothing
 
-		} else if (ApplicationModel.getCameraMode () == 1) {
+//		} else if (ApplicationModel.getCameraMode () == 1) {
 //			this.Gvr_EmbryoCenter.SetActive(false);
 //			this.Gvr_Perspective.SetActive (true);
 			//this.PerspectiveCam.enabled = true;
 
 			// move the Gvr camera to the location of the perspective game
-			this.Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
-			this.Gvr_EmbryoCenter.transform.rotation = PerspectiveCam.transform.rotation;
-		}
+			//this.Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
+			//this.Gvr_EmbryoCenter.transform.rotation = PerspectiveCam.transform.rotation;
+//		}
 
 		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
 		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
@@ -78,11 +78,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	// TODO
 	void Update() {
-		// add rotation of scene based on gyroscrope if in perspective mode
-		Transform reg = transform.Find(REG);
-		if (reg != null && !Gvr_EmbryoCenter.transform.position.Equals (Gvr_EmbryoCenter_Transform_InitialPosition)) {
-			reg.transform.rotation = Quaternion.Inverse(ApplicationModel.getGvrHeadRot ());
-		}
+
 	}
 		
 	private void initRootLayout() {
@@ -90,8 +86,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		rlc.setUIElements (this.HideShow_Control_Button, this.Control_Panel,
 			this.timeSlider, this.backwardButton, this.playPauseButton, this.forwardButton,
 			this.timeText, this.switchCameras, this.colorSchemeDropdown, this.ContextMenu);
-		rlc.addCameras (this.Gvr_EmbryoCenter, this.PerspectiveCam, 
-			this.Gvr_EmbryoCenter_Transform_InitialPosition, this.Gvr_EmbryoCenter_Transform_InitialRotation);
+		rlc.addCameras (this.PerspectiveCam);
 		rlc.setColorScheme (this.CS);
 	}
 
