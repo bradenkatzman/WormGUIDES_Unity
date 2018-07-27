@@ -29,21 +29,13 @@ public class RootLayoutController : MonoBehaviour {
 	// scene rendering info
 	private bool play;
 
-	// hide/show time control panel button
-	private Button HideShow_Control_Button;
-
 	// control UI elements
-	private GameObject Control_Panel;
 	private Slider timeSlider;
 	private Button backwardButton;
 	private Button playPauseButton;
 	private Button forwardButton;
 	private Text timeText;
-	private Button switchCameras;
 	private Dropdown ColorScheme_Dropdown;
-
-	// context menu
-	private GameObject ContextMenu;
 
 	// camera stuff
 	private Camera PerspectiveCam;
@@ -59,6 +51,11 @@ public class RootLayoutController : MonoBehaviour {
 	private string hideControlPanelStr = "Hide Control Panel";
 
 	private string REG_tag;
+
+    private int speed = 100;
+    private float lastX = 0;
+    private float lastY = 0;
+    private float prevScroll;
 
 	void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
@@ -80,25 +77,19 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	//
-	public void setUIElements(Button hs, GameObject tcp, Slider ts, Button bb, 
-		Button ppb, Button fb, Text tt, Button sc, Dropdown csd, GameObject cm) {
-		this.HideShow_Control_Button = hs;
-		this.Control_Panel = tcp;
+	public void setUIElements(GameObject tcp, Slider ts, Button bb, 
+		Button ppb, Button fb, Text tt, Dropdown csd) {
 		this.timeSlider = ts;
 		this.backwardButton = bb;
 		this.playPauseButton = ppb;
 		this.forwardButton = fb;
 		this.timeText = tt;
-		this.switchCameras = sc;
 		this.ColorScheme_Dropdown = csd;
-		this.ContextMenu = cm;
 
-		HideShow_Control_Button.onClick.AddListener (onHideShowTimeControlPanelClicked);
 		timeSlider.onValueChanged.AddListener (delegate {onSliderValueChange ();});
 		backwardButton.onClick.AddListener (onBackButtonClicked);
 		playPauseButton.onClick.AddListener (onPlayPauseButtonClicked);
 		forwardButton.onClick.AddListener (onForwardButtonClicked);
-		switchCameras.onClick.AddListener (onSwitchCamerasClicked);
 		ColorScheme_Dropdown.onValueChanged.AddListener (delegate { onColorSchemeDropdownValueChanged(); });
 	}
 
@@ -108,16 +99,6 @@ public class RootLayoutController : MonoBehaviour {
 
 	public void setColorScheme(ColorScheme cs_) {
 		this.CS = cs_;
-	}
-
-	public void onHideShowTimeControlPanelClicked() {
-		if (Control_Panel.activeSelf) {
-			Control_Panel.SetActive(false);
-			HideShow_Control_Button.GetComponentInChildren<Text> ().text = showControlPanelStr;
-		} else {
-			Control_Panel.SetActive (true);
-			HideShow_Control_Button.GetComponentInChildren<Text> ().text = hideControlPanelStr;
-		}
 	}
 
 	public void onSliderValueChange() {
@@ -203,8 +184,7 @@ public class RootLayoutController : MonoBehaviour {
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getNeuronalCellPositionsRuleMaterials (),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTissueTypesRuleMaterials (),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getDefaultMaterials (),
-			this.CS,
-			this.ContextMenu);
+			this.CS);
 	}
 
 	/*
@@ -229,8 +209,48 @@ public class RootLayoutController : MonoBehaviour {
 			}
 		}
 
-		window3d.Update ();
-	}
+        if (Input.GetMouseButton(0))
+        {
+            if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
+            {
+                lastX = Input.GetAxis("Mouse X");
+                lastY = Input.GetAxis("Mouse Y");
+
+                float rotX = lastX * speed * Mathf.Deg2Rad;
+                float rotY = lastY * speed * Mathf.Deg2Rad;
+
+                window3d.getRootEntitiesGroup().transform.Rotate(Vector3.up, -rotX, Space.World);
+                window3d.getRootEntitiesGroup().transform.Rotate(Vector3.right, rotY, Space.World);
+            }
+        }
+
+        float currScroll = Input.GetAxis("Mouse ScrollWheel");
+        if (currScroll != prevScroll)
+        {
+            if (currScroll > 0f)
+            {
+                // zoom in
+                if (PerspectiveCam.transform.position.z < 0f)
+                {
+                    PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
+                        PerspectiveCam.transform.position.z + 5);
+                }
+
+            }
+            else if (currScroll < 0f)
+            {
+                // zoom out
+                if (PerspectiveCam.transform.position.z > -360)
+                {
+                    PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
+                        PerspectiveCam.transform.position.z - 5);
+                }
+
+            }
+        }
+
+        prevScroll = 0;
+    }
 
 	private void render() {
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());

@@ -11,15 +11,17 @@ public class SceneElementsList {
 	//private static string ASTERISK = "*";
 	//private static string SLASH = "/";
 
-	private static int NUM_CSV_FIELDS = 8;
+	private static int NUM_CSV_FIELDS = 10;
 	private static int DESCRIPTION_IDX = 0;
-	private static int CELL_IDX = 1;
-	private static int MARKER_IDX = 2;
-	private static int IMAGING_SRC_IDX = 3;
-	private static int RESOURCE_LOCATION_IDX = 4;
-	private static int START_TIME_IDX = 5;
-	private static int END_TIME_IDX = 6;
-	private static int COMMENTS_IDX = 7;
+    private static int TYPE_IDX = 1;
+	private static int CELL_IDX = 2;
+	private static int MARKER_IDX = 3;
+	private static int IMAGING_SRC_IDX = 4;
+	private static int RESOURCE_LOCATION_IDX = 5;
+	private static int START_TIME_IDX = 6;
+	private static int END_TIME_IDX = 7;
+    private static int SELECTABLE_IDX = 8;
+	private static int COMMENTS_IDX = 9;
 
 	private List<SceneElement> elementsList;
 
@@ -41,6 +43,7 @@ public class SceneElementsList {
 			string line;
 			string name;
 			string lineageName;
+            string type;
 			string resourceLocation;
 			int startTime;
 			int endTime;
@@ -59,6 +62,7 @@ public class SceneElementsList {
 						resourceLocation = tokens [RESOURCE_LOCATION_IDX];
 						startTime = (int)Int32.Parse (tokens [START_TIME_IDX]);
 						endTime = (int)Int32.Parse (tokens [END_TIME_IDX]);
+                        type = tokens[TYPE_IDX];
 
 						// check for first time that the .obj resource exists
 						int effectiveStartTime = GeometryLoader.getEffectiveStartTime(resourceLocation, startTime, endTime);

@@ -41,7 +41,6 @@ public class Window3DController {
 	private int Z_COR_IDX = 2;
 
 	// context menu
-	private GameObject ContextMenu;
 //	private bool hasAVL;
 //	private Vector3 avlPos;
 
@@ -120,8 +119,7 @@ public class Window3DController {
 		Material[] ncp_materials,
 		Material[] tt_materials,
 		Material[] defMaterials,
-		ColorScheme cs_,
-		GameObject cm) {
+		ColorScheme cs_) {
 		this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
@@ -144,7 +142,6 @@ public class Window3DController {
 //		this.textMaterial = tMaterial;
 
 		this.CS = cs_;
-		this.ContextMenu = cm;
 
 		// temp context menu vars
 		//this.hasAVL = false;
@@ -230,7 +227,7 @@ public class Window3DController {
 		}
 
 		sceneElementsAtCurrentTime = sceneElementsList.getSceneElementsAtTime (time);
-		for (int i = 0; i < sceneElementsAtCurrentTime.Count; i++) {
+        for (int i = 0; i < sceneElementsAtCurrentTime.Count; i++) {
 			SceneElement se = sceneElementsAtCurrentTime [i];
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
@@ -239,7 +236,6 @@ public class Window3DController {
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
 			} else {
-				//Debug.Log (se.getSceneName () + " has no geometry. Removing name from meshNames");
 				if (meshNames.Contains (se.getSceneName ())) {
 					meshNames.Remove (se.getSceneName ());
 				} else if (se.getAllCells ().Count != 0 && meshNames.Contains(se.getAllCells () [0])) {
@@ -505,7 +501,7 @@ public class Window3DController {
 		reg.transform.parent = WormGUIDES_Unity.transform;
 	}
 
-	private GameObject getRootEntitiesGroup() {
+	public GameObject getRootEntitiesGroup() {
 		return rootEntitiesGroup;
 	}
 

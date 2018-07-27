@@ -13,9 +13,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	private RootLayoutController rlc;
 
-	// hide/show time control button
-	public Button HideShow_Control_Button;
-
 	// Time control UI elements
 	public GameObject Control_Panel;
 	public Slider timeSlider;
@@ -23,11 +20,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	public Button playPauseButton;
 	public Button forwardButton;
 	public Text timeText;
-	public Button switchCameras;
 	public Dropdown colorSchemeDropdown;
-
-	// context menu
-	public GameObject ContextMenu;
 
 	// camera stuff
 	public Camera PerspectiveCam;
@@ -83,9 +76,9 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 		
 	private void initRootLayout() {
 		rlc = this.gameObject.AddComponent<RootLayoutController> ();
-		rlc.setUIElements (this.HideShow_Control_Button, this.Control_Panel,
+		rlc.setUIElements (this.Control_Panel,
 			this.timeSlider, this.backwardButton, this.playPauseButton, this.forwardButton,
-			this.timeText, this.switchCameras, this.colorSchemeDropdown, this.ContextMenu);
+			this.timeText, this.colorSchemeDropdown);
 		rlc.addCameras (this.PerspectiveCam);
 		rlc.setColorScheme (this.CS);
 	}
