@@ -46,18 +46,29 @@ public class RootLayoutController : MonoBehaviour {
 	// color scheme stuff
 	private ColorScheme CS;
 
+    // entity label
+    private TextMesh entityLabel;
+
 	private int count;
 	private string showControlPanelStr = "Show Control Panel";
 	private string hideControlPanelStr = "Hide Control Panel";
 
 	private string REG_tag;
 
-    private int speed = 100;
-    private float lastX = 0;
-    private float lastY = 0;
+    private int speed;
+    private float lastX;
+    private float lastY;
+    private float rotX;
+    private float rotY;
+    private Vector3 currPos;
     private float prevScroll;
 
-	void Start () {
+    private bool isSliderSelected;
+
+    private int xScale, yScale, zScale;
+    private int offsetX, offsetY, offsetZ;
+
+    void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
 		initRulesList ();
@@ -74,7 +85,16 @@ public class RootLayoutController : MonoBehaviour {
 		this.REG_tag = "Root Entities Group";
 
 		render ();
-	}
+
+        isSliderSelected = false;
+
+        speed = 100;
+        lastX = 0;
+        lastY = 0;
+        rotX = 0;
+        rotY = 0;
+        currPos = new Vector3(0, 0, 0);
+    }
 
 	//
 	public void setUIElements(GameObject tcp, Slider ts, Button bb, 
@@ -92,6 +112,21 @@ public class RootLayoutController : MonoBehaviour {
 		forwardButton.onClick.AddListener (onForwardButtonClicked);
 		ColorScheme_Dropdown.onValueChanged.AddListener (delegate { onColorSchemeDropdownValueChanged(); });
 	}
+
+    public void setEntityLabel(TextMesh el)
+    {
+        entityLabel = el;
+    }
+
+    public void setModelVars(int xOff, int yOff, int zOff, int xS, int yS, int zS)
+    {
+        this.offsetX = xOff;
+        this.offsetY = yOff;
+        this.offsetZ = zOff;
+        this.xScale = xS;
+        this.yScale = yS;
+        this.zScale = zS;
+    }
 
 	public void addCameras(Camera PerspectiveCamera_) {
 		this.PerspectiveCam = PerspectiveCamera_;
@@ -133,8 +168,6 @@ public class RootLayoutController : MonoBehaviour {
 			count = 8;
 		}
 	}
-
-	void onSwitchCamerasClicked() {	}
 
 	void onColorSchemeDropdownValueChanged() {
 		this.window3d.updateColorScheme (this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);
@@ -187,79 +220,182 @@ public class RootLayoutController : MonoBehaviour {
 			this.CS);
 	}
 
-	/*
+    /*
 	 * Update is called once per frame
 	 *  - Here we check the state of the app (play, pause, iterate forward, iterate backward)
 	 *    and render the scene accordingly
-	 */ 
-	void Update() {
-		if (play) {
-			if (count == 8) { // use this to render at 1/4 of the speed at which Update() is called
-				if (ApplicationModel.getTime() < 360 && ApplicationModel.getTime() > 0) {
-					render ();
-					ApplicationModel.setTime(ApplicationModel.getTime() + 1);
-					updateUIElements ();
-				} else if (ApplicationModel.getTime() == 360) {
-					play = false;
-					playPauseButton.GetComponentInChildren<Text> ().text = "Play";
-				}
-				count = 0;
-			} else {
-				count++;
-			}
-		}
-
-        if (Input.GetMouseButton(0))
+     *  - Rotation, zoom and translation is also handled here  
+	 */
+    void Update()
+    {
+        if (play)
         {
-            if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
+            if (count == 8)
+            { // use this to render at 1/8 of the speed at which Update() is called
+                if (ApplicationModel.getTime() < 360 && ApplicationModel.getTime() > 0)
+                {
+                    render();
+                    ApplicationModel.setTime(ApplicationModel.getTime() + 1);
+                    updateUIElements();
+                }
+                else if (ApplicationModel.getTime() == 360)
+                {
+                    play = false;
+                    playPauseButton.GetComponentInChildren<Text>().text = "Play";
+                }
+                count = 0;
+            }
+            else
             {
-                lastX = Input.GetAxis("Mouse X");
-                lastY = Input.GetAxis("Mouse Y");
-
-                float rotX = lastX * speed * Mathf.Deg2Rad;
-                float rotY = lastY * speed * Mathf.Deg2Rad;
-
-                window3d.getRootEntitiesGroup().transform.Rotate(Vector3.up, -rotX, Space.World);
-                window3d.getRootEntitiesGroup().transform.Rotate(Vector3.right, rotY, Space.World);
+                count++;
             }
         }
 
-        float currScroll = Input.GetAxis("Mouse ScrollWheel");
-        if (currScroll != prevScroll)
+        // only apply mouse rotation and scroll if the slider is not currently selected
+        if (!timeSlider.GetComponent<SliderScript>().isSelect())
         {
-            if (currScroll > 0f)
+            // left click - for rotation
+            if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
             {
-                // zoom in
-                if (PerspectiveCam.transform.position.z < 0f)
+                if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
                 {
-                    PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
-                        PerspectiveCam.transform.position.z + 5);
-                }
+                    lastX = Input.GetAxis("Mouse X");
+                    lastY = Input.GetAxis("Mouse Y");
 
+                    rotX = lastX * speed * Mathf.Deg2Rad;
+                    rotY = lastY * speed * Mathf.Deg2Rad;
+
+                    window3d.getRootEntitiesGroup().transform.Rotate(Vector3.up, -rotX, Space.World);
+                    window3d.getRootEntitiesGroup().transform.Rotate(Vector3.right, rotY, Space.World);
+                }
             }
-            else if (currScroll < 0f)
+
+            // right click, for label
+            if (!Input.GetMouseButton(0) && Input.GetMouseButton(1))
             {
-                // zoom out
-                if (PerspectiveCam.transform.position.z > -360)
-                {
-                    PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
-                        PerspectiveCam.transform.position.z - 5);
-                }
+                // check if entity clicked
+                RaycastHit hitInfo = new RaycastHit();
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+                if (hit)
+                {   
+                    // first check if the label is active already
+                    if (entityLabel.gameObject.activeSelf)
+                    {
+                        // check if this is a click on the same object
+                        if (entityLabel.GetComponent<TextMesh>().text == hitInfo.transform.gameObject.name)
+                        {
+                            // turn off the label
+                            entityLabel.gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            // new entity clicked, change the label
 
+                            // check if this is a primitive shape or custom geometry (which are constructed in differented coordinated systems,
+                            // and hence, have different rendering requirements for alignment) by seeing if the entity has childen (b/c the 
+                            // custom geomtry all have a child game object which contains the mesh and the mesh collider)
+
+                            // not doing anything for this now, but that comment explains how the complex geometry (MCS stuff - not stuff that's
+                            // a single cell's body) works
+                            if (hitInfo.transform.childCount == 0)
+                            {
+                                entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                                entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
+                            } else
+                            {
+                                // more complex geometry
+                                entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                                entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
+                            }
+
+                            
+
+
+                        }
+                    }
+                    else
+                    {
+                        // set up the label and turn it on
+                        entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                        entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
+                        entityLabel.gameObject.SetActive(true);
+                    }
+                }
             }
+
+
+            // double click - for translation
+            if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
+            {
+                if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
+                {
+                    float distance_to_screen = Camera.main.WorldToScreenPoint(window3d.getRootEntitiesGroup().transform.position).z;
+                    Vector3 currPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+                    float step = speed * Time.deltaTime;
+                    window3d.getRootEntitiesGroup().transform.position = Vector3.MoveTowards(window3d.getRootEntitiesGroup().transform.position, currPos, step);
+
+                    lastX = Input.GetAxis("Mouse X");
+                    lastY = Input.GetAxis("Mouse Y");
+                }
+            }
+
+            float currScroll = Input.GetAxis("Mouse ScrollWheel");
+            if (currScroll != prevScroll)
+            {
+                if (currScroll > 0f)
+                {
+                    // zoom in
+                    if (PerspectiveCam.transform.position.z < 0f)
+                    {
+                        PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
+                            PerspectiveCam.transform.position.z + 5);
+                    }
+                }
+                else if (currScroll < 0f)
+                {
+                    // zoom out
+                    if (PerspectiveCam.transform.position.z > -360)
+                    {
+                        PerspectiveCam.transform.position = new Vector3(PerspectiveCam.transform.position.x, PerspectiveCam.transform.position.y,
+                            PerspectiveCam.transform.position.z - 5);
+                    }
+
+                }
+            }
+
+            prevScroll = 0;
         }
 
-        prevScroll = 0;
+        
+        // if the label is active, make it look toward the camera
+        if (entityLabel.gameObject.activeSelf)
+        {
+            entityLabel.gameObject.transform.LookAt(PerspectiveCam.transform);
+            entityLabel.gameObject.transform.Rotate(Vector3.up, 180);
+
+            Transform entity = window3d.getRootEntitiesGroup().transform.Find(entityLabel.GetComponent<TextMesh>().text);
+            if (entity != null)
+            {
+                // keep the label stuck to the entity
+                entityLabel.transform.position = entity.position;
+            } else
+            {
+                // remove the label
+                entityLabel.gameObject.SetActive(false);
+            }
+        }
     }
 
 	private void render() {
+        Quaternion rotSave = window3d.getRootEntitiesGroup().transform.rotation;
+        Vector3 posSave = window3d.getRootEntitiesGroup().transform.position;
+
 		GameObject reg = window3d.renderScene (ApplicationModel.getTime());
-		if (reg != null && ApplicationModel.getCameraMode() == 1) {
-			reg.tag = REG_tag;
-			reg.transform.rotation = ApplicationModel.getGvrHeadRot ();
-		}
 		reg.transform.parent = WormGUIDES_Unity.transform;
-	}
+        
+        window3d.getRootEntitiesGroup().transform.rotation = rotSave;
+        window3d.getRootEntitiesGroup().transform.position = posSave;
+    }
 
 	private void updateUIElements() {
 		updateSlider ();

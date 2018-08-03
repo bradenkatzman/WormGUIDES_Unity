@@ -73,6 +73,7 @@
      <Compile Include="Assets\wormguides\resources\PartsList.cs" />
      <Compile Include="Assets\wormguides\resources\ProductionInfo.cs" />
      <Compile Include="Assets\wormguides\Utilities\RulesLists.cs" />
+     <Compile Include="Assets\wormguides\Utilities\SliderScript.cs" />
      <Compile Include="Assets\wormguides\Utilities\WeightedAvgHexcode.cs" />
      <Compile Include="Assets\wormguides\WormGUIDES_UnityApp.cs" />
      <None Include="Assets\Resources\nucleifiles\t228-nuclei.txt" />

@@ -49,37 +49,29 @@ public class Window3DController {
 	 */ 
 			// 1. Tract Tour, Nerve Ring
 	private string[] TractTour_NerveRing_rule_cells = new string[]{
-		"ABplpaaaaaa", "ABplppaaaaa", "ABprppaaaaa", "ABprpappaap", "ABprpapppap", "ABalpapaaaa", "ABarappaaaa", "ABprpappaaa",
-		"ABplpapappa", "ABprpapappa", "ABplpapaaaa", "ABprpapaaaa",  "ABplpapaapa", "ABprpapaapa",  "ABplpapaapp", "ABprpapaapp",
-		"ABprpaaaaaa", "ABalppappaa", "ABarappppaa", "ABplpaapaaa", "ABprpaapaaa", "unc-86_outgrowth"};
-
-	private bool[] TractTour_NerveRing_rule_cells_CELLONLY = new bool[]{
-		false, false, false, false, false, false, false, false,
-		true, true, true, true, true, true, true, true, true,
-		true, true, true, true, false};
+		"ABplpaaaaaa", "ABplppaaaaa", "ABprppaaaaa", "ABprpapppap", "ABalpapaaaa", "ABarappaaaa", "ABprpappaaa", "ABplpapaaaa", "ABprpapaaaa",
+        "ABplpapaaap", "ABprpapaaap", "ABplppappaaa", "ABprppappaa" , "ABplpappppa", "ABprppppapp", "ABalapppaaa", "ABplpaapppa", "ABprpaapppa",
+        "ABplppaappa", "ABalpppapav", "ABpraaaapav", "ABplppaapap", "ABprppaapap", "ABalaaapalr", "ABalaaapprl", "ABalpapapaa", "ABarappapaa",
+        "ABplapaaapp", "ABprapaaapp", "ABplapaaaapp", "ABprapaaaapp", "ABplapaaapav", "ABprapaaapav", "ABarppaappp", "ABarpppappp", "ABalpapapapp",
+        "ABarappapapp", "ABplpppaapp", "ABprpppaapp", "ABplapppappa", "ABprapppappa", "ABplapppappp", "ABprapppappp", "ceh-37 amphid", "embryo"};
 
 			// 2. Lineage and Spatial Relationships (color only applies to primitive cell shapes
 	private string[] LineageSpatialRelationships_rule_cells = new string[] {
-		"E", "MS", "D", "C", "P4", "ABal", "ABar", "ABpl", "ABpr", "Z2", "Z3"};
+    "E", "MS", "D", "C", "P4", "ABal", "ABar", "ABpl", "ABpr", "Z2", "Z3"};
 
 			// 3. Neuronal Cell Positions
 	private string[] NeuronalCellPositions_keywords = new string[] {
-		"sheath", "socket", "sensory", "interneuron", "motor"};
+		};
 			// 4. Tissue Types
 	private string[] TissueTypes_keywords = new string[] {
-		"muscle", "intestinal", "marginal", "vulva", "interneuron", "motor", "sensory", "pore", "duct",
-		"gland", "excretory", "hypoderm", "seam", "socket", "sheath", "valve", "arcade", "epithelium", 
-		"rectal", "head"};
+		};
 	// ** end cells/keywords
 
 	// string vars
 	private string[] tract_names = new string[]{
-		"nerve_ring_anterior", "ventral_sensory_left", "ventral_sensory_right", "nerve_ring_left",
-		"nerve_ring_left_base", "amphid_right", "amphid_left", "nerve_ring_right_base",
-		"nerve_ring_right", "VNC_left", "VNC_right"};
+		};
 
-	private string[] billboard_misc_geometry_names = new string[]{
-		"Arrow"};
+	private string[] billboard_misc_geometry_names = new string[]{};
 
 
 	/*
@@ -231,6 +223,7 @@ public class Window3DController {
 			SceneElement se = sceneElementsAtCurrentTime [i];
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
+                go.name = se.getSceneName();
 				go.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
@@ -325,21 +318,40 @@ public class Window3DController {
 	private void addEntities() {
 		addCellGeometries ();
 		addSceneElementGeometries ();
-		foreach (GameObject sphere in spheres) {
-			sphere.transform.parent = rootEntitiesGroup.transform;
-		}
+
+        // add transform and mesh colliders to objects
+        foreach (GameObject sphere in spheres) {
+            MeshCollider meshc = sphere.AddComponent(typeof(MeshCollider)) as MeshCollider;
+            meshc.sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
+
+            sphere.transform.parent = rootEntitiesGroup.transform;
+        }
 		foreach (GameObject mesh in meshes) {
-			mesh.transform.parent = rootEntitiesGroup.transform;
-		}
+            if (mesh.name != "Embryo")
+            {
+                if (mesh.transform.Find("tube1") != null)
+                {
+                    // replace the name
+                    mesh.transform.Find("tube1").name = mesh.name;
+
+                    // add the collider
+                    MeshCollider meshc = mesh.transform.Find(mesh.name).gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
+                    meshc.sharedMesh = mesh.transform.Find(mesh.name).gameObject.GetComponent<MeshFilter>().sharedMesh;
+                }
+                else if (mesh.transform.Find("foo") != null)
+                {
+                    mesh.transform.Find("foo").name = mesh.name;
+                    MeshCollider meshc = mesh.transform.Find(mesh.name).gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
+                    meshc.sharedMesh = mesh.transform.Find(mesh.name).gameObject.GetComponent<MeshFilter>().sharedMesh;
+                }
+            }
+
+            mesh.transform.parent = rootEntitiesGroup.transform;
+        }
 		foreach (GameObject textMesh in currentBillboardTextMeshes) {
 			textMesh.transform.parent = rootEntitiesGroup.transform;
 		}
-
-//		if (hasAVL) {
-//			ContextMenu.transform.position = new Vector3 (avlPos.x + 25.0f, avlPos.y - 15.0f, avlPos.z);
-//			ContextMenu.SetActive (true);
-//
-//		}
+   
 	}
 
 	private void addCellGeometries() {
@@ -395,7 +407,7 @@ public class Window3DController {
 			bool hasColor = false;
 			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
 				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ()) && !TractTour_NerveRing_rule_cells_CELLONLY [k]) {
+					if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
 						// add the color
 						hasColor = true;
 
@@ -407,6 +419,8 @@ public class Window3DController {
 				}
 			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
 				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
+                    if (go.name.ToLower().Equals("embryo")) { continue; }
+
 					if (go.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ())) {
 						hasColor = true;
 						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
@@ -506,10 +520,6 @@ public class Window3DController {
 	}
 
 	public void Update() {
-		foreach (GameObject b_GO in currentBillboardTextMeshes) {
-			//Debug.Log ("looking toward VR cam");
-			b_GO.transform.LookAt (PerspectiveCam.transform);
-			b_GO.transform.Rotate(new Vector3(0, 180, 0));
-		}
+	
 	}
 }

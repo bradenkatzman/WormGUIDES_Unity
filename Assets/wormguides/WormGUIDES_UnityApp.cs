@@ -39,6 +39,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	private string REG = "Root Entities Group";
 
+    public TextMesh entityLabel;
+
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
@@ -81,6 +83,7 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 			this.timeText, this.colorSchemeDropdown);
 		rlc.addCameras (this.PerspectiveCam);
 		rlc.setColorScheme (this.CS);
+        rlc.setEntityLabel(entityLabel);
 	}
 
 	public GameObject getWormGUIDES_Unity() {
