@@ -68,6 +68,9 @@ public class RootLayoutController : MonoBehaviour {
     private int xScale, yScale, zScale;
     private int offsetX, offsetY, offsetZ;
 
+    private bool complexGeometryClicked;
+    private string entityLabelLineageNameRef;
+
     void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 
@@ -94,6 +97,8 @@ public class RootLayoutController : MonoBehaviour {
         rotX = 0;
         rotY = 0;
         currPos = new Vector3(0, 0, 0);
+        complexGeometryClicked = false;
+        entityLabelLineageNameRef = "";
     }
 
 	//
@@ -254,7 +259,7 @@ public class RootLayoutController : MonoBehaviour {
         // only apply mouse rotation and scroll if the slider is not currently selected
         if (!timeSlider.GetComponent<SliderScript>().isSelect())
         {
-            // left click - for rotation
+            // left click and hold - for rotation
             if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
             {
                 if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
@@ -270,8 +275,8 @@ public class RootLayoutController : MonoBehaviour {
                 }
             }
 
-            // right click, for label
-            if (!Input.GetMouseButton(0) && Input.GetMouseButton(1))
+            // left click, for label
+            if (Input.GetMouseButtonDown(0))
             {
                 // check if entity clicked
                 RaycastHit hitInfo = new RaycastHit();
@@ -282,7 +287,8 @@ public class RootLayoutController : MonoBehaviour {
                     if (entityLabel.gameObject.activeSelf)
                     {
                         // check if this is a click on the same object
-                        if (entityLabel.GetComponent<TextMesh>().text == hitInfo.transform.gameObject.name)
+                        if (entityLabel.GetComponent<TextMesh>().text == hitInfo.transform.gameObject.name
+                            || PartsList.getLineageNameByTerminalName(entityLabel.GetComponent<TextMesh>().text)  == hitInfo.transform.gameObject.name)
                         {
                             // turn off the label
                             entityLabel.gameObject.SetActive(false);
@@ -297,26 +303,27 @@ public class RootLayoutController : MonoBehaviour {
 
                             // not doing anything for this now, but that comment explains how the complex geometry (MCS stuff - not stuff that's
                             // a single cell's body) works
+                            entityLabelLineageNameRef = hitInfo.transform.gameObject.name;
+                            entityLabel.GetComponent<TextMesh>().text = PartsList.getTerminalNameByLineageName(hitInfo.transform.gameObject.name);
+
+                            // no difference here yet
                             if (hitInfo.transform.childCount == 0)
                             {
-                                entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                                complexGeometryClicked = false;
                                 entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
                             } else
                             {
-                                // more complex geometry
-                                entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                                // set the complex geometry flag
+                                complexGeometryClicked = true;
+
                                 entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
                             }
-
-                            
-
-
                         }
                     }
                     else
                     {
-                        // set up the label and turn it on
-                        entityLabel.GetComponent<TextMesh>().text = hitInfo.transform.gameObject.name;
+                        entityLabelLineageNameRef = hitInfo.transform.gameObject.name;
+                        entityLabel.GetComponent<TextMesh>().text = PartsList.getTerminalNameByLineageName(hitInfo.transform.gameObject.name);
                         entityLabel.transform.position = hitInfo.transform.gameObject.transform.position;
                         entityLabel.gameObject.SetActive(true);
                     }
@@ -324,7 +331,7 @@ public class RootLayoutController : MonoBehaviour {
             }
 
 
-            // double click - for translation
+            // double click and hold - for translation
             if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
             {
                 if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
@@ -373,10 +380,10 @@ public class RootLayoutController : MonoBehaviour {
             entityLabel.gameObject.transform.LookAt(PerspectiveCam.transform);
             entityLabel.gameObject.transform.Rotate(Vector3.up, 180);
 
-            Transform entity = window3d.getRootEntitiesGroup().transform.Find(entityLabel.GetComponent<TextMesh>().text);
+            Transform entity = window3d.getRootEntitiesGroup().transform.Find(entityLabelLineageNameRef); // this will help account for terminal names which are used more than once
             if (entity != null)
             {
-                // keep the label stuck to the entity
+                 //keep the label stuck to the entity
                 entityLabel.transform.position = entity.position;
             } else
             {

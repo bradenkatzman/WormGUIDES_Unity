@@ -3,3 +3,5 @@ Builds/
 obj/
 Assets/Plugins/iOS/libgvrunity.a
 360_images/
+.vs/*
+.vs/WormGUIDES_Unity/

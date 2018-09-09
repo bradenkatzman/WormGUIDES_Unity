@@ -73,6 +73,42 @@ public static class PartsList {
 		return ct;
 	}
 
+    public static string getTerminalNameByLineageName(string cell)
+    {
+        if (cell.Length == 0)
+        {
+            return cell;
+        }
+
+        string terminalName = cell;
+        for (int i = 0; i < lineageNames.Count; i++)
+        {
+            if (lineageNames[i].ToLower().Equals(cell.ToLower())) {
+                return functionalNames[i];
+            }
+        }
+
+        return terminalName;
+    }
+
+    public static string getLineageNameByTerminalName(string cell)
+    {
+        if (cell.Length == 0)
+        {
+            return cell;
+        }
+
+        string lineageName = cell;
+        for (int i = 0; i < functionalNames.Count; i++) {
+            if (functionalNames[i].ToLower().Equals(cell.ToLower()))
+            {
+                return lineageNames[i];
+            }
+        }
+
+        return lineageName;
+    }
+
 	private class CustomTuple {
 		private int lineageNameIdx;
 		private bool isParentOfPartsListEntry;
