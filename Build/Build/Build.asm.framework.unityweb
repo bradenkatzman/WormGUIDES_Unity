@@ -1226,7 +1226,7 @@ function _emscripten_asm_const_id(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 1831280;
+STATICTOP = STATIC_BASE + 1830976;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_AccessibilityScriptingClasses_cpp();
@@ -2769,7 +2769,7 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
-  __GLOBAL__sub_I_Thread_cpp_44993();
+  __GLOBAL__sub_I_Thread_cpp_12152();
  })
 }, {
  func: (function() {
@@ -2793,7 +2793,7 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
-  __GLOBAL__sub_I_Assembly_cpp_45480();
+  __GLOBAL__sub_I_Assembly_cpp_12636();
  })
 }, {
  func: (function() {
@@ -2801,11 +2801,7 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
-  __GLOBAL__sub_I_Runtime_cpp_46018();
- })
-}, {
- func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
+  __GLOBAL__sub_I_Runtime_cpp_13164();
  })
 }, {
  func: (function() {
@@ -2822,6 +2818,10 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Path_cpp();
+ })
+}, {
+ func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 });
 memoryInitializer = "build.js.mem";
@@ -16417,11 +16417,6 @@ function nullFunc_viiiiiiiiiiiiiii(x) {
  Module["printErr"]("Build with ASSERTIONS=2 for more info.");
  abort(x);
 }
-function nullFunc_viiiiiiiiiiiiiiiiii(x) {
- Module["printErr"]("Invalid function pointer called with signature 'viiiiiiiiiiiiiiiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");
- Module["printErr"]("Build with ASSERTIONS=2 for more info.");
- abort(x);
-}
 function nullFunc_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii(x) {
  Module["printErr"]("Invalid function pointer called with signature 'viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");
  Module["printErr"]("Build with ASSERTIONS=2 for more info.");
@@ -17691,14 +17686,6 @@ function invoke_viiiiiiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,
   Module["setThrew"](1, 0);
  }
 }
-function invoke_viiiiiiiiiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18) {
- try {
-  Module["dynCall_viiiiiiiiiiiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18);
- } catch (e) {
-  if (typeof e !== "number" && e !== "longjmp") throw e;
-  Module["setThrew"](1, 0);
- }
-}
 function invoke_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34) {
  try {
   Module["dynCall_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34);
@@ -17885,7 +17872,6 @@ Module.asmLibraryArg = {
  "nullFunc_viiiiiiiiiiiii": nullFunc_viiiiiiiiiiiii,
  "nullFunc_viiiiiiiiiiiiii": nullFunc_viiiiiiiiiiiiii,
  "nullFunc_viiiiiiiiiiiiiii": nullFunc_viiiiiiiiiiiiiii,
- "nullFunc_viiiiiiiiiiiiiiiiii": nullFunc_viiiiiiiiiiiiiiiiii,
  "nullFunc_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii": nullFunc_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii,
  "invoke_di": invoke_di,
  "invoke_diddi": invoke_diddi,
@@ -18045,7 +18031,6 @@ Module.asmLibraryArg = {
  "invoke_viiiiiiiiiiiii": invoke_viiiiiiiiiiiii,
  "invoke_viiiiiiiiiiiiii": invoke_viiiiiiiiiiiiii,
  "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii,
- "invoke_viiiiiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiiiiii,
  "invoke_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii,
  "_IMG_Load": _IMG_Load,
  "_IMG_Load_RW": _IMG_Load_RW,
@@ -18708,11 +18693,11 @@ asm["__GLOBAL__sub_I_Assembly_cpp"] = (function() {
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
  return real___GLOBAL__sub_I_Assembly_cpp.apply(null, arguments);
 });
-var real___GLOBAL__sub_I_Assembly_cpp_45480 = asm["__GLOBAL__sub_I_Assembly_cpp_45480"];
-asm["__GLOBAL__sub_I_Assembly_cpp_45480"] = (function() {
+var real___GLOBAL__sub_I_Assembly_cpp_12636 = asm["__GLOBAL__sub_I_Assembly_cpp_12636"];
+asm["__GLOBAL__sub_I_Assembly_cpp_12636"] = (function() {
  assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
- return real___GLOBAL__sub_I_Assembly_cpp_45480.apply(null, arguments);
+ return real___GLOBAL__sub_I_Assembly_cpp_12636.apply(null, arguments);
 });
 var real___GLOBAL__sub_I_AssetBundleFileSystem_cpp = asm["__GLOBAL__sub_I_AssetBundleFileSystem_cpp"];
 asm["__GLOBAL__sub_I_AssetBundleFileSystem_cpp"] = (function() {
@@ -20016,11 +20001,11 @@ asm["__GLOBAL__sub_I_Runtime_cpp"] = (function() {
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
  return real___GLOBAL__sub_I_Runtime_cpp.apply(null, arguments);
 });
-var real___GLOBAL__sub_I_Runtime_cpp_46018 = asm["__GLOBAL__sub_I_Runtime_cpp_46018"];
-asm["__GLOBAL__sub_I_Runtime_cpp_46018"] = (function() {
+var real___GLOBAL__sub_I_Runtime_cpp_13164 = asm["__GLOBAL__sub_I_Runtime_cpp_13164"];
+asm["__GLOBAL__sub_I_Runtime_cpp_13164"] = (function() {
  assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
- return real___GLOBAL__sub_I_Runtime_cpp_46018.apply(null, arguments);
+ return real___GLOBAL__sub_I_Runtime_cpp_13164.apply(null, arguments);
 });
 var real___GLOBAL__sub_I_Shader_cpp = asm["__GLOBAL__sub_I_Shader_cpp"];
 asm["__GLOBAL__sub_I_Shader_cpp"] = (function() {
@@ -20118,11 +20103,11 @@ asm["__GLOBAL__sub_I_Thread_cpp"] = (function() {
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
  return real___GLOBAL__sub_I_Thread_cpp.apply(null, arguments);
 });
-var real___GLOBAL__sub_I_Thread_cpp_44993 = asm["__GLOBAL__sub_I_Thread_cpp_44993"];
-asm["__GLOBAL__sub_I_Thread_cpp_44993"] = (function() {
+var real___GLOBAL__sub_I_Thread_cpp_12152 = asm["__GLOBAL__sub_I_Thread_cpp_12152"];
+asm["__GLOBAL__sub_I_Thread_cpp_12152"] = (function() {
  assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
  assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
- return real___GLOBAL__sub_I_Thread_cpp_44993.apply(null, arguments);
+ return real___GLOBAL__sub_I_Thread_cpp_12152.apply(null, arguments);
 });
 var real___GLOBAL__sub_I_TilemapScriptingClasses_cpp = asm["__GLOBAL__sub_I_TilemapScriptingClasses_cpp"];
 asm["__GLOBAL__sub_I_TilemapScriptingClasses_cpp"] = (function() {
@@ -21325,7 +21310,7 @@ var __GLOBAL__sub_I_AnimationScriptingClasses_cpp = Module["__GLOBAL__sub_I_Anim
 var __GLOBAL__sub_I_AppDomain_cpp = Module["__GLOBAL__sub_I_AppDomain_cpp"] = asm["__GLOBAL__sub_I_AppDomain_cpp"];
 var __GLOBAL__sub_I_ArrayMetadata_cpp = Module["__GLOBAL__sub_I_ArrayMetadata_cpp"] = asm["__GLOBAL__sub_I_ArrayMetadata_cpp"];
 var __GLOBAL__sub_I_Assembly_cpp = Module["__GLOBAL__sub_I_Assembly_cpp"] = asm["__GLOBAL__sub_I_Assembly_cpp"];
-var __GLOBAL__sub_I_Assembly_cpp_45480 = Module["__GLOBAL__sub_I_Assembly_cpp_45480"] = asm["__GLOBAL__sub_I_Assembly_cpp_45480"];
+var __GLOBAL__sub_I_Assembly_cpp_12636 = Module["__GLOBAL__sub_I_Assembly_cpp_12636"] = asm["__GLOBAL__sub_I_Assembly_cpp_12636"];
 var __GLOBAL__sub_I_AssetBundleFileSystem_cpp = Module["__GLOBAL__sub_I_AssetBundleFileSystem_cpp"] = asm["__GLOBAL__sub_I_AssetBundleFileSystem_cpp"];
 var __GLOBAL__sub_I_AssetBundleScriptingClasses_cpp = Module["__GLOBAL__sub_I_AssetBundleScriptingClasses_cpp"] = asm["__GLOBAL__sub_I_AssetBundleScriptingClasses_cpp"];
 var __GLOBAL__sub_I_AudioScriptingClasses_cpp = Module["__GLOBAL__sub_I_AudioScriptingClasses_cpp"] = asm["__GLOBAL__sub_I_AudioScriptingClasses_cpp"];
@@ -21543,7 +21528,7 @@ var __GLOBAL__sub_I_Runtime_VirtualFileSystem_1_cpp = Module["__GLOBAL__sub_I_Ru
 var __GLOBAL__sub_I_Runtime_VirtualFileSystem_ArchiveFileSystem_0_cpp = Module["__GLOBAL__sub_I_Runtime_VirtualFileSystem_ArchiveFileSystem_0_cpp"] = asm["__GLOBAL__sub_I_Runtime_VirtualFileSystem_ArchiveFileSystem_0_cpp"];
 var __GLOBAL__sub_I_Runtime_VirtualFileSystem_MemoryFileSystem_0_cpp = Module["__GLOBAL__sub_I_Runtime_VirtualFileSystem_MemoryFileSystem_0_cpp"] = asm["__GLOBAL__sub_I_Runtime_VirtualFileSystem_MemoryFileSystem_0_cpp"];
 var __GLOBAL__sub_I_Runtime_cpp = Module["__GLOBAL__sub_I_Runtime_cpp"] = asm["__GLOBAL__sub_I_Runtime_cpp"];
-var __GLOBAL__sub_I_Runtime_cpp_46018 = Module["__GLOBAL__sub_I_Runtime_cpp_46018"] = asm["__GLOBAL__sub_I_Runtime_cpp_46018"];
+var __GLOBAL__sub_I_Runtime_cpp_13164 = Module["__GLOBAL__sub_I_Runtime_cpp_13164"] = asm["__GLOBAL__sub_I_Runtime_cpp_13164"];
 var __GLOBAL__sub_I_Shader_cpp = Module["__GLOBAL__sub_I_Shader_cpp"] = asm["__GLOBAL__sub_I_Shader_cpp"];
 var __GLOBAL__sub_I_ShapeModule_cpp = Module["__GLOBAL__sub_I_ShapeModule_cpp"] = asm["__GLOBAL__sub_I_ShapeModule_cpp"];
 var __GLOBAL__sub_I_SkinnedMeshRendererManager_cpp = Module["__GLOBAL__sub_I_SkinnedMeshRendererManager_cpp"] = asm["__GLOBAL__sub_I_SkinnedMeshRendererManager_cpp"];
@@ -21560,7 +21545,7 @@ var __GLOBAL__sub_I_TerrainScriptingClasses_cpp = Module["__GLOBAL__sub_I_Terrai
 var __GLOBAL__sub_I_TextRenderingScriptingClasses_cpp = Module["__GLOBAL__sub_I_TextRenderingScriptingClasses_cpp"] = asm["__GLOBAL__sub_I_TextRenderingScriptingClasses_cpp"];
 var __GLOBAL__sub_I_ThreadImpl_cpp = Module["__GLOBAL__sub_I_ThreadImpl_cpp"] = asm["__GLOBAL__sub_I_ThreadImpl_cpp"];
 var __GLOBAL__sub_I_Thread_cpp = Module["__GLOBAL__sub_I_Thread_cpp"] = asm["__GLOBAL__sub_I_Thread_cpp"];
-var __GLOBAL__sub_I_Thread_cpp_44993 = Module["__GLOBAL__sub_I_Thread_cpp_44993"] = asm["__GLOBAL__sub_I_Thread_cpp_44993"];
+var __GLOBAL__sub_I_Thread_cpp_12152 = Module["__GLOBAL__sub_I_Thread_cpp_12152"] = asm["__GLOBAL__sub_I_Thread_cpp_12152"];
 var __GLOBAL__sub_I_TilemapScriptingClasses_cpp = Module["__GLOBAL__sub_I_TilemapScriptingClasses_cpp"] = asm["__GLOBAL__sub_I_TilemapScriptingClasses_cpp"];
 var __GLOBAL__sub_I_TrailRenderer_cpp = Module["__GLOBAL__sub_I_TrailRenderer_cpp"] = asm["__GLOBAL__sub_I_TrailRenderer_cpp"];
 var __GLOBAL__sub_I_TransformFeedbackSkinning_cpp = Module["__GLOBAL__sub_I_TransformFeedbackSkinning_cpp"] = asm["__GLOBAL__sub_I_TransformFeedbackSkinning_cpp"];
@@ -21920,7 +21905,6 @@ var dynCall_viiiiiiiiiiii = Module["dynCall_viiiiiiiiiiii"] = asm["dynCall_viiii
 var dynCall_viiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiii"] = asm["dynCall_viiiiiiiiiiiii"];
 var dynCall_viiiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiiii"] = asm["dynCall_viiiiiiiiiiiiii"];
 var dynCall_viiiiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiiiii"] = asm["dynCall_viiiiiiiiiiiiiii"];
-var dynCall_viiiiiiiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiiiiiiii"] = asm["dynCall_viiiiiiiiiiiiiiiiii"];
 var dynCall_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"] = asm["dynCall_viiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"];
 Module["asm"] = asm;
 if (!Module["intArrayFromString"]) Module["intArrayFromString"] = (function() {

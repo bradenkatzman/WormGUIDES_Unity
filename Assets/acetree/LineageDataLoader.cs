@@ -31,7 +31,7 @@ public class LineageDataLoader {
 	/*
 	 * 
 	 */ 
-	public static LineageData loadNucFiles(RulesLists rulesLists) {
+	public static LineageData loadNucFiles() {
 		// initialize lineage data
 		LineageData ld = new LineageData();
 		ld.setAllCellNames (allCellNames);
@@ -46,8 +46,6 @@ public class LineageDataLoader {
 				Debug.Log ("Could not find file: " + urlStr);
 			}
 		}
-
-		processAllMaterials (ld, rulesLists);
 
 		// translate all cells to center around (0,0,0)
 		setOriginToZero(ld);
@@ -99,12 +97,6 @@ public class LineageDataLoader {
 			}
 		} else {
 			Debug.Log ("couldn't find file: " + FilePath);
-		}
-	}
-
-	private static void processAllMaterials(LineageData ld, RulesLists rulesLists) {
-		for (int i = 1; i <= ProductionInfo.getTotalTimePoints (); i++) {
-			ld.addMaterialsForFrame (i, rulesLists);
 		}
 	}
 

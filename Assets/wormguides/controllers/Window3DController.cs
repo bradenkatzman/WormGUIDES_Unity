@@ -40,64 +40,23 @@ public class Window3DController {
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
 
-	// context menu
-//	private bool hasAVL;
-//	private Vector3 avlPos;
 
-	/*
-	 * Cells or keywords with associated color rules
-	 */ 
-			// 1. Tract Tour, Nerve Ring
-	private string[] TractTour_NerveRing_rule_cells = new string[]{
-		"ABplpaaaaaa", "ABplppaaaaa", "ABprppaaaaa", "ABprpapppap", "ABalpapaaaa", "ABarappaaaa", "ABprpappaaa", "ABplpapaaaa", "ABprpapaaaa",
-        "ABplpapaaap", "ABprpapaaap", "ABplppappaaa", "ABprppappaa" , "ABplpappppa", "ABprppppapp", "ABalapppaaa", "ABplpaapppa", "ABprpaapppa",
-        "ABplppaappa", "ABalpppapav", "ABpraaaapav", "ABplppaapap", "ABprppaapap", "ABalaaapalr", "ABalaaapprl", "ABalpapapaa", "ABarappapaa",
-        "ABplapaaapp", "ABprapaaapp", "ABplapaaaapp", "ABprapaaaapp", "ABplapaaapav", "ABprapaaapav", "ABarppaappp", "ABarpppappp", "ABalpapapapp",
-        "ABarappapapp", "ABplpppaapp", "ABprpppaapp", "ABplapppappa", "ABprapppappa", "ABplapppappp", "ABprapppappp", "ceh-37 amphid", "embryo"};
+    private string[] tract_names = new string[]{
+        "nerve_ring_anterior", "ventral_sensory_left", "ventral_sensory_right", "nerve_ring_left",
+        "nerve_ring_left_base", "amphid_right", "amphid_left", "nerve_ring_right_base",
+        "nerve_ring_right", "VNC_left", "VNC_right"};
 
-			// 2. Lineage and Spatial Relationships (color only applies to primitive cell shapes
-	private string[] LineageSpatialRelationships_rule_cells = new string[] {
-    "E", "MS", "D", "C", "P4", "ABal", "ABar", "ABpl", "ABpr", "Z2", "Z3"};
-
-			// 3. Neuronal Cell Positions
-	private string[] NeuronalCellPositions_keywords = new string[] {
-		};
-			// 4. Tissue Types
-	private string[] TissueTypes_keywords = new string[] {
-		};
-	// ** end cells/keywords
-
-	// string vars
-	private string[] tract_names = new string[]{
-		};
-
-	private string[] billboard_misc_geometry_names = new string[]{};
-
-
-	/*
+    /*
 	 * Color Schemes
-	 */ 
-	private ColorScheme CS;
-			// 1. Tract Tour, Nerve Ring
-	private Material[] TractTour_NerveRing_rule_materials;
-
-
-			// 2. Lineage and Spatial Relationships
-	private Material[] LineageSpatialRelationships_rule_materials;
-
-			// 3. Neuronal Cell Positions
-	private Material[] NeuronalCellPositions_rule_materials;
-
-			// 4. Tissue Types
-	private Material[] TissueTypes_rule_materials;
-
+	 */
+    private ColorScheme CS;
 			//defaults
 	private Material[] DefaultMaterials;
 	private int DEFAULT_MATERIAL_IDX = 0;
 	private int DEFAULT_MATERIAL_TRACTS_IDX = 1;
 	private int MISCELLANEOUS_GEOMETRY_MATERIAL_IDX = 2;
 	// ** end color schemes
-
+    
 	// billboard stuff
 	private static string BillboardStr = "Billboard";
 	private static string SPACE = " ";
@@ -106,10 +65,6 @@ public class Window3DController {
 		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
 		Camera pc,
 		int offX, int offY, int offZ,
-		Material[] Tt_Nr_materials,
-		Material[] Lsr_materials,
-		Material[] ncp_materials,
-		Material[] tt_materials,
 		Material[] defMaterials,
 		ColorScheme cs_) {
 		this.xScale = xS;
@@ -126,10 +81,6 @@ public class Window3DController {
 		this.offsetY = offY;
 		this.offsetZ = offZ;
 
-		this.TractTour_NerveRing_rule_materials = Tt_Nr_materials;
-		this.LineageSpatialRelationships_rule_materials = Lsr_materials;
-		this.NeuronalCellPositions_rule_materials = ncp_materials;
-		this.TissueTypes_rule_materials = tt_materials;
 		this.DefaultMaterials = defMaterials;
 //		this.textMaterial = tMaterial;
 
@@ -152,7 +103,11 @@ public class Window3DController {
 		currentBillboardTextMeshes = new List<GameObject> ();
 
 		rootEntitiesGroup = new GameObject ();
-	}
+
+        //List<List<string>> test1 = UrlParser.parseUrlRules("http://scene.wormguides.org/wormguides/testurlscript?/set/saavl-n$@+#ffff0000/sibd-n$@+#ffe6ccff/avg-n$@+#ffffff00/rip-n$@+#ff99cc99/rih-n$@+#ff99cc99/smdd-n$@+#ff4d66cc/aiy-n$@+#ffff9900/rig-n$@+#fff90557/pvt-n$@+#ffffffff/dva-n$@+#ffffb366/ala-n$@+#ff01c501/aim-n$@+#ffffff66/aial-n$@+#ff8066cc/afd-n$@+#ff4de6e2/rim-n$@+#ffb399ff/avd-n$@+#ffff9980/CEH-37=Amphid=Multicellular=Structure-H+#ff994d66/rmdd-n$@+#ff664db3/rmg-n$@+#ffffffff/ada-n$@+#ffffffff/aiz-n$@+#ffffffff/bdu-n$@+#ffffffff/smbd-n$@+#ffffffff/pha-n$@+#ffffffff/hsn-n$@+#ffffffff/phb-n$@+#ffffffff/Embryo=Outline-M+#4a00f2ff/Hypoderm-M+#033381aa/view/time=360/rX=28.0/rY=-4.0/rZ=0.0/tX=-14.0/tY=18.0/scale=2.75/dim=0.3/browser/");
+        //List <List<string>> test2 = UrlParser.parseUrlRules();
+
+    }
 
 	// called by RootLayoutController to render the scene
 	public GameObject renderScene(int time) {
@@ -169,10 +124,6 @@ public class Window3DController {
 		rootEntitiesGroup = new GameObject ();
 		rootEntitiesGroup.name = "Root Entities Group";
 
-		// temp
-//		this.hasAVL = false;
-//		this.ContextMenu.SetActive (false);
-
 		// clear note sprites and overlays here if they are integrated at some point
 
 		// handle orientation indicator rotation here
@@ -181,17 +132,6 @@ public class Window3DController {
 	private void getSceneData(int time) {
 		// get cell names, positions, diameters and spheres
 		cellNames = new List<string>(lineageData.getNames(time));
-
-		if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
-			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TourTract_NerveRing);
-		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
-			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.LineageSpatialRelationships);
-		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
-			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.NeuronalCellPositions);
-		} else if (CS.getColorScheme ().Equals (ColorScheme.CS.TissueTypes)) {
-			cellSphereMaterials = lineageData.getMaterials (time, ColorScheme.CS.TissueTypes);
-		}
-
 
 		positions = new List<double[]>();
 		foreach (double[] position in lineageData.getPositions (time)) {
@@ -251,22 +191,7 @@ public class Window3DController {
 			float[] arrow_pos = new float[3];
 			// determine if this billboard has geometry instead of text
 			bool miscGeometry = false;
-			foreach (string name in billboard_misc_geometry_names) {
-				if (name.ToLower ().Equals (b.getBillboardText ().ToLower ())) {
-					b_GO = GeometryLoader.loadObj (billboardsList.getMiscGeoPathStr() + b.getBillboardText ());
-					if (b_GO != null) {
-						miscGeometry = true;
-						if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
-							GameObject arrow_child = b_GO.transform.GetChild (0).gameObject;
-							arrow_child.transform.localScale += new Vector3 (9, 9, 9);
-							arrow_child.transform.eulerAngles = new Vector3 (0, 0, 90);
-							foreach (Renderer rend in b_GO.GetComponentsInChildren<Renderer>()) {
-								rend.material = DefaultMaterials [MISCELLANEOUS_GEOMETRY_MATERIAL_IDX];
-							}
-						}
-					}
-				}
-			}
+
 
 			// create text billboard if standard billboard
 			if (!miscGeometry) {
@@ -279,25 +204,13 @@ public class Window3DController {
 			}
 
 			if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Static)) {
-				if (b.getBillboardText().ToLower().Equals ("Nose Tip".ToLower())) {
-					float[] xyzLocation = b.getXYZLocation ();
-					b_GO.transform.position = new Vector3 (
-						xyzLocation [X_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_X,
-						xyzLocation [Y_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Y,
-						xyzLocation [Z_COR_IDX] + BillboardsList.NOSE_TIP_OFFSET_Z
-					);
-				} else {
+				 
 					float[] xyzLocation = b.getXYZLocation ();
 					b_GO.transform.position = new Vector3 (
 						xyzLocation [X_COR_IDX],
 						xyzLocation [Y_COR_IDX],
 						xyzLocation [Z_COR_IDX]
 					);
-
-					if (b.getBillboardText ().ToLower ().Equals ("Arrow".ToLower ())) {
-						arrow_pos = xyzLocation;
-					}
-				}
 			} else if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Cell)) {
 				// find the position of the attachment cell
 				int idx = cellNames.IndexOf(billboardsAtCurrentTime[i].getAttachmentCell());
@@ -379,13 +292,47 @@ public class Window3DController {
 			// set cell name
 			sphere.name = cellName;
 
-			// add color
-			sphere.GetComponent<Renderer> ().material = cellSphereMaterials[i];
+            // add color
+            foreach (List<string> rule in CS.getCurrentRulesList())
+            {
+               
+               if (sphere.name.ToLower().Equals(rule[0].ToLower()) ||
+                    PartsList.getTerminalNameByLineageName(sphere.name).ToLower().StartsWith(rule[0].ToLower()))
+                {
+                    //Debug.Log("Applying color " + rule[3] + " to '" + rule[0] + "'");
+                    Color c = new Color();
+                    if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
+                    {
+                        sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                    } else
+                    {
+                        Debug.Log("color didn't work");
+                    }
+                }
 
-//			if (cellName.ToLower().Equals("ABprpappaap".ToLower())) {
-//				this.hasAVL = true;
-//				this.avlPos = sphere.transform.position;
-//			}
+                if (rule[2].Contains("A"))
+                {
+                   if (rule[0].ToLower().StartsWith(sphere.name.ToLower())) {
+                        Color c = new Color();
+                        if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
+                        {
+                            sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                        }
+                    }
+                }
+
+                if (rule[2].Contains("D"))
+                {
+                    // apply descendants
+                    if (sphere.name.ToLower().StartsWith(rule[0].ToLower())) {
+                        Color c = new Color();
+                        if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
+                        {
+                            sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                        }
+                    }
+                }
+            }
 
 			// add sphere to list
 			spheres.Add(sphere);
@@ -401,34 +348,55 @@ public class Window3DController {
 
 			go.name = meshNames [i];
 
-			// rule and coloring stuff will happen here
-
 			// add color
 			bool hasColor = false;
-			if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
-				for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
+
+            // iterate over rules and apply where applicable
+            foreach (List<string> rule in CS.getCurrentRulesList())
+            {
+                if (go.name.ToLower().Equals("embryo")) { continue;  }
+                if (go.name.ToLower().Equals(rule[0].ToLower()) || 
+                    PartsList.getTerminalNameByLineageName(go.name).ToLower().StartsWith(rule[0].ToLower()))
+                {
+                    hasColor = true;
+                    Color c = new Color();
+                    if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
+                    {
+                        foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
+                        {
+                            rend.material.SetColor("_Color", c);
+                        }
+                    }
+                }
+            }
+
+
+                //
+
+                //if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
+				//for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
+					//if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
 						// add the color
-						hasColor = true;
+						//hasColor = true;
 
 						// need to add the material to all of the components
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = TractTour_NerveRing_rule_materials [k];
-						}
-					}
-				}
-			} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
-				for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
-                    if (go.name.ToLower().Equals("embryo")) { continue; }
+						//foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+						//	rend.material = TractTour_NerveRing_rule_materials [k];
+						//}
+					//}
+				//}
+			//} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
+			//	for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
+              //      if (go.name.ToLower().Equals("embryo")) { continue; }
 
-					if (go.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ())) {
-						hasColor = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = LineageSpatialRelationships_rule_materials [k];
-						}
-					}
-				}
-			} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+			//		if (go.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ())) {
+			//			hasColor = true;
+			//			foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+			//				rend.material = LineageSpatialRelationships_rule_materials [k];
+			//			}
+			//		}
+			//	}
+			//} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
 //				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
 //					int descrMatchResults = PartsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
 //

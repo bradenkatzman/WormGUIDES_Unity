@@ -136,18 +136,6 @@ public class LineageData {
 	}
 
 	/*
-	 * 
-	 */ 
-	public void addMaterialsForFrame(int time, RulesLists rulesLists) {
-		if (time <= getNumberOfTimePoints ()) {
-			int idx = time - 1;
-
-			Frame frame = timeFrames [idx];
-			frame.addMaterials (rulesLists);
-		}
-	}
-
-	/*
 	 * TODO
 	 */ 
 	public int getFirstOccurenceOf(string name) {
@@ -227,16 +215,6 @@ public class LineageData {
 		// 
 		public void addDiameter(double diameter) {
 			diameters.Add (diameter);
-		}
-
-		public void addMaterials(RulesLists rulesLists) {
-			List<List<Material>> allMaterials = rulesLists.getAllRuleMaterialsForTimePoint (this.names);
-			if (allMaterials.Count == ApplicationModel.getNumColorSchemes ()) {
-				TractTour_NerveRing_materials = allMaterials [0];
-				LineageSpatialRelationships_materials = allMaterials [1];
-				NeuronalCellPositions_materials = allMaterials [2];
-				TissueTypes_materials = allMaterials [3];
-			}
 		}
 
 		// 

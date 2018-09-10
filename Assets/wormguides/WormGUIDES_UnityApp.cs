@@ -29,10 +29,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	private ColorScheme CS;
 
 	// materials for color schemes
-	public Material[] TractTour_NerveRing_rule_materials;
-	public Material[] LineageSpatialRelationships_rule_materials;
-	public Material[] NeuronalCellPositions_rule_materials;
-	public Material[] TissueTypes_rule_materials;
 	public Material[] DefaultMaterials;
 
 	public Material TextMaterial;
@@ -47,25 +43,8 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
         PartsList.initPartsList();
         ProductionInfo.initProductionInfo();
 
-        // first set the selected camera mode
-//        if (ApplicationModel.getCameraMode () == 0) {
-			//this.PerspectiveCam.enabled = false;
-//			this.Gvr_Perspective.SetActive(false);
-//			this.Gvr_EmbryoCenter.SetActive(true);
 
-			// default, do nothing
-
-//		} else if (ApplicationModel.getCameraMode () == 1) {
-//			this.Gvr_EmbryoCenter.SetActive(false);
-//			this.Gvr_Perspective.SetActive (true);
-			//this.PerspectiveCam.enabled = true;
-
-			// move the Gvr camera to the location of the perspective game
-			//this.Gvr_EmbryoCenter.transform.position = PerspectiveCam.transform.position;
-			//this.Gvr_EmbryoCenter.transform.rotation = PerspectiveCam.transform.rotation;
-//		}
-
-		CS = new ColorScheme (ColorScheme.CS.TourTract_NerveRing);
+		CS = new ColorScheme (0);
 		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
 
 		initRootLayout ();
@@ -88,22 +67,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 	public GameObject getWormGUIDES_Unity() {
 		return this.gameObject;
-	}
-
-	public Material[] getTractTourNerveRingRuleMaterials() {
-		return this.TractTour_NerveRing_rule_materials;
-	}
-
-	public Material[] getLineageSpatialRelationshipsRuleMaterials() {
-		return this.LineageSpatialRelationships_rule_materials;
-	}
-
-	public Material[] getNeuronalCellPositionsRuleMaterials() {
-		return this.NeuronalCellPositions_rule_materials;
-	}
-
-	public Material[] getTissueTypesRuleMaterials() {
-		return this.TissueTypes_rule_materials;
 	}
 
 	public Material[] getDefaultMaterials() {

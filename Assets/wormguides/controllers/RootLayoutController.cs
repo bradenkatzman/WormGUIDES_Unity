@@ -17,8 +17,6 @@ public class RootLayoutController : MonoBehaviour {
 
 	private ProductionInfo productionInfo;
 
-	private RulesLists rulesLists;
-
 	// class which holds all of the lineage data. All time points are loaded at app initialization
 	private LineageData lineageData;
 
@@ -73,8 +71,6 @@ public class RootLayoutController : MonoBehaviour {
 
     void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
-
-		initRulesList ();
 		initLineageData ();
 		initSceneElementsList ();
 		initBillboardsList ();
@@ -180,17 +176,9 @@ public class RootLayoutController : MonoBehaviour {
 
 	// load all of the lineage data into the LineageData class
 	private void initLineageData() {
-		this.lineageData = LineageDataLoader.loadNucFiles (rulesLists);
+		this.lineageData = LineageDataLoader.loadNucFiles ();
 	}
 
-	private void initRulesList() {
-		this.rulesLists = new RulesLists (
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTractTourNerveRingRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getLineageSpatialRelationshipsRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getNeuronalCellPositionsRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTissueTypesRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getDefaultMaterials ());
-	}
 
 	private void initSceneElementsList() {
 		this.elementsList = new SceneElementsList (lineageData);
@@ -217,10 +205,6 @@ public class RootLayoutController : MonoBehaviour {
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),
 			LineageDataLoader.getAvgZOffsetFromZero(),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTractTourNerveRingRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getLineageSpatialRelationshipsRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getNeuronalCellPositionsRuleMaterials (),
-			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getTissueTypesRuleMaterials (),
 			WormGUIDES_Unity.GetComponent<WormGUIDES_UnityApp> ().getDefaultMaterials (),
 			this.CS);
 	}
@@ -369,7 +353,7 @@ public class RootLayoutController : MonoBehaviour {
 
                 }
             }
-
+            
             prevScroll = 0;
         }
 
