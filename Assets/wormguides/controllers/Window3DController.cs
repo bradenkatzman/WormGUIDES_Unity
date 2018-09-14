@@ -104,9 +104,6 @@ public class Window3DController {
 
 		rootEntitiesGroup = new GameObject ();
 
-        //List<List<string>> test1 = UrlParser.parseUrlRules("http://scene.wormguides.org/wormguides/testurlscript?/set/saavl-n$@+#ffff0000/sibd-n$@+#ffe6ccff/avg-n$@+#ffffff00/rip-n$@+#ff99cc99/rih-n$@+#ff99cc99/smdd-n$@+#ff4d66cc/aiy-n$@+#ffff9900/rig-n$@+#fff90557/pvt-n$@+#ffffffff/dva-n$@+#ffffb366/ala-n$@+#ff01c501/aim-n$@+#ffffff66/aial-n$@+#ff8066cc/afd-n$@+#ff4de6e2/rim-n$@+#ffb399ff/avd-n$@+#ffff9980/CEH-37=Amphid=Multicellular=Structure-H+#ff994d66/rmdd-n$@+#ff664db3/rmg-n$@+#ffffffff/ada-n$@+#ffffffff/aiz-n$@+#ffffffff/bdu-n$@+#ffffffff/smbd-n$@+#ffffffff/pha-n$@+#ffffffff/hsn-n$@+#ffffffff/phb-n$@+#ffffffff/Embryo=Outline-M+#4a00f2ff/Hypoderm-M+#033381aa/view/time=360/rX=28.0/rY=-4.0/rZ=0.0/tX=-14.0/tY=18.0/scale=2.75/dim=0.3/browser/");
-        //List <List<string>> test2 = UrlParser.parseUrlRules();
-
     }
 
 	// called by RootLayoutController to render the scene
@@ -293,6 +290,7 @@ public class Window3DController {
 			sphere.name = cellName;
 
             // add color
+            bool hasColor = false;
             foreach (List<string> rule in CS.getCurrentRulesList())
             {
                
@@ -304,6 +302,7 @@ public class Window3DController {
                     if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
                     {
                         sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                        hasColor = true;
                     } else
                     {
                         Debug.Log("color didn't work");
@@ -317,6 +316,7 @@ public class Window3DController {
                         if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
                         {
                             sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                            hasColor = true;
                         }
                     }
                 }
@@ -329,9 +329,15 @@ public class Window3DController {
                         if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
                         {
                             sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                            hasColor = true;
                         }
                     }
                 }
+            }
+
+            if (!hasColor)
+            {
+                sphere.GetComponent<Renderer>().material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
             }
 
 			// add sphere to list
