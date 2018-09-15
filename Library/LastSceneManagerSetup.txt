@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/wormguides/unity_scenes/MainSceneReleaseStable.unity
-  isLoaded: 1
-  isActive: 1
