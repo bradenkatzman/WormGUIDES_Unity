@@ -251,10 +251,6 @@ public class LineageData {
 				return this.TractTour_NerveRing_materials;
 			} else if (cs.Equals(ColorScheme.CS.LineageSpatialRelationships)) {
 				return this.LineageSpatialRelationships_materials;
-			} else if (cs.Equals(ColorScheme.CS.NeuronalCellPositions)) {
-				return this.NeuronalCellPositions_materials;
-			} else if (cs.Equals(ColorScheme.CS.TissueTypes)) {
-				return this.TissueTypes_materials;
 			}
 			return new List<Material> ();
 		}

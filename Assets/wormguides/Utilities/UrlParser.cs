@@ -29,6 +29,11 @@ public class UrlParser
         String wholeColorString;
         String name;
 
+        List<string> entityNames = new List<string>();
+        List<string> ruleTypes = new List<string>();
+        List<string> optionsList = new List<string>();
+        List<string> colors = new List<string>();
+
         foreach (string ruleString in ruleStrings)
         {
             // temporary representation of rule
@@ -50,23 +55,22 @@ public class UrlParser
             {
                 // multicellular rules have a null SearchType
                 // parse SearchType args
-                // systematic/functional
+                // lineage
                 if (ruleString.IndexOf("-s") > -1)
                 {
                     types.Add("-s");
                     ruleType = "L"; // temporary representation
                 }
-                // lineage
+                // functional
                 if (ruleString.IndexOf("-n") > -1)
                 {
                     types.Add("-n");
                     ruleType = "F"; // temporary representation
                 }
-                // description
+                // description - NOT CURRENTLY SUPPORTED
                 if (ruleString.IndexOf("-d") > -1)
                 {
                     types.Add("-d");
-                    ruleType = "D"; // temporary representation
                 }
                 // gene - NOT CURRENTLY SUPPORTED
                 if (ruleString.IndexOf("-g") > -1)
@@ -187,12 +191,11 @@ public class UrlParser
                 if (!entityName.Equals("") && !ruleType.Equals("")
                     && !color.Equals(""))
                 {
-                    List<string> r = new List<string>();
-                    r.Add(entityName);
-                    r.Add(ruleType);
-                    r.Add(options);
-                    r.Add(color);
-                    rules.Add(r);
+                    
+                    entityNames.Add(entityName);
+                    ruleTypes.Add(ruleType);
+                    optionsList.Add(options);
+                    colors.Add(color);
                 }
             } // END TRY
             catch (System.IndexOutOfRangeException IOE)
@@ -200,6 +203,21 @@ public class UrlParser
                 Debug.Log("Invalid color rule format");
             }
         } // END FOREACH
+
+        // add the compiled rule data
+        // idx 0 - rule entity names
+        // idx 1 - rule types
+        // idx 2 - rule options
+        // idx 3 - rule colors
+        if (entityNames.Count != colors.Count || entityNames.Count != ruleTypes.Count || entityNames.Count != optionsList.Count)
+        {
+            Debug.Log("rule data arrays are not parallel");
+        }
+
+        rules.Add(entityNames);
+        rules.Add(ruleTypes);
+        rules.Add(optionsList);
+        rules.Add(colors);
 
         return rules;
 	}

@@ -109,6 +109,45 @@ public static class PartsList {
         return lineageName;
     }
 
+    // TODO - make this handle rules such as XXDL --> there could be a situation where you want to the rule to apply to all XXD, 
+    // but right now this will only give you the root XX so you can't distinguish among multiple appended division characters
+    public static string getTerminalNameRootByLineageName(string cell)
+    {
+        if (cell.Length == 0)
+        {
+            return cell;
+        }
+
+        string terminalName = getTerminalNameByLineageName(cell);
+
+        // now parse the terminal name for the root (i.e. everything before an L, R, D, V or #
+        for (int i = terminalName.Length-1; i >= 0; i--)
+        {
+            if (terminalName[i].Equals('L') || terminalName[i].Equals('R') || terminalName[i].Equals('D')
+                || terminalName[i].Equals('V') || System.Char.IsDigit(terminalName[i]))
+            {
+                continue; // keep moving back in the string
+            } else
+            {
+                // we've reached the end of the characters that are appended to the root terminal name. return the root
+                return terminalName.Substring(0, i+1);
+            }
+        }
+
+        // need this to avoid compiler errors
+        return "";
+    }
+
+    public static List<string> getLineageNames()
+    {
+        return lineageNames;
+    }
+
+    public static List<string> getFunctionalNames()
+    {
+        return functionalNames;
+    }
+
 	private class CustomTuple {
 		private int lineageNameIdx;
 		private bool isParentOfPartsListEntry;

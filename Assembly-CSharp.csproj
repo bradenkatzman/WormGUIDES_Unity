@@ -63,6 +63,9 @@
   <ItemGroup>
     <Compile Include="Assets\acetree\LineageData.cs" />
     <Compile Include="Assets\acetree\LineageDataLoader.cs" />
+    <Compile Include="Assets\wormguides\application_data\CellDeaths\CellDeaths.cs" />
+    <Compile Include="Assets\wormguides\application_data\Lineage\SulstonLineage.cs" />
+    <Compile Include="Assets\wormguides\application_data\PartsList\PartsList.cs" />
     <Compile Include="Assets\wormguides\controllers\PinchZoomController.cs" />
     <Compile Include="Assets\wormguides\controllers\RootLayoutController.cs" />
     <Compile Include="Assets\wormguides\controllers\Window3DController.cs" />
@@ -78,7 +81,6 @@
     <Compile Include="Assets\wormguides\models\subscenegeometry\BillboardsList.cs" />
     <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElement.cs" />
     <Compile Include="Assets\wormguides\models\subscenegeometry\SceneElementsList.cs" />
-    <Compile Include="Assets\wormguides\resources\PartsList.cs" />
     <Compile Include="Assets\wormguides\resources\ProductionInfo.cs" />
     <Compile Include="Assets\wormguides\Utilities\SliderScript.cs" />
     <Compile Include="Assets\wormguides\Utilities\UrlParser.cs" />
@@ -289,6 +291,7 @@
     <None Include="Assets\Resources\nucleifiles\t049-nuclei.txt" />
     <None Include="Assets\Resources\nucleifiles\t071-nuclei.txt" />
     <None Include="Assets\Resources\nucleifiles\t092-nuclei.txt" />
+    <None Include="Assets\Resources\celldeaths_file\CellDeaths.txt" />
     <None Include="Assets\Resources\nucleifiles\t345-nuclei.txt" />
     <None Include="Assets\Resources\nucleifiles\t137-nuclei.txt" />
     <None Include="Assets\Resources\nucleifiles\t230-nuclei.txt" />

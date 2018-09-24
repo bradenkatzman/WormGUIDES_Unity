@@ -69,12 +69,16 @@ public class RootLayoutController : MonoBehaviour {
     private bool complexGeometryClicked;
     private string entityLabelLineageNameRef;
 
+    int mouseHoldCounterHackRotation;
+    int mouseHoldCounterHackTranslation;
+
     void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 		initLineageData ();
 		initSceneElementsList ();
 		initBillboardsList ();
 		initPinchZoomController ();
+        initCellDeaths();
 		initWindow3DController ();
 
 		play = false;
@@ -95,6 +99,8 @@ public class RootLayoutController : MonoBehaviour {
         currPos = new Vector3(0, 0, 0);
         complexGeometryClicked = false;
         entityLabelLineageNameRef = "";
+
+        mouseHoldCounterHackRotation = 0;
     }
 
 	//
@@ -193,6 +199,11 @@ public class RootLayoutController : MonoBehaviour {
 		pzc.setCamera (this.PerspectiveCam);
 	}
 
+    private void initCellDeaths()
+    {
+        CellDeaths.init();
+    }
+
 	private void initWindow3DController() {
 		this.window3d = new Window3DController(
 			ProductionInfo.getXScale(),
@@ -246,6 +257,7 @@ public class RootLayoutController : MonoBehaviour {
             // left click and hold - for rotation
             if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
             {
+
                 if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
                 {
                     lastX = Input.GetAxis("Mouse X");
@@ -256,6 +268,7 @@ public class RootLayoutController : MonoBehaviour {
 
                     window3d.getRootEntitiesGroup().transform.Rotate(Vector3.up, -rotX, Space.World);
                     window3d.getRootEntitiesGroup().transform.Rotate(Vector3.right, rotY, Space.World);
+                    
                 }
             }
 
@@ -318,16 +331,18 @@ public class RootLayoutController : MonoBehaviour {
             // double click and hold - for translation
             if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
             {
-                if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
-                {
-                    float distance_to_screen = Camera.main.WorldToScreenPoint(window3d.getRootEntitiesGroup().transform.position).z;
-                    Vector3 currPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
-                    float step = speed * Time.deltaTime;
-                    window3d.getRootEntitiesGroup().transform.position = Vector3.MoveTowards(window3d.getRootEntitiesGroup().transform.position, currPos, step);
+                    if (lastX != Input.GetAxis("Mouse X") || lastY != Input.GetAxis("Mouse Y"))
+                    {
+                        float distance_to_screen = Camera.main.WorldToScreenPoint(window3d.getRootEntitiesGroup().transform.position).z;
+                        Vector3 currPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+                        float step = speed * Time.deltaTime;
+                        window3d.getRootEntitiesGroup().transform.position = Vector3.MoveTowards(window3d.getRootEntitiesGroup().transform.position, currPos, step);
 
-                    lastX = Input.GetAxis("Mouse X");
-                    lastY = Input.GetAxis("Mouse Y");
-                }
+                        lastX = Input.GetAxis("Mouse X");
+                        lastY = Input.GetAxis("Mouse Y");
+                    }
+
+                
             }
 
             float currScroll = Input.GetAxis("Mouse ScrollWheel");

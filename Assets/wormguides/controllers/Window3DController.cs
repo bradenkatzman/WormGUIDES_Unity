@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Window3DController {
@@ -20,7 +19,6 @@ public class Window3DController {
 	private List<GameObject> spheres;
 	private List<double[]> positions;
 	private List<double> diameters;
-	private List<Material> cellSphereMaterials;
 
 	private List<GameObject> meshes;
 	private List<string> meshNames;
@@ -43,7 +41,7 @@ public class Window3DController {
 
     private string[] tract_names = new string[]{
         "nerve_ring_anterior", "ventral_sensory_left", "ventral_sensory_right", "nerve_ring_left",
-        "nerve_ring_left_base", "amphid_right", "amphid_left", "nerve_ring_right_base",
+        "nerve_ring_left_base", "amphitimd_right", "amphid_left", "nerve_ring_right_base",
         "nerve_ring_right", "VNC_left", "VNC_right"};
 
     /*
@@ -156,8 +154,9 @@ public class Window3DController {
 		}
 
 		sceneElementsAtCurrentTime = sceneElementsList.getSceneElementsAtTime (time);
-        for (int i = 0; i < sceneElementsAtCurrentTime.Count; i++) {
-			SceneElement se = sceneElementsAtCurrentTime [i];
+        for (int i = 0; i < sceneElementsAtCurrentTime.Count; i++)
+        {
+            SceneElement se = sceneElementsAtCurrentTime [i];
 			GameObject go = se.buildGeometry (time - 1);
 			if (go != null) {
                 go.name = se.getSceneName();
@@ -290,51 +289,16 @@ public class Window3DController {
 			sphere.name = cellName;
 
             // add color
+            Dictionary<string, Color> rulesDict = CS.getCurrentColorSchemeDict();
             bool hasColor = false;
-            foreach (List<string> rule in CS.getCurrentRulesList())
-            {
-               
-               if (sphere.name.ToLower().Equals(rule[0].ToLower()) ||
-                    PartsList.getTerminalNameByLineageName(sphere.name).ToLower().StartsWith(rule[0].ToLower()))
-                {
-                    //Debug.Log("Applying color " + rule[3] + " to '" + rule[0] + "'");
-                    Color c = new Color();
-                    if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
-                    {
-                        sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
-                        hasColor = true;
-                    } else
-                    {
-                        Debug.Log("color didn't work");
-                    }
-                }
+            Color c;
 
-                if (rule[2].Contains("A"))
-                {
-                   if (rule[0].ToLower().StartsWith(sphere.name.ToLower())) {
-                        Color c = new Color();
-                        if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
-                        {
-                            sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
-                            hasColor = true;
-                        }
-                    }
-                }
-
-                if (rule[2].Contains("D"))
-                {
-                    // apply descendants
-                    if (sphere.name.ToLower().StartsWith(rule[0].ToLower())) {
-                        Color c = new Color();
-                        if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
-                        {
-                            sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
-                            hasColor = true;
-                        }
-                    }
-                }
+            // check if the entity has color
+            if (rulesDict.TryGetValue(sphere.name.ToLower(), out c)) {
+                sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+                hasColor = true;
             }
-
+       
             if (!hasColor)
             {
                 sphere.GetComponent<Renderer>().material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
@@ -354,55 +318,68 @@ public class Window3DController {
 
 			go.name = meshNames [i];
 
-			// add color
-			bool hasColor = false;
+            // add color
+            Dictionary<string, Color> rulesDict = CS.getCurrentColorSchemeDict();
+            bool hasColor = false;
+            Color c;
 
             // iterate over rules and apply where applicable
-            foreach (List<string> rule in CS.getCurrentRulesList())
+            if (rulesDict.TryGetValue(go.name.ToLower(), out c))
             {
-                if (go.name.ToLower().Equals("embryo")) { continue;  }
-                if (go.name.ToLower().Equals(rule[0].ToLower()) || 
-                    PartsList.getTerminalNameByLineageName(go.name).ToLower().StartsWith(rule[0].ToLower()))
+                foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
                 {
+                    rend.material.SetColor("_Color", c);
                     hasColor = true;
-                    Color c = new Color();
-                    if (ColorUtility.TryParseHtmlString(("#" + rule[3]), out c))
-                    {
-                        foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
-                        {
-                            rend.material.SetColor("_Color", c);
-                        }
-                    }
                 }
             }
 
 
-                //
+			if (!hasColor) {
+				bool isTract = false;
+				for (int k = 0; k < tract_names.Length; k++) {
+					if (go.name.ToLower ().Equals (tract_names [k].ToLower ())) {
+						isTract = true;
+						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+							rend.material = DefaultMaterials [DEFAULT_MATERIAL_TRACTS_IDX];
+						}
+						break;
+					}
+				}
+				if (!isTract) {
+					foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+						rend.material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
+					}
+				}
+			}
 
-                //if (CS.getColorScheme ().Equals (ColorScheme.CS.TourTract_NerveRing)) {
-				//for (int k = 0; k < TractTour_NerveRing_rule_cells.Length; k++) {
-					//if (go.name.ToLower ().Equals (TractTour_NerveRing_rule_cells [k].ToLower ())) {
-						// add the color
-						//hasColor = true;
+			meshes.Add (go);
+		}
+	}
 
-						// need to add the material to all of the components
-						//foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-						//	rend.material = TractTour_NerveRing_rule_materials [k];
-						//}
-					//}
-				//}
-			//} else if (CS.getColorScheme ().Equals (ColorScheme.CS.LineageSpatialRelationships)) {
-			//	for (int k = 0; k < LineageSpatialRelationships_rule_cells.Length; k++) {
-              //      if (go.name.ToLower().Equals("embryo")) { continue; }
+	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity) {
+		this.CS.setColorScheme (ColorScheme_IDX);
 
-			//		if (go.name.ToLower ().StartsWith (LineageSpatialRelationships_rule_cells [k].ToLower ())) {
-			//			hasColor = true;
-			//			foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-			//				rend.material = LineageSpatialRelationships_rule_materials [k];
-			//			}
-			//		}
-			//	}
-			//} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
+		GameObject reg = renderScene (ApplicationModel.getTime());
+		
+		reg.transform.parent = WormGUIDES_Unity.transform;
+	}
+
+	public GameObject getRootEntitiesGroup() {
+		return rootEntitiesGroup;
+	}
+
+	public void Update() {
+	
+	}
+}
+
+
+
+
+
+
+// -----------------------------------------------------------------------------------------------------------------------------------------
+//} //else if (CS.getColorScheme ().Equals (ColorScheme.CS.NeuronalCellPositions)) {
 //				for (int k = 0; !hasColor && k < NeuronalCellPositions_keywords.Length; k++) {
 //					int descrMatchResults = PartsList.findDescriptionMatch (go.name, NeuronalCellPositions_keywords [k]);
 //
@@ -457,43 +434,3 @@ public class Window3DController {
 //					}
 //				}
 //			}
-
-
-			if (!hasColor) {
-				bool isTract = false;
-				for (int k = 0; k < tract_names.Length; k++) {
-					if (go.name.ToLower ().Equals (tract_names [k].ToLower ())) {
-						isTract = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = DefaultMaterials [DEFAULT_MATERIAL_TRACTS_IDX];
-						}
-						break;
-					}
-				}
-				if (!isTract) {
-					foreach(Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-						rend.material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
-					}
-				}
-			}
-
-			meshes.Add (go);
-		}
-	}
-
-	public void updateColorScheme(int ColorScheme_IDX, GameObject WormGUIDES_Unity) {
-		this.CS.setColorScheme (ColorScheme_IDX);
-
-		GameObject reg = renderScene (ApplicationModel.getTime());
-		
-		reg.transform.parent = WormGUIDES_Unity.transform;
-	}
-
-	public GameObject getRootEntitiesGroup() {
-		return rootEntitiesGroup;
-	}
-
-	public void Update() {
-	
-	}
-}
