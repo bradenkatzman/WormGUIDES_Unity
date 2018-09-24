@@ -1,0 +1,14 @@
+{
+"companyName": "com.bao.appdev",
+"productName": "WormGUIDES",
+"dataUrl": "WebGL_Build_Firefox_Only.data.unityweb",
+"asmCodeUrl": "WebGL_Build_Firefox_Only.asm.code.unityweb",
+"asmMemoryUrl": "WebGL_Build_Firefox_Only.asm.memory.unityweb",
+"asmFrameworkUrl": "WebGL_Build_Firefox_Only.asm.framework.unityweb",
+"TOTAL_MEMORY": 2130706432,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "WebGL_Build_Firefox_Only.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF"
+}

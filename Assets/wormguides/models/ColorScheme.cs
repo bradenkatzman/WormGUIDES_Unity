@@ -49,6 +49,7 @@ public class ColorScheme
             || colorSchemeAsLists[0].Count != colorSchemeAsLists[2].Count
             || colorSchemeAsLists[0].Count != colorSchemeAsLists[3].Count)
         {
+            Debug.Log("non-parallel rule lists: " + colorSchemeAsLists[0].Count + ", " + colorSchemeAsLists[1].Count + ", " + colorSchemeAsLists[2].Count + ", " + colorSchemeAsLists[3].Count);
             return exhaustiveRulesDict;
         }
 
@@ -62,7 +63,7 @@ public class ColorScheme
             Color color = buildColorFromHex(colorSchemeAsLists[3][i]);
 
             // LINEAGE RULE UNPACKING
-            if (ruleType.ToLower().Equals("l")) // lineage rule
+            if (ruleType.ToLower().Contains("l")) // lineage rule
             {
 
                 // if ancestors or descendants are include, this will require a search
@@ -72,8 +73,8 @@ public class ColorScheme
 
                     for (int k = entityName.Length; k >= 0; k--)
                     {
-                        string substr = entityName.Substring(0, i);
-                        if (specialCases.Contains(substr))
+                        string substr = entityName.Substring(0, k);
+                        if (specialCases.Contains(substr.ToUpper()))
                         {
                             // add the special case
                             if (!exhaustiveRulesDict.ContainsKey(substr.ToLower()))
@@ -112,26 +113,42 @@ public class ColorScheme
                     // first check if this is a special case
                     List<string> specialCases = SulstonLineage.getSpecialCases();
 
-                    if (specialCases.Contains(entityName))
+                    if (specialCases.Contains(entityName.ToUpper()))
                     {
                         // add all of the descendants in the special case tree
-                        foreach (string descendant in SulstonLineage.getDescendantsOfSpecialCase(entityName))
+                        List<string> cases = SulstonLineage.getDescendantsOfSpecialCase(entityName);
+                        if (cases.Count == 0) // this is already a leaf node, add its descendants directly
                         {
-                            if (!exhaustiveRulesDict.ContainsKey(descendant.ToLower())) {
-                                exhaustiveRulesDict.Add(descendant.ToLower(), color);
-                            }
-                            
-
-                            // to tell if this descendant is a leaf node, see if it's descendants list is empty
-                            if (SulstonLineage.getDescendantsOfSpecialCase(descendant).Count == 0)
+                            // query all of the descendants from this special case leaf and add them to the dictionary
+                            List<string> specialCaseDescendants = addAllDescendants(entityName);
+                            foreach (string s in specialCaseDescendants)
                             {
-                                // query all of the descendants from this special case leaf and add them to the dictionary
-                                List<string> specialCaseDescendants = addAllDescendants(descendant);
-                                foreach (string s in specialCaseDescendants)
+                                if (!exhaustiveRulesDict.ContainsKey(s.ToLower()))
                                 {
-                                    if (!exhaustiveRulesDict.ContainsKey(s.ToLower()))
+                                    exhaustiveRulesDict.Add(s.ToLower(), color);
+                                }
+                            }
+                        } else // it's not a leaf node, so query its special case descendants and add all of those's descendants
+                        {
+                            foreach (string descendant in cases)
+                            {
+                                if (!exhaustiveRulesDict.ContainsKey(descendant.ToLower()))
+                                {
+                                    exhaustiveRulesDict.Add(descendant.ToLower(), color);
+                                }
+
+
+                                // to tell if this descendant is a leaf node, see if it's descendants list is empty
+                                if (SulstonLineage.getDescendantsOfSpecialCase(descendant).Count == 0)
+                                {
+                                    // query all of the descendants from this special case leaf and add them to the dictionary
+                                    List<string> specialCaseDescendants = addAllDescendants(descendant);
+                                    foreach (string s in specialCaseDescendants)
                                     {
-                                        exhaustiveRulesDict.Add(s.ToLower(), color);
+                                        if (!exhaustiveRulesDict.ContainsKey(s.ToLower()))
+                                        {
+                                            exhaustiveRulesDict.Add(s.ToLower(), color);
+                                        }
                                     }
                                 }
                             }
@@ -212,7 +229,7 @@ public class ColorScheme
                             for (int k = lineageName.Length; k >= 0; k--)
                             {
                                 string substr = lineageName.Substring(0, i);
-                                if (specialCases.Contains(substr))
+                                if (specialCases.Contains(substr.ToUpper()))
                                 {
                                     // add the special case
                                     if (!exhaustiveRulesDict.ContainsKey(substr.ToLower()))
