@@ -289,13 +289,13 @@ public class Window3DController {
 			sphere.name = cellName;
 
             // add color
-            Dictionary<string, Color> rulesDict = CS.getCurrentColorSchemeDict();
+            Dictionary<string, int> rulesDict = CS.getCurrentColorSchemeDict();
             bool hasColor = false;
-            Color c;
+            int colorIdx;
 
             // check if the entity has color
-            if (rulesDict.TryGetValue(sphere.name.ToLower(), out c)) {
-                sphere.GetComponent<Renderer>().material.SetColor("_Color", c);
+            if (rulesDict.TryGetValue(sphere.name.ToLower(), out colorIdx)) {
+                sphere.GetComponent<Renderer>().material.color = CS.getColorByIndex(colorIdx);
                 hasColor = true;
             }
        
@@ -319,16 +319,16 @@ public class Window3DController {
 			go.name = meshNames [i];
 
             // add color
-            Dictionary<string, Color> rulesDict = CS.getCurrentColorSchemeDict();
+            Dictionary<string, int> rulesDict = CS.getCurrentColorSchemeDict();
             bool hasColor = false;
-            Color c;
+            int colorIdx;
 
             // iterate over rules and apply where applicable
-            if (rulesDict.TryGetValue(go.name.ToLower(), out c))
+            if (rulesDict.TryGetValue(go.name.ToLower(), out colorIdx))
             {
                 foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
                 {
-                    rend.material.SetColor("_Color", c);
+                    rend.material.color = CS.getColorByIndex(colorIdx);
                     hasColor = true;
                 }
             }

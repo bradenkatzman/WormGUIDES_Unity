@@ -40,12 +40,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 	void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
-        // -1 sets the target frame rate to configure to the optimal rate based on the platform. This is useful for optimizing
-        // perfomance across different browers. See more here: https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html
-
-        // using other values to test performance
-        Application.targetFrameRate = 1;
-
         PartsList.initPartsList();
         ProductionInfo.initProductionInfo();
 
