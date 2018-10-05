@@ -38,11 +38,7 @@ public class Window3DController {
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
 
-
-    private string[] tract_names = new string[]{
-        "nerve_ring_anterior", "ventral_sensory_left", "ventral_sensory_right", "nerve_ring_left",
-        "nerve_ring_left_base", "amphitimd_right", "amphid_left", "nerve_ring_right_base",
-        "nerve_ring_right", "VNC_left", "VNC_right"};
+    private List<string> tract_names;
 
     /*
 	 * Color Schemes
@@ -65,7 +61,11 @@ public class Window3DController {
 		int offX, int offY, int offZ,
 		Material[] defMaterials,
 		ColorScheme cs_) {
-		this.xScale = xS;
+
+        this.tract_names = new List<string>(new string[] {"nerve_ring", "nerve_ring_left_base", "nerve_ring_right_base", "amphid_left", "amphid_right",
+            "nerve_ring_ventral_right", "nerve_ring_ventral_left", "vnc_left", "vnc_right", "amphid_tip_left", "amphid_tip_right", "pharynx", "embryo"});
+
+        this.xScale = xS;
 		this.yScale = yS;
 		this.zScale = zS;
 
@@ -80,12 +80,8 @@ public class Window3DController {
 		this.offsetZ = offZ;
 
 		this.DefaultMaterials = defMaterials;
-//		this.textMaterial = tMaterial;
 
 		this.CS = cs_;
-
-		// temp context menu vars
-		//this.hasAVL = false;
 
 		// initialize
 		spheres = new List<GameObject>();
@@ -101,6 +97,8 @@ public class Window3DController {
 		currentBillboardTextMeshes = new List<GameObject> ();
 
 		rootEntitiesGroup = new GameObject ();
+
+        
 
     }
 
@@ -164,6 +162,7 @@ public class Window3DController {
 				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
+                Debug.Log("added: " + se.getSceneName());
 			} else {
 				if (meshNames.Contains (se.getSceneName ())) {
 					meshNames.Remove (se.getSceneName ());
@@ -174,54 +173,6 @@ public class Window3DController {
 		}
 
 		meshes = new List<GameObject> ();
-
-		if (!(currentBillboardTextMeshes.Count == 0)) {
-			currentBillboardTextMeshes.Clear ();
-		}
-
-		billboardsAtCurrentTime = billboardsList.getBillboardsAtTime (time, cellNames);
-		for (int i = 0; i < billboardsAtCurrentTime.Count; i++) {
-			Billboard b = billboardsAtCurrentTime [i];
-
-			GameObject b_GO = null;
-			float[] arrow_pos = new float[3];
-			// determine if this billboard has geometry instead of text
-			bool miscGeometry = false;
-
-
-			// create text billboard if standard billboard
-			if (!miscGeometry) {
-				b_GO = new GameObject ();
-				b_GO.name = b.getBillboardText () + SPACE + BillboardStr;
-				TextMesh tm = b_GO.AddComponent<TextMesh> ();
-				tm.text = b.getBillboardText ();
-				tm.fontSize = billboardsList.getDefaultFontSize ();
-				//b_GO.GetComponentInChildren<MeshRenderer> ().material = textMaterial;
-			}
-
-			if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Static)) {
-				 
-					float[] xyzLocation = b.getXYZLocation ();
-					b_GO.transform.position = new Vector3 (
-						xyzLocation [X_COR_IDX],
-						xyzLocation [Y_COR_IDX],
-						xyzLocation [Z_COR_IDX]
-					);
-			} else if (b.getAttachmentType ().Equals (BillboardAttachmentType.AttachmentType.Cell)) {
-				// find the position of the attachment cell
-				int idx = cellNames.IndexOf(billboardsAtCurrentTime[i].getAttachmentCell());
-				double[] position = positions [idx];
-				b_GO.transform.position = new Vector3 (
-					((float) -position [X_COR_IDX] * xScale) + billboardsList.getXOffset(),
-					((float) position [Y_COR_IDX] * yScale) + billboardsList.getYOffset(),
-					((float) position [Z_COR_IDX] * zScale) + billboardsList.getZOffset());
-				b_GO.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
-				b_GO.transform.RotateAround (b_GO.transform.position, Vector3.forward, 180);
-				//b_GO.transform.Rotate(new Vector3(0,0,180));
-			}
-
-			currentBillboardTextMeshes.Add (b_GO);
-		}
 	}
 
 	private void addEntities() {
@@ -235,9 +186,10 @@ public class Window3DController {
 
             sphere.transform.parent = rootEntitiesGroup.transform;
         }
+
 		foreach (GameObject mesh in meshes) {
-            if (mesh.name != "Embryo")
-            {
+            // if this mesh is a tract, we won't put a collider on it
+            if (!tract_names.Contains(mesh.name.ToLower())) {
                 if (mesh.transform.Find("tube1") != null)
                 {
                     // replace the name
@@ -257,10 +209,6 @@ public class Window3DController {
 
             mesh.transform.parent = rootEntitiesGroup.transform;
         }
-		foreach (GameObject textMesh in currentBillboardTextMeshes) {
-			textMesh.transform.parent = rootEntitiesGroup.transform;
-		}
-   
 	}
 
 	private void addCellGeometries() {
@@ -312,7 +260,7 @@ public class Window3DController {
 	private void addSceneElementGeometries() {
 		SceneElement se;
 		GameObject go;
-		for (int i = 0; i < currentSceneElements.Count; i++) {
+        for (int i = 0; i < currentSceneElements.Count; i++) {
 			se = currentSceneElements [i];
 			go = currentSceneElementMeshes [i];
 
@@ -333,16 +281,12 @@ public class Window3DController {
                 }
             }
 
-
 			if (!hasColor) {
 				bool isTract = false;
-				for (int k = 0; k < tract_names.Length; k++) {
-					if (go.name.ToLower ().Equals (tract_names [k].ToLower ())) {
-						isTract = true;
-						foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
-							rend.material = DefaultMaterials [DEFAULT_MATERIAL_TRACTS_IDX];
-						}
-						break;
+                if (tract_names.Contains(go.name.ToLower())) { 
+					isTract = true;
+					foreach (Renderer rend in go.GetComponentsInChildren<Renderer>()) {
+						rend.material = DefaultMaterials [DEFAULT_MATERIAL_TRACTS_IDX];
 					}
 				}
 				if (!isTract) {
