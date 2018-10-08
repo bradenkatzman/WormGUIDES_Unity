@@ -13,12 +13,14 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>WebGL:20</UnityBuildTarget>
     <UnityVersion>2017.4.11f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -240,7 +242,6 @@
     <Compile Include="Assets\wormguides\application_data\CellDeaths\CellDeaths.cs" />
     <Compile Include="Assets\wormguides\application_data\Lineage\SulstonLineage.cs" />
     <Compile Include="Assets\wormguides\application_data\PartsList\PartsList.cs" />
-    <Compile Include="Assets\wormguides\controllers\PinchZoomController.cs" />
     <Compile Include="Assets\wormguides\controllers\RootLayoutController.cs" />
     <Compile Include="Assets\wormguides\controllers\Window3DController.cs" />
     <Compile Include="Assets\wormguides\loaders\GeomtryLoader.cs" />

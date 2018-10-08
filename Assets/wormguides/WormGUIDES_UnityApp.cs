@@ -45,7 +45,6 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
 
 		CS = new ColorScheme (0);
-		//CS = new ColorScheme (ColorScheme.CS.LineageSpatialRelationships);
 
 		initRootLayout ();
 	}

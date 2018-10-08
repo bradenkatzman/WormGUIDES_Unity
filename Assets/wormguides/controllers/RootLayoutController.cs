@@ -22,8 +22,6 @@ public class RootLayoutController : MonoBehaviour {
 
 	private SceneElementsList elementsList;
 
-	private BillboardsList billboardsList;
-
 	// scene rendering info
 	private bool play;
 
@@ -37,9 +35,6 @@ public class RootLayoutController : MonoBehaviour {
 
 	// camera stuff
 	private Camera PerspectiveCam;
-
-	// zoom stuff
-	private PinchZoomController pzc;
 
 	// color scheme stuff
 	private ColorScheme CS;
@@ -76,8 +71,6 @@ public class RootLayoutController : MonoBehaviour {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 		initLineageData ();
 		initSceneElementsList ();
-		initBillboardsList ();
-		initPinchZoomController ();
         initCellDeaths();
 		initWindow3DController ();
 
@@ -190,15 +183,6 @@ public class RootLayoutController : MonoBehaviour {
 		this.elementsList = new SceneElementsList (lineageData);
 	}
 
-	private void initBillboardsList() {
-		this.billboardsList = new BillboardsList ();
-	}
-
-	private void initPinchZoomController() {
-		pzc = this.gameObject.AddComponent<PinchZoomController> ();
-		pzc.setCamera (this.PerspectiveCam);
-	}
-
     private void initCellDeaths()
     {
         CellDeaths.init();
@@ -211,7 +195,6 @@ public class RootLayoutController : MonoBehaviour {
 			ProductionInfo.getZScale(),
 			lineageData,
 			elementsList,
-			billboardsList,
 			PerspectiveCam,
 			LineageDataLoader.getAvgXOffsetFromZero(),
 			LineageDataLoader.getAvgYOffsetFromZero(),

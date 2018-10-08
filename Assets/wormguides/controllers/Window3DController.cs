@@ -12,7 +12,6 @@ public class Window3DController {
 
 	private LineageData lineageData;
 	private SceneElementsList sceneElementsList;
-	private BillboardsList billboardsList;
 
 	// subscene state parameters
 	private List<string> cellNames;
@@ -25,8 +24,6 @@ public class Window3DController {
 	private List<SceneElement> sceneElementsAtCurrentTime;
 	private List<GameObject> currentSceneElementMeshes;
 	private List<SceneElement> currentSceneElements;
-	private List<Billboard> billboardsAtCurrentTime;
-	private List<GameObject> currentBillboardTextMeshes;
 
 	private int xScale, yScale, zScale;
 	private int offsetX, offsetY, offsetZ;
@@ -38,6 +35,7 @@ public class Window3DController {
 	private int Y_COR_IDX = 1;
 	private int Z_COR_IDX = 2;
 
+    // this is dual-functioning as a list of entities whose click-to-label functionality should be suppressed, but that should be updated
     private List<string> tract_names;
 
     /*
@@ -51,18 +49,17 @@ public class Window3DController {
 	private int MISCELLANEOUS_GEOMETRY_MATERIAL_IDX = 2;
 	// ** end color schemes
     
-	// billboard stuff
-	private static string BillboardStr = "Billboard";
-	private static string SPACE = " ";
 
 	public Window3DController(int xS, int yS, int zS, 
-		LineageData ld, SceneElementsList elementsList, BillboardsList bl,
+		LineageData ld, SceneElementsList elementsList,
 		Camera pc,
 		int offX, int offY, int offZ,
 		Material[] defMaterials,
 		ColorScheme cs_) {
 
-        this.tract_names = new List<string>(new string[] {"nerve_ring", "nerve_ring_left_base", "nerve_ring_right_base", "amphid_left", "amphid_right",
+        this.tract_names = new List<string>(new string[] {"ceh-37_amphid_left", "ceh-37_amphid_right", "lim-4_outgrowth_sibd_bundle_left", "lim-4_outgrowth_sibd_bundle_right",
+            "lim-4_outgrowth_riv_bundle_right", "lim-4_outgrowth_riv_bundle_left", "lim-4_outgrowth_late", "unc-86_outgrowth",
+            "nerve_ring", "nerve_ring_left_base", "nerve_ring_right_base", "amphid_left", "amphid_right",
             "nerve_ring_ventral_right", "nerve_ring_ventral_left", "vnc_left", "vnc_right", "amphid_tip_left", "amphid_tip_right", "pharynx", "embryo"});
 
         this.xScale = xS;
@@ -71,7 +68,6 @@ public class Window3DController {
 
 		this.lineageData = ld;
 		this.sceneElementsList = elementsList;
-		this.billboardsList = bl;
 
 		this.PerspectiveCam = pc;
 
@@ -93,8 +89,6 @@ public class Window3DController {
 		sceneElementsAtCurrentTime = new List<SceneElement> ();
 		currentSceneElementMeshes = new List<GameObject> ();
 		currentSceneElements = new List<SceneElement> ();
-		billboardsAtCurrentTime = new List<Billboard> ();
-		currentBillboardTextMeshes = new List<GameObject> ();
 
 		rootEntitiesGroup = new GameObject ();
 
@@ -162,7 +156,6 @@ public class Window3DController {
 				go.transform.Translate (new Vector3 (offsetX, -offsetY, (-offsetZ * zScale)));
 				currentSceneElementMeshes.Add (go);
 				currentSceneElements.Add (se);
-                Debug.Log("added: " + se.getSceneName());
 			} else {
 				if (meshNames.Contains (se.getSceneName ())) {
 					meshNames.Remove (se.getSceneName ());
