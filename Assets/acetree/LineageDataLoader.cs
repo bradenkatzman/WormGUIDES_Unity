@@ -38,7 +38,7 @@ public class LineageDataLoader {
 		ld.setXYZScale (ProductionInfo.getXScale (), ProductionInfo.getYScale (), ProductionInfo.getZScale ());
 
 		string urlStr;
-		for (int i = 1; i <= ProductionInfo.getTotalTimePoints (); i++) {
+		for (int i = 0; i <= ProductionInfo.getTotalTimePoints (); i++) {
 			urlStr = getResourceAtTime (i);
 			if (urlStr != null) {
 				process (ld, i, urlStr);
