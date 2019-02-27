@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Linq;
 
 public class ColorScheme
 {
@@ -13,15 +15,46 @@ public class ColorScheme
     private string[] colorURLS = new string[] {"http://scene.wormguides.org/wormguides/testurlscript?/set/saavl-n$@+#ffff0000/sibd-n$@+#ffe6ccff/avg-n$@+#ffffff00/rip-n$@+#ff99cc99/rih-n$@+#ff99cc99/smdd-n$@+#ff4d66cc/aiy-n$@+#ffff9900/rig-n$@+#fff90557/pvt-n$@+#ffffffff/dva-n$@+#ffffb366/ala-n$@+#ff01c501/aim-n$@+#ffffff66/aial-n$@+#ff8066cc/afd-n$@+#ff4de6e2/rim-n$@+#ffb399ff/avd-n$@+#ffff9980/CEH-37=Amphid=Multicellular=Structure-H+#ff994d66/rmdd-n$@+#ff664db3/rmg-n$@+#ffffffff/ada-n$@+#ffffffff/aiz-n$@+#ffffffff/bdu-n$@+#ffffffff/smbd-n$@+#ffffffff/pha-n$@+#ffffffff/hsn-n$@+#ffffffff/phb-n$@+#ffffffff/Embryo=Outline-M+#4b00f2ff/Hypoderm-M+#043381aa/view/time=360/rX=0.0/rY=0.0/rZ=0.0/tX=-14.0/tY=18.0/scale=2.75/dim=0.3/Android/",
     "http://scene.wormguides.org/wormguides/testurlscript?/set/E-s<$+#ff13ff03/MS-s<$+#ff05ffd6/D-s<$+#fffd00ff/C-s<$+#ffffb3b3/P4-s<$+#ffffff4d/ABal-s<$+#ffff6666/ABar-s<$+#ffcc3333/ABpl-s<$+#ff4b6efc/ABpr-s<$+#ff0034ff/view/time=294/rX=0.0/rY=0.0/rZ=0.0/tX=-14.0/tY=18.0/scale=2.75/dim=0.3/Android/"};
 
+   
+    // 
+
     private string[] colorSchemeNames = new string[] {"Tour of the Tract and Simplified Single Cell Shape Model",
      "Lineage/Spatial Relationships"};
+
+    private string colorSchemeNameForExternalURL = "External Color URL";
+
+    private string colorSchemeBaseURL = "http://scene.wormguides.org/wormguides/testurlscript?/set/";
 
     public enum CS { TourTract_NerveRing, LineageSpatialRelationships };
 
     private CS cs;
 
-    public ColorScheme(int idx)
+    // constructor called when a color scheme URL is appended to the base URL of the webpage
+    public ColorScheme(string externalURL, Dropdown colorSchemeDropdown)
     {
+        // handle the addition of the URL by adding it to the list of default URLs and setting its index as the starting index
+
+        // first, format the external URL (it is assumed that it does not contain the base)
+        externalURL = colorSchemeBaseURL + externalURL;
+        Debug.Log("Made external URL: " + externalURL);
+
+        // add the new url to the lists
+        colorURLS = new string[] { colorURLS[0], colorURLS[1], externalURL };
+        colorSchemeNames = new string[] { colorSchemeNames[0], colorSchemeNames[1], colorSchemeNameForExternalURL };
+
+        colorSchemeDropdown.ClearOptions();
+        colorSchemeDropdown.AddOptions(new List<string>(colorSchemeNames));
+
+        lastIDX = 2;
+
+        setColorScheme(lastIDX);
+    }
+
+    public ColorScheme(int idx, Dropdown colorSchemeDropdown)
+    {
+        colorSchemeDropdown.ClearOptions();
+        colorSchemeDropdown.AddOptions(new List<string>(colorSchemeNames));
+
         setColorScheme(idx);
     }
 
@@ -75,7 +108,6 @@ public class ColorScheme
             // LINEAGE RULE UNPACKING
             if (ruleType.ToLower().Contains("l")) // lineage rule
             {
-
                 // if ancestors or descendants are include, this will require a search
                 if (ruleOptions.ToLower().Contains("a"))
                 {
@@ -186,9 +218,9 @@ public class ColorScheme
             {
                 List<string> functionalNames = PartsList.getFunctionalNames();
                 bool isTerminalNameRoot = false;
-                List<string> matchingTerminalNames = new List<string>(); // in the event that the rule entityName is the root of terminal name,
-                                                                         // we'll build up a list of full terminal names that share this root
-                                                                         // and add them at the end
+                List<string> matchingLineageNames = new List<string>(); // if the terminal name for this rule is either a root of a class of terminal names
+                                                                        // e.g. hyp, or the terminal name is full but has multiple lineage names associated with it
+                                                                        // e.g. int or hyp7, we will build up a list of all of the lineage names that correspond 
                 for (int k = 0; k < functionalNames.Count; k++)
                 {
                     string s = functionalNames[k];
@@ -199,24 +231,30 @@ public class ColorScheme
                             // they're different lengths, so the entity name is the root of a terminal name
                             isTerminalNameRoot = true; // this will be set true multiple times during this loop if it's true once - that's okay
 
-                            // add the lineage name matching the terminal name which starts with the entity name in the rule
-                            matchingTerminalNames.Add(PartsList.getLineageNameByTerminalName(s));
+                            // add the lineage names matching the terminal name which starts with the entity name in the rule
+                            matchingLineageNames.AddRange(PartsList.getLineageNamesByTerminalName(s));
                         }
                         else
                         {
-                            string lineageName = PartsList.getLineageNameByTerminalName(s);
-                            if (!exhaustiveRulesDict.ContainsKey(lineageName.ToLower()))
+                            // even if they're the same length, there still be many lineage names associated with this functional name e.g. 'int'
+                            List<string> lineageNames = PartsList.getLineageNamesByTerminalName(s);
+                            for (int j = 0; j < lineageNames.Count; j++)
+                            if (!exhaustiveRulesDict.ContainsKey(lineageNames[j].ToLower()))
                             {
-                                exhaustiveRulesDict.Add(lineageName.ToLower(), colorIdx);
+                                exhaustiveRulesDict.Add(lineageNames[j].ToLower(), colorIdx);
                             }
-                            break; // got the match - save some time by breaking the loop
+
+                            break;
                         }
                     }
                 }
 
+                // remove any duplicates in matchingLineageNames
+                matchingLineageNames = matchingLineageNames.Distinct().ToList();
+
                 // so if we do have an entity name that is a root of a terminal name, the above loop should have built up a list of 
                 // the different full terminal names that have that root. Let's add them now
-                foreach(string s in matchingTerminalNames)
+                foreach(string s in matchingLineageNames)
                 {
                     if (!exhaustiveRulesDict.ContainsKey(s.ToLower()))
                     {
@@ -231,11 +269,11 @@ public class ColorScheme
                     // need to check if the entityName is a full terminal name (e.g. hyp7) or a terminal name root (hyp)
                     if (isTerminalNameRoot)
                     {
-                        // again, if this is true, there should be a list with names filled that all share the root. Apply the ancestry naming
+                        // again, if this is true, there should be a list of all lineage names that have that functional name root. Apply the ancestry naming
                         // algorithm to each of those names
-                        foreach(string s in matchingTerminalNames)
+                        foreach(string lineageName in matchingLineageNames)
                         {
-                            string lineageName = PartsList.getLineageNameByTerminalName(s);
+
                             for (int k = lineageName.Length; k >= 0; k--)
                             {
                                 string substr = lineageName.Substring(0, i);
@@ -268,7 +306,9 @@ public class ColorScheme
                             }
                         }
 
-                    } else // we've got a full name so just do the standard procedure for this terminal name on its lineage name
+                    }
+                    /*
+                    else // we've got a full name so just do the standard procedure for this terminal name on its lineage name
                     {
                         string lineageName = PartsList.getLineageNameByTerminalName(entityName);
                         for (int k = lineageName.Length; k >= 0; k--)
@@ -300,8 +340,8 @@ public class ColorScheme
                             {
                                 exhaustiveRulesDict.Add(substr.ToLower(), colorIdx);
                             }
-                        }
-                    }
+                        } 
+                    } */
                 }
             }
         }

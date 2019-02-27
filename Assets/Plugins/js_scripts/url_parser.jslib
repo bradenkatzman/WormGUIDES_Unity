@@ -1,9 +1,10 @@
 mergeInto(LibraryManager.library, {
 
-	doesURLContainColorScheme: function() {
+	DoesURLContainColorScheme: function() {
 		// the base URL for the app is: http://digital-development.org/WormGUIDES/
 		var baseURL = "http://digital-development.org/WormGUIDES/";
-		if (window.location.href.includes("/WormGUIDES/")) {
+
+		if (window.location.href.includes(baseURL)) {
 			// check if there is anything after the last substring in the base URL
 			if (window.location.href.length > baseURL.length) {
 				// we can't know exactly what's going to be there, but we do know some properties of a valid URL that we'll check here:
@@ -12,30 +13,30 @@ mergeInto(LibraryManager.library, {
 				// 3. contains /view/time=
 
 				// first, extract everything after the base url into it's own variable
-				var colorSchemeURLCandidate = window.location.substring(baseURL.length);
+				var colorSchemeURLCandidate = window.location.href.substring(baseURL.length);
 
 				if (colorSchemeURLCandidate.endsWith("/Android/") && colorSchemeURLCandidate.includes("/view/time=") && colorSchemeURLCandidate.includes("/scale=")) {
-					window.alert("Found valid color scheme in URL");
+					//window.alert("Found valid color scheme in URL: " + colorSchemeURLCandidate);
 					return true;
-				} else {
-					window.alert("Color scheme candidate in URL did not meet criteria");
-					return false;
 				}
-			} else {
-				window.alert("There is no extended URL");
 			}
-		} else {
-			window.alert("Problems with base URL");
 		}
+
+		return false;
 	}, 
 
-	extractColorSchemeFromURL: function() {
-		// just make sure that the URL actually does contain a color scheme. This is normally called after first checking, but just be sure
-		if (!doesURLContainColorScheme()) return "";
-
+	ExtractColorSchemeFromURL: function() {
 		// the base URL for the app is: http://digital-development.org/WormGUIDES/
 		var baseURL = "http://digital-development.org/WormGUIDES/";
 
-		return window.location.href.substring(baseURL.length);
+		// extract the color scheme as a javascript string
+		var colorSchemeStr = window.location.href.substring(baseURL.length);
+		
+		// strings required some work to return to c#. Adapted from: https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+		var bufferSize = lengthBytesUTF8(colorSchemeStr) + 1;
+		var buffer = _malloc(bufferSize);
+		stringToUTF8(colorSchemeStr, buffer, bufferSize);
+
+		return buffer;
 	}
 });

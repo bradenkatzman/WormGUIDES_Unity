@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Runtime.InteropServices;
 
 
 /*
@@ -68,19 +67,13 @@ public class RootLayoutController : MonoBehaviour {
     int mouseHoldCounterHackRotation;
     int mouseHoldCounterHackTranslation;
 
-    // .js function hooks that facilitate color URLs
-    [DllImport("__Internal")]
-    private static extern bool doesURLContainColorScheme();
-
-    [DllImport("__Internal")]
-    private static extern string extractColorSchemeFromURL();
-
 
     void Start () {
 		this.WormGUIDES_Unity = this.GetComponent<WormGUIDES_UnityApp> ().getWormGUIDES_Unity ();
 		initLineageData ();
 		initSceneElementsList ();
-        initCellDeaths();
+
+
 		initWindow3DController ();
 
 		play = false;
@@ -179,18 +172,7 @@ public class RootLayoutController : MonoBehaviour {
 	}
 
 	void onColorSchemeDropdownValueChanged() {
-        // make a call to the javascript scripts to see if the app is being loaded with a specific color scheme
-        if (doesURLContainColorScheme())
-        {
-            // load the externally supplied color scheme along with the default color schemes
-            string externalColorScheme = extractColorSchemeFromURL();
-        } else
-        {
-            // just load the default color schemes
-            this.window3d.updateColorScheme(this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);
-        }
-
-		
+        this.window3d.updateColorScheme(this.ColorScheme_Dropdown.value, this.WormGUIDES_Unity);		
 	}
 
 	// load all of the lineage data into the LineageData class
@@ -202,11 +184,6 @@ public class RootLayoutController : MonoBehaviour {
 	private void initSceneElementsList() {
 		this.elementsList = new SceneElementsList (lineageData);
 	}
-
-    private void initCellDeaths()
-    {
-        CellDeaths.init();
-    }
 
 	private void initWindow3DController() {
 		this.window3d = new Window3DController(
@@ -288,7 +265,7 @@ public class RootLayoutController : MonoBehaviour {
                     {
                         // check if this is a click on the same object
                         if (entityLabel.GetComponent<TextMesh>().text == hitInfo.transform.gameObject.name
-                            || PartsList.getLineageNameByTerminalName(entityLabel.GetComponent<TextMesh>().text)  == hitInfo.transform.gameObject.name)
+                            || PartsList.getLineageNamesByTerminalName(entityLabel.GetComponent<TextMesh>().text).Contains(hitInfo.transform.gameObject.name))
                         {
                             // turn off the label
                             entityLabel.gameObject.SetActive(false);

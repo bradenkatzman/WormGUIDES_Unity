@@ -141,7 +141,7 @@ public class UrlParser
                  
                 //options.clear();
                 int i;
-                if (ruleString.IndexOf("%3C") > -1)
+                if (ruleString.IndexOf("%3E") > -1)
                 {
                     //    options.add(ANCESTOR);
                     //i = sb.indexOf("%3C");
@@ -161,7 +161,7 @@ public class UrlParser
                 //    i = sb.indexOf("$");
                 //   sb.replace(i, i + 1, "");
                 //}
-                if (ruleString.IndexOf("%3E") > -1)
+                if (ruleString.IndexOf("%3C") > -1)
                 {
                     //    options.add(DESCENDANT);
                     //    i = sb.indexOf("%3E");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
 
 /*
  * Main script for WormGUIDES_Unity
@@ -37,15 +38,30 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
     public TextMesh entityLabel;
 
-	void Start() {
+    [DllImport("__Internal")]
+    private static extern bool DoesURLContainColorScheme();
+
+    [DllImport("__Internal")]
+    private static extern string ExtractColorSchemeFromURL();
+
+    void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
         PartsList.initPartsList();
+        CellDeaths.init();
         ProductionInfo.initProductionInfo();
+        
+        if (DoesURLContainColorScheme())
+        {
+            string extractedColorScheme = ExtractColorSchemeFromURL();
+            CS = new ColorScheme(ExtractColorSchemeFromURL(), colorSchemeDropdown);
+            colorSchemeDropdown.value = 2;
 
-
-		CS = new ColorScheme (0);
-
+       } else
+        {
+            CS = new ColorScheme(0, colorSchemeDropdown);
+        }
+		
 		initRootLayout ();
 	}
 

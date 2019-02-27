@@ -91,22 +91,24 @@ public static class PartsList {
         return terminalName;
     }
 
-    public static string getLineageNameByTerminalName(string cell)
+    public static List<string> getLineageNamesByTerminalName(string cell)
     {
         if (cell.Length == 0)
         {
-            return cell;
+            return new List<string>();
         }
 
-        string lineageName = cell;
+        List<string> lineageNamesMatch = new List<string>();
+
         for (int i = 0; i < functionalNames.Count; i++) {
-            if (functionalNames[i].ToLower().Equals(cell.ToLower()))
+            if (functionalNames[i].ToLower().StartsWith(cell.ToLower()))
             {
-                return lineageNames[i];
+                lineageNamesMatch.Add(lineageNames[i]);
             }
+
         }
 
-        return lineageName;
+        return lineageNamesMatch;
     }
 
     // TODO - make this handle rules such as XXDL --> there could be a situation where you want to the rule to apply to all XXD, 
