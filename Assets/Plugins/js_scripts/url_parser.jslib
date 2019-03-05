@@ -2,7 +2,7 @@ mergeInto(LibraryManager.library, {
 
 	DoesURLContainColorScheme: function() {
 		// the base URL for the app is: http://digital-development.org/WormGUIDES/
-		var baseURL = "http://digital-development.org/WormGUIDES/";
+		var baseURL = "http://digital-development.org/WormGUIDES/index.html?=";
 
 		if (window.location.href.includes(baseURL)) {
 			// check if there is anything after the last substring in the base URL
@@ -27,7 +27,7 @@ mergeInto(LibraryManager.library, {
 
 	ExtractColorSchemeFromURL: function() {
 		// the base URL for the app is: http://digital-development.org/WormGUIDES/
-		var baseURL = "http://digital-development.org/WormGUIDES/";
+		var baseURL = "http://digital-development.org/WormGUIDES/index.html?=";
 
 		// extract the color scheme as a javascript string
 		var colorSchemeStr = window.location.href.substring(baseURL.length);
