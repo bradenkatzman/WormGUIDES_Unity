@@ -130,13 +130,13 @@ public class UrlParser
                 double alpha = 1.0;
                 if (ruleString.IndexOf("+#") > -1)
                 {
+                    // flip the order of the string from AARRGGBB to RRGGBBAA
                     // ff112233
                     wholeColorString = ruleString.Substring(ruleString.IndexOf("+#") + 2);
                     // whole color string format: alpha, red, green, blue
                     colorHex = wholeColorString.Substring(2);
                     String alphaHex = wholeColorString.Substring(0, 2);
-                    alpha = (Convert.ToInt32(alphaHex, 16) + 1) / 256.0;
-                    color = colorHex; // temporary representation
+                    color = colorHex + alphaHex; // temporary representation
                 }
                  
                 //options.clear();

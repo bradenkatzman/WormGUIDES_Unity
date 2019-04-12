@@ -38,29 +38,15 @@ public class WormGUIDES_UnityApp : MonoBehaviour {
 
     public TextMesh entityLabel;
 
-    [DllImport("__Internal")]
-    private static extern bool DoesURLContainColorScheme();
-
-    [DllImport("__Internal")]
-    private static extern string ExtractColorSchemeFromURL();
-
     void Start() {
 		Debug.Log("Starting WormGUIDES_Unity application");
 
         PartsList.initPartsList();
         CellDeaths.init();
         ProductionInfo.initProductionInfo();
-        
-        if (DoesURLContainColorScheme())
-        {
-            string extractedColorScheme = ExtractColorSchemeFromURL();
-            CS = new ColorScheme(ExtractColorSchemeFromURL(), colorSchemeDropdown);
-            colorSchemeDropdown.value = 2;
-
-       } else
-        {
-            CS = new ColorScheme(0, colorSchemeDropdown);
-        }
+       
+        CS = new ColorScheme(0, colorSchemeDropdown);
+     
 		
 		initRootLayout ();
 	}

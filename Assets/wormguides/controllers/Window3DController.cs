@@ -269,6 +269,15 @@ public class Window3DController {
             {
                 foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
                 {
+                    rend.material.SetFloat("_Mode", 2);
+                    rend.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    rend.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    rend.material.SetInt("_ZWrite", 0);
+                    rend.material.DisableKeyword("_ALPHATEST_ON");
+                    rend.material.EnableKeyword("_ALPHABLEND_ON");
+                    rend.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    rend.material.renderQueue = 3000;
+
                     rend.material.color = CS.getColorByIndex(colorIdx);
                     hasColor = true;
                 }
