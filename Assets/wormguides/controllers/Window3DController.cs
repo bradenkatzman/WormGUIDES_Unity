@@ -298,6 +298,15 @@ public class Window3DController {
 				}
 			}
 
+            // the following code snippet effectively turns OFF backface culling by duplicating the triangles with
+            // flipped normals. We do this for specific meshes that are large so that you see the inside if the
+            // camera is inside the mesh
+            if (go.name.ToLower().Equals("embryo"))
+            {
+                go.AddComponent<MakeMeshDoubleSided>();
+                
+            }
+
 			meshes.Add (go);
 		}
 	}
