@@ -91,9 +91,6 @@ public class Window3DController {
 		currentSceneElements = new List<SceneElement> ();
 
 		rootEntitiesGroup = new GameObject ();
-
-        
-
     }
 
 	// called by RootLayoutController to render the scene
@@ -236,6 +233,15 @@ public class Window3DController {
 
             // check if the entity has color
             if (rulesDict.TryGetValue(sphere.name.ToLower(), out colorIdx)) {
+                sphere.GetComponent<Renderer>().material.SetFloat("_Mode", 2);
+                sphere.GetComponent<Renderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                sphere.GetComponent<Renderer>().GetComponent<Renderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                sphere.GetComponent<Renderer>().material.SetInt("_ZWrite", 0);
+                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHATEST_ON");
+                sphere.GetComponent<Renderer>().material.EnableKeyword("_ALPHABLEND_ON");
+                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                sphere.GetComponent<Renderer>().material.renderQueue = 3000;
+
                 sphere.GetComponent<Renderer>().material.color = CS.getColorByIndex(colorIdx);
                 hasColor = true;
             }
