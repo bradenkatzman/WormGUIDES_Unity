@@ -233,14 +233,14 @@ public class Window3DController {
 
             // check if the entity has color
             if (rulesDict.TryGetValue(sphere.name.ToLower(), out colorIdx)) {
-                sphere.GetComponent<Renderer>().material.SetFloat("_Mode", 2);
-                sphere.GetComponent<Renderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                sphere.GetComponent<Renderer>().GetComponent<Renderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                sphere.GetComponent<Renderer>().material.SetInt("_ZWrite", 0);
-                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHATEST_ON");
-                sphere.GetComponent<Renderer>().material.EnableKeyword("_ALPHABLEND_ON");
-                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                sphere.GetComponent<Renderer>().material.renderQueue = 3000;
+//                sphere.GetComponent<Renderer>().material.SetFloat("_Mode", 2);
+//                sphere.GetComponent<Renderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+//                sphere.GetComponent<Renderer>().GetComponent<Renderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+//                sphere.GetComponent<Renderer>().material.SetInt("_ZWrite", 0);
+//                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHATEST_ON");
+//                sphere.GetComponent<Renderer>().material.EnableKeyword("_ALPHABLEND_ON");
+//                sphere.GetComponent<Renderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+//                sphere.GetComponent<Renderer>().material.renderQueue = 3000;
 
                 sphere.GetComponent<Renderer>().material.color = CS.getColorByIndex(colorIdx);
                 hasColor = true;
@@ -275,14 +275,20 @@ public class Window3DController {
             {
                 foreach (Renderer rend in go.GetComponentsInChildren<Renderer>())
                 {
-                    rend.material.SetFloat("_Mode", 2);
-                    rend.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    rend.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    rend.material.SetInt("_ZWrite", 0);
-                    rend.material.DisableKeyword("_ALPHATEST_ON");
-                    rend.material.EnableKeyword("_ALPHABLEND_ON");
-                    rend.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                    rend.material.renderQueue = 3000;
+                    // the following code snippets set the shader type to "Fade" because the pharynx and embryo 
+                    // are large and hence contain other entities that should still be visible if these structures
+                    // have a less than 1.0 transparency value
+                    if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx"))
+                    {
+                        rend.material.SetFloat("_Mode", 2);
+                        rend.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                        rend.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                        rend.material.SetInt("_ZWrite", 0);
+                        rend.material.DisableKeyword("_ALPHATEST_ON");
+                        rend.material.EnableKeyword("_ALPHABLEND_ON");
+                        rend.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                        rend.material.renderQueue = 3000;
+                    }
 
                     rend.material.color = CS.getColorByIndex(colorIdx);
                     hasColor = true;
@@ -307,7 +313,7 @@ public class Window3DController {
             // the following code snippet effectively turns OFF backface culling by duplicating the triangles with
             // flipped normals. We do this for specific meshes that are large so that you see the inside if the
             // camera is inside the mesh
-            if (go.name.ToLower().Equals("embryo"))
+            if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx"))
             {
                 go.AddComponent<MakeMeshDoubleSided>();
                 
