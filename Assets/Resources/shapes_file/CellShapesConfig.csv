@@ -120,6 +120,6 @@ amphid_tip_right,Tract,MCS,cnd-1,L:\shahp2\iSIM\BV293\11082016,obj_files/filamen
 Tracts,,,,,,,,,
 Tissue Level Objects,,,,,,,,,
 Pharynx,,Pharynx,-,-,obj_files/Pharynx,200,400,Y,
-Hypoderm,,Hypoderm,-,-,obj_files/Hypoderm,0,0,N,
-Embryo,,Embryo,-,-,obj_files/embryo,1,400,N,
+Hypoderm,,Hypoderm,-,-,obj_files/Hypoderm,200,400,N,
+Embryo Outline,,Embryo,-,-,obj_files/embryo,1,400,N,
 Tissue Level Objects,,,,,,,,,
