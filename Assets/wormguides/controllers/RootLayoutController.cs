@@ -259,7 +259,7 @@ public class RootLayoutController : MonoBehaviour {
                 RaycastHit hitInfo = new RaycastHit();
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
-                {   
+                { 
                     // first check if the label is active already
                     if (entityLabel.gameObject.activeSelf)
                     {

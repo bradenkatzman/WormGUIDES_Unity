@@ -171,9 +171,6 @@ public class Window3DController {
 
         // add transform and mesh colliders to objects
         foreach (GameObject sphere in spheres) {
-            MeshCollider meshc = sphere.AddComponent(typeof(MeshCollider)) as MeshCollider;
-            meshc.sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
-
             sphere.transform.parent = rootEntitiesGroup.transform;
         }
 
@@ -223,8 +220,13 @@ public class Window3DController {
 
 			sphere.transform.RotateAround (Vector3.zero, Vector3.forward, 180);
 
-			// set cell name
-			sphere.name = cellName;
+
+            // add mesh colliders
+            //MeshCollider meshc = sphere.AddComponent(typeof(MeshCollider)) as MeshCollider;
+            //meshc.sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
+
+            // set cell name
+            sphere.name = cellName;
 
             // add color
             Dictionary<string, int> rulesDict = CS.getCurrentColorSchemeDict();
@@ -249,6 +251,11 @@ public class Window3DController {
             if (!hasColor)
             {
                 sphere.GetComponent<Renderer>().material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
+
+                // also turn off the mesh and sphere collider so that it is not clickable
+                sphere.GetComponent<SphereCollider>().enabled = false;
+                //sphere.GetComponent<MeshCollider>().enabled = false;
+                
             }
 
 			// add sphere to list
@@ -308,6 +315,13 @@ public class Window3DController {
 						rend.material = DefaultMaterials[DEFAULT_MATERIAL_IDX];
 					}
 				}
+
+                // turn off the mesh collider so that it can't be clicked
+                foreach (MeshCollider mc in go.GetComponentsInChildren<MeshCollider>())
+                {
+                    mc.enabled = false;
+                }
+                
 			}
 
             // the following code snippet effectively turns OFF backface culling by duplicating the triangles with
