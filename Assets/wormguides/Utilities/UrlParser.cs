@@ -185,7 +185,7 @@ public class UrlParser
 
                 // extract name(s) from what's left of rule
                 //name = ruleString.Substring(0, ruleString.IndexOf("+"));
-                entityName = ruleString.Substring(0, ruleString.IndexOf("-")); // temporary representation
+                entityName = ruleString.Substring(0, ruleString.LastIndexOf("-")); // temporary representation
 
                 // temporary representation
                 if (!entityName.Equals("") && !ruleType.Equals("")

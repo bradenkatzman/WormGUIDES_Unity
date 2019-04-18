@@ -278,7 +278,7 @@ public class Window3DController {
                     // the following code snippets set the shader type to "Fade" because the pharynx and embryo 
                     // are large and hence contain other entities that should still be visible if these structures
                     // have a less than 1.0 transparency value
-                    if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx"))
+                    if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx") || go.name.ToLower().Equals("hypoderm"))
                     {
                         rend.material.SetFloat("_Mode", 2);
                         rend.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -313,7 +313,7 @@ public class Window3DController {
             // the following code snippet effectively turns OFF backface culling by duplicating the triangles with
             // flipped normals. We do this for specific meshes that are large so that you see the inside if the
             // camera is inside the mesh
-            if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx"))
+            if (go.name.ToLower().Equals("embryo") || go.name.ToLower().Equals("pharynx") || go.name.ToLower().Equals("hypoderm"))
             {
                 go.AddComponent<MakeMeshDoubleSided>();
                 
